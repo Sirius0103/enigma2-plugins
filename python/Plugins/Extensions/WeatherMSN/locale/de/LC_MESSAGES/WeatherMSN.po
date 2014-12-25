@@ -1,0 +1,131 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WeatherMSN\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-07-29 01:13+0100\n"
+"PO-Revision-Date: 2014-12-19 17:29+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <sirius.al@rambler.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Language: de\n"
+"X-Generator: Poedit 1.6.4\n"
+
+msgid "Weather MSN"
+msgstr "Wetter MSN"
+
+msgid "Weather forecast for 5 days"
+msgstr "Wetter forecast für 5 Tage"
+
+msgid "Config Weather MSN"
+msgstr "Config Wetter MSN"
+
+msgid "Show Weather MSN in menu information:"
+msgstr "Wetter MSN im menü informationen Zeigen:"
+
+msgid "Location:"
+msgstr "Ort:"
+
+msgid "Timezone:"
+msgstr "Zeitzone:"
+
+msgid "Latitude:"
+msgstr "Breite:"
+
+msgid "Longitude:"
+msgstr "Laenge:"
+
+msgid "Temperature:"
+msgstr "Temperatur:"
+
+msgid "Feels like:"
+msgstr "Gefühlt:"
+
+msgid "Humidity:"
+msgstr "Luftfeuchtigkeit:"
+
+msgid "Chance precip:"
+msgstr "Niederschlagswahrscheinlichkeit:"
+
+msgid "Wind:"
+msgstr "Wind:"
+
+msgid "Observation point:"
+msgstr "Aussichtspunkt:"
+
+msgid "Date:"
+msgstr "Datum:"
+
+msgid "Day week:"
+msgstr "Wochen Tag:"
+
+msgid "m/s"
+msgstr "m/s"
+
+msgid "ft/s"
+msgstr "ft/s"
+
+msgid "km/h"
+msgstr "km/h"
+
+msgid "mp/h"
+msgstr "mp/h"
+
+msgid "knots"
+msgstr "Knoten"
+
+msgid "Configuration is saved"
+msgstr "Konfiguration wird gespeichert"
+
+msgid "%s h"
+msgstr "%s h"
+
+msgid "Scale of wind speed:"
+msgstr "Skala von Windgeschwindigkeit:"
+
+msgid "%3.02f m/s"
+msgstr "%3.02f m/s"
+
+msgid "%3.02f ft/s"
+msgstr "%3.02f ft/s"
+
+msgid "%3.02f mp/h"
+msgstr "%3.02f mp/h"
+
+msgid "%3.02f knots"
+msgstr "%3.02f Knoten"
+
+msgid "%s km/h"
+msgstr "%s km/h"
+
+msgid "Scale of temperature:"
+msgstr "Temperaturskala:"
+
+msgid "Celsius"
+msgstr "Celsius"
+
+msgid "Fahrenheit"
+msgstr "Fahrenheit"
+
+msgid ""
+"Wetter MSN\n"
+"Developer: Sirius0103 \n"
+"Homepage: www.gisclub.tv \n"
+"\n"
+"Donate:\n"
+"WMZ  Z395874509364\n"
+"WME  E284580190260\n"
+"WMR  R213063691482\n"
+"WMU  U658742613505"
+msgstr ""
+"Погода MSN\n"
+"Разработчик: Sirius0103 \n"
+"Домашний сайт: www.gisclub.tv \n"
+"\n"
+"Поблагодарить:\n"
+"WMZ  Z395874509364\n"
+"WME  E284580190260\n"
+"WMR  R213063691482\n"
+"WMU  U658742613505"

@@ -1,0 +1,132 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WeatherMSN\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-07-29 01:13+0100\n"
+"PO-Revision-Date: 2014-12-03 13:06+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Language: uk\n"
+"X-Generator: Poedit 1.5.5\n"
+
+msgid "%3.02f ft/s"
+msgstr "%3.02f фут/с"
+
+msgid "%3.02f knots"
+msgstr "%3.02f вузла"
+
+msgid "%3.02f m/s"
+msgstr "%3.02f м/с"
+
+msgid "%3.02f mp/h"
+msgstr "%3.02f миль/год"
+
+msgid "%s h"
+msgstr "%s г"
+
+msgid "%s km/h"
+msgstr "%s км/г"
+
+msgid "Celsius"
+msgstr "Цельсій"
+
+msgid "Chance precip:"
+msgstr "Ймовірність опадів:"
+
+msgid "Config Weather MSN"
+msgstr "Конфігурація Погода MSN"
+
+msgid "Configuration is saved"
+msgstr "Конфігурація збережена"
+
+msgid "Date:"
+msgstr "Дата:"
+
+msgid "Day week:"
+msgstr "День тижня:"
+
+msgid "Fahrenheit"
+msgstr "Фаренгейт"
+
+msgid "Feels like:"
+msgstr "По відчуттю:"
+
+msgid "Humidity:"
+msgstr "Вологість:"
+
+msgid "Latitude:"
+msgstr "Широта:"
+
+msgid "Location:"
+msgstr "Місцезнаходження:"
+
+msgid "Longitude:"
+msgstr "Довгота:"
+
+msgid "Observation point:"
+msgstr "Точка спостереження:"
+
+msgid "Scale of temperature:"
+msgstr "Шкала температури:"
+
+msgid "Scale of wind speed:"
+msgstr "Шкала швидкості вітру:"
+
+msgid "Temperature:"
+msgstr "Температура:"
+
+msgid "Timezone:"
+msgstr "Часовий пояс:"
+
+msgid "Weather MSN"
+msgstr "Погода MSN"
+
+msgid "Weather forecast for 5 days"
+msgstr "Прогноз погоди на 5 днів"
+
+msgid "Show Weather MSN in menu information:"
+msgstr "Показати Погода MSN в інформації меню:"
+
+msgid ""
+"Weather MSN\n"
+"Developer: Sirius0103 \n"
+"Homepage: www.gisclub.tv \n"
+"\n"
+"Donate:\n"
+"WMZ  Z395874509364\n"
+"WME  E284580190260\n"
+"WMR  R213063691482\n"
+"WMU  U658742613505"
+msgstr ""
+"Погода MSN\n"
+"Розробник: Sirius0103 \n"
+"Домашній сайт: www.gisclub.tv \n"
+"\n"
+"Подякувати:\n"
+"WMZ  Z395874509364\n"
+"WME  E284580190260\n"
+"WMR  R213063691482\n"
+"WMU  U658742613505"
+
+msgid "Wind:"
+msgstr "Вітер:"
+
+msgid "ft/s"
+msgstr "фут/с"
+
+msgid "km/h"
+msgstr "км/год"
+
+msgid "knots"
+msgstr "вузли"
+
+msgid "m/s"
+msgstr "м/с"
+
+msgid "mp/h"
+msgstr "миль/г"
+
