@@ -102,7 +102,7 @@ class MSNWeather2(Poll, Converter, object):
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		Poll.__init__(self)
-		if type == "Vdf":
+		if type == "Vfd":
 			self.type = self.VFD
 		elif type == "Date":
 			self.type = self.DATE
