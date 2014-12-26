@@ -695,7 +695,7 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 
 		self.setTitle(_("Config Weather MSN"))
 		self.convertorpath = "/usr/lib/enigma2/python/Components/Converter/"
-		self.pluginpath = "/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/"
+		self.pluginpath = "/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/components/"
 		self.city = config.plugins.weathermsn.city.value
 		self.language = config.osd.language.value.replace('_', '-')
 		if self.language == 'en-EN':
