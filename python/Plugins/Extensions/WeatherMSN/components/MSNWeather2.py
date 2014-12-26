@@ -259,7 +259,7 @@ class MSNWeather2(Poll, Converter, object):
 	@cached
 	def getText(self):
 		info, weze = 'n/a', ''
-		msnweather = {'Format':'', 'Date':'', 'Shortdate':'', 'Day':'', 'Shortday':'',\
+		msnweather = {'Vfd':'', 'Date':'', 'Shortdate':'', 'Day':'', 'Shortday':'',\
 			'Location':'', 'Timezone':'', 'Latitude':'', 'Longitude':'',\
 			'Temp':'', 'Picon':'', 'Skytext':'', 'Feelslike':'', 'Humidity':'', 'Wind':'', 'Windspeed':'',\
 			'Date0':'', 'Shortdate0':'', 'Day0':'', 'Shortday0':'', 'Temp0':'', 'Lowtemp0':'', 'Hightemp0':'', 'Picon0':'', 'Skytext0':'', 'Precip0':'',\
