@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 ## MSNWeather Converter
 ## Coded by Sirius
-## version 0.6
+## version 0.7
 
 from Tools.Directories import fileExists, pathExists
 from Components.Converter.Converter import Converter
@@ -282,7 +282,7 @@ class MSNWeather2(Poll, Converter, object):
 		for line in open("/tmp/weathermsn.xml"):
 			try:
 				if "<weather" in line:
-					msnweather['Location'] = line.split('weatherlocationname')[1].split('"')[1]
+					msnweather['Location'] = line.split('weatherlocationname')[1].split('"')[1].split(",")[0]
 					if not line.split('timezone')[1].split('"')[1][0] is '0':
 						msnweather['Timezone'] = '+' + line.split('timezone')[1].split('"')[1] + ' h'
 					else:
@@ -305,16 +305,41 @@ class MSNWeather2(Poll, Converter, object):
 						msnweather['Wind'] = line.split('winddisplay')[1].split('"')[1].split(' ')[2]
 					except:
 						pass
-					if windtype == 'ms':
-						msnweather['Windspeed'] = '%3.02f m/s' % (float(line.split('windspeed')[1].split('"')[1]) * 0.278)
-					elif windtype == 'fts':
-						msnweather['Windspeed']= '%3.02f ft/s' % (float(line.split('windspeed')[1].split('"')[1]) * 0.91)
-					elif windtype == 'mph':
-						msnweather['Windspeed'] = '%3.02f mp/h' % (float(line.split('windspeed')[1].split('"')[1]) * 0.62)
-					elif windtype == 'knots':
-						msnweather['Windspeed'] = '%3.02f knots' % (float(line.split('windspeed')[1].split('"')[1]) * 0.54)
-					else:
-						msnweather['Windspeed'] = '%s km/h' % line.split('windspeed')[1].split('"')[1]
+				# m/s
+					if windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
+						msnweather['Windspeed'] = _('%s m/s') % line.split('windspeed')[1].split('"')[1].split(" ")[0]
+					elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
+						msnweather['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.28)
+					elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
+						msnweather['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.45)
+				# ft/s
+					elif windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
+						msnweather['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 3.28)
+					elif windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
+						msnweather['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.91)
+					elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
+						msnweather['Windspeed'] = _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 1.47)
+				# mp/h
+					elif windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
+						msnweather['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 2.24)
+					elif windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
+						msnweather['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.62)
+					elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
+						msnweather['Windspeed'] =  _('%s mp/h') % line.split('windspeed')[1].split('"')[1].split(" ")[0]
+				# knots
+					elif windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
+						msnweather['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 1.94)
+					elif windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
+						msnweather['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.54)
+					elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
+						msnweather['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.87)
+				# km/h
+					elif windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
+						msnweather['Windspeed'] = _('%3.02f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 3.6)
+					elif windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
+						msnweather['Windspeed'] = _('%s km/h') % line.split('windspeed')[1].split('"')[1].split(" ")[0]
+					elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
+						msnweather['Windspeed'] = _('%3.02f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 1.61)
 					msnweather['Date'] = line.split('date')[1].split('"')[1].split("-")[2].strip() + '.' + line.split('date')[1].split('"')[1].split("-")[1].strip() + '.' + line.split('date')[1].split('"')[1].split("-")[0].strip()
 					msnweather['Shortdate'] = line.split('shortday')[1].split('"')[1] + ' ' + line.split('date')[1].split('"')[1].split("-")[2].strip()
 					msnweather['Day'] = line.split(' day')[1].split('"')[1]

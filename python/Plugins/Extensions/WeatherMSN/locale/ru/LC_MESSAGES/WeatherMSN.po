@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WeatherMSN\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-07-29 01:13+0100\n"
-"PO-Revision-Date: 2014-12-03 13:06+0300\n"
+"PO-Revision-Date: 2015-04-04 13:00+0300\n"
 "Last-Translator: \n"
 "Language-Team:  <sirius.al@rambler.ru>\n"
 "MIME-Version: 1.0\n"
@@ -97,8 +97,14 @@ msgstr "%3.02f миль/ч"
 msgid "%3.02f knots"
 msgstr "%3.02f узла"
 
+msgid "%s m/s"
+msgstr "%s м/с"
+
 msgid "%s km/h"
 msgstr "%s км/ч"
+
+msgid "%s mp/h"
+msgstr "%s миль/ч"
 
 msgid "Scale of temperature:"
 msgstr "Шкала температуры:"

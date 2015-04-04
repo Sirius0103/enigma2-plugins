@@ -16,8 +16,7 @@ from Components.Pixmap import Pixmap
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_LANGUAGE
 from twisted.web.client import downloadPage
 from enigma import eTimer, ePoint
-from os import environ
-from os import system
+from os import system, environ
 import gettext
 import time
 import os
@@ -50,8 +49,7 @@ config.plugins.weathermsn.degreetype = ConfigSelection(default="C", choices = [
 	("C", _("Celsius")),
 	("F", _("Fahrenheit"))])
 
-class WeatherMSN(ConfigListScreen, Screen):
-	skin = """
+SKIN_MSN = """
 	<!-- WeatherMSN -->
 	<screen name="WeatherMSN" position="40,55" size="1200,650" title=" " >
 		<eLabel position="600,10" size="3,590" backgroundColor="#00555555" zPosition="1" />
@@ -86,7 +84,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		<widget source="feelslike" render="Label" position="440,350" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
 		<widget source="skytext" render="Label" position="20,425" size="570,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
 		<widget source="humidity" render="Label" position="440,375" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="wind" render="Label" position="400,400" size="190,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="wind" render="Label" position="300,400" size="290,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
 		<widget name="pic" position="70,320" size="128,128" zPosition="2" alphatest="blend" />
 
 		<widget source="temperaturetxt" render="Label" position="250,525" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
@@ -153,10 +151,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_epg.png" position="1130,620" size="40,20" alphatest="on" />
 	</screen>"""
 
+class WeatherMSN(ConfigListScreen, Screen):
 	def __init__(self, session):
-
 		Screen.__init__(self, session)
 		self.session = session
+		self.skin = SKIN_MSN
 
 		self.time_update = 20
 		self.language = config.osd.language.value.replace('_', '-')
@@ -320,7 +319,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		for line in open("/tmp/weathermsn.xml"):
 			try:
 				if "<weather" in line:
-					self.location['Location'] = line.split('weatherlocationname')[1].split('"')[1]
+					self.location['Location'] = line.split('weatherlocationname')[1].split('"')[1].split(",")[0]
 					if not line.split('timezone')[1].split('"')[1][0] is '0':
 						self.timezone['Timezone'] = '+' + line.split('timezone')[1].split('"')[1]
 					else:
@@ -346,16 +345,41 @@ class WeatherMSN(ConfigListScreen, Screen):
 						self.wind['Wind'] = line.split('winddisplay')[1].split('"')[1].split(' ')[2]
 					except:
 						pass
-					if self.windtype == 'ms':
-						self.windspeed['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1]) * 0.278)
-					elif self.windtype == 'fts':
-						self.windspeed['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1]) * 0.91)
-					elif self.windtype == 'mph':
-						self.windspeed['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1]) * 0.62)
-					elif self.windtype == 'knots':
-						self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1]) * 0.54)
-					else:
-						self.windspeed['Windspeed'] = _('%s km/h') % line.split('windspeed')[1].split('"')[1]
+				# m/s
+					if self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
+						self.windspeed['Windspeed'] = _('%s m/s') % line.split('windspeed')[1].split('"')[1].split(" ")[0]
+					elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
+						self.windspeed['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.28)
+					elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
+						self.windspeed['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.45)
+				# ft/s
+					elif self.windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
+						self.windspeed['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 3.28)
+					elif self.windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
+						self.windspeed['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.91)
+					elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
+						self.windspeed['Windspeed'] = _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 1.47)
+				# mp/h
+					elif self.windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
+						self.windspeed['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 2.24)
+					elif self.windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
+						self.windspeed['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.62)
+					elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
+						self.windspeed['Windspeed'] =  _('%s mp/h') % line.split('windspeed')[1].split('"')[1].split(" ")[0]
+				# knots
+					elif self.windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
+						self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 1.94)
+					elif self.windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
+						self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.54)
+					elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
+						self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.87)
+				# km/h
+					elif self.windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
+						self.windspeed['Windspeed'] = _('%3.02f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 3.6)
+					elif self.windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
+						self.windspeed['Windspeed'] = _('%s km/h') % line.split('windspeed')[1].split('"')[1].split(" ")[0]
+					elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
+						self.windspeed['Windspeed'] = _('%3.02f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 1.61)
 #	today	#
 				if "<forecast" in line:
 					if not line.split('low')[1].split('"')[1][0] is '-' and not line.split('low')[1].split('"')[1][0] is '0':
@@ -672,8 +696,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		os.system("rm -f /tmp/weathermsn.xml")
 		self.close()
 
-class ConfigWeatherMSN(ConfigListScreen, Screen):
-	skin = """
+SKIN_CONF = """
 	<!-- Config WeatherMSN -->
 	<screen name="ConfigWeatherMSN" position="center,160" size="750,370" title=" ">
 		<eLabel position="20,325" size="710,3" backgroundColor="#00555555" zPosition="1" />
@@ -685,10 +708,11 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		<widget name="HelpWindow" position="285,300" zPosition="1" size="1,1" backgroundColor="background" transparent="1" alphatest="blend" />
 	</screen>"""
 
+class ConfigWeatherMSN(ConfigListScreen, Screen):
 	def __init__(self, session):
-		self.session = session
 		Screen.__init__(self, session)
-
+		self.session = session
+		self.skin = SKIN_CONF
 		self.list = []
 
 		ConfigListScreen.__init__(self, self.list, session = session)

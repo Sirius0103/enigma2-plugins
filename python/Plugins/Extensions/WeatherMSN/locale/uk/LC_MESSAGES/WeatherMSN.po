@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WeatherMSN\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-07-29 01:13+0100\n"
-"PO-Revision-Date: 2014-12-03 13:06+0300\n"
+"PO-Revision-Date: 2015-04-04 13:03+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,13 +23,19 @@ msgid "%3.02f m/s"
 msgstr "%3.02f м/с"
 
 msgid "%3.02f mp/h"
-msgstr "%3.02f миль/год"
+msgstr "%3.02f миль/г"
 
 msgid "%s h"
 msgstr "%s г"
 
+msgid "%s m/s"
+msgstr "%s м/с"
+
 msgid "%s km/h"
 msgstr "%s км/г"
+
+msgid "%s mp/h"
+msgstr "%s миль/г"
 
 msgid "Celsius"
 msgstr "Цельсій"
