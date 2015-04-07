@@ -38,7 +38,6 @@ config.plugins.weathermsn.menu = ConfigSelection(default="no", choices = [
 	("no", _("no")),
 	("yes", _("yes"))])
 config.plugins.weathermsn.city = ConfigText(default="Moscow,Moscow-City,Russia", visible_width = 250, fixed_size = False)
-#config.plugins.weathermsn.city = ConfigText(default="Aleksandrov,Vladimir,Russia", visible_width = 250, fixed_size = False)
 config.plugins.weathermsn.windtype = ConfigSelection(default="ms", choices = [
 	("ms", _("m/s")),
 	("fts", _("ft/s")),
@@ -348,19 +347,19 @@ class WeatherMSN(ConfigListScreen, Screen):
 					if line.split('attribution2')[1].split('"')[1] == '© Foreca':
 				# m/s
 						if self.windtype == 'ms':
-							self.windspeed['Windspeed'] = '%3.02f m/s' % (float(line.split('windspeed')[1].split('"')[1]) * 0.28)
+							self.windspeed['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1]) * 0.28)
 				# ft/s
 						elif self.windtype == 'fts':
-							self.windspeed['Windspeed']= '%3.02f ft/s' % (float(line.split('windspeed')[1].split('"')[1]) * 0.91)
+							self.windspeed['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1]) * 0.91)
 				# mp/h
 						elif self.windtype == 'mph':
-							self.windspeed['Windspeed'] = '%3.02f mp/h' % (float(line.split('windspeed')[1].split('"')[1]) * 0.62)
+							self.windspeed['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1]) * 0.62)
 				# knots
 						elif self.windtype == 'knots':
-							self.windspeed['Windspeed'] = '%3.02f knots' % (float(line.split('windspeed')[1].split('"')[1]) * 0.54)
+							self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1]) * 0.54)
 				# km/h
 						elif self.windtype == 'kmh':
-							self.windspeed['Windspeed'] = '%s km/h' % line.split('windspeed')[1].split('"')[1]
+							self.windspeed['Windspeed'] = _('%s km/h') % line.split('windspeed')[1].split('"')[1]
 					if line.split('attribution2')[1].split('"')[1] == 'wdt':
 				# m/s
 						if self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
