@@ -50,7 +50,7 @@ config.plugins.weathermsn.degreetype = ConfigSelection(default="C", choices = [
 
 SKIN_MSN = """
 	<!-- WeatherMSN -->
-	<screen name="WeatherMSN" position="40,55" size="1200,650" title=" " >
+	<screen name="WeatherMSN" position="40,55" size="1200,650" title=' ' >
 		<eLabel position="600,10" size="3,590" backgroundColor="#00555555" zPosition="1" />
 		<eLabel position="20,310" size="570,3" backgroundColor="#00555555" zPosition="1" />
 		<eLabel position="20,460" size="570,3" backgroundColor="#00555555" zPosition="1" />
@@ -318,7 +318,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		for line in open("/tmp/weathermsn.xml"):
 			try:
 				if "<weather" in line:
-					self.location['Location'] = line.split('weatherlocationname')[1].split('"')[1].split(",")[0]
+					self.location['Location'] = line.split('weatherlocationname')[1].split('"')[1].split(',')[0]
 					if not line.split('timezone')[1].split('"')[1][0] is '0':
 						self.timezone['Timezone'] = '+' + line.split('timezone')[1].split('"')[1]
 					else:
@@ -347,55 +347,55 @@ class WeatherMSN(ConfigListScreen, Screen):
 					if line.split('attribution2')[1].split('"')[1] == '© Foreca':
 				# m/s
 						if self.windtype == 'ms':
-							self.windspeed['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1]) * 0.28)
+							self.windspeed['Windspeed'] = '%3.02f m/s' % (float(line.split('windspeed')[1].split('"')[1]) * 0.28)
 				# ft/s
 						elif self.windtype == 'fts':
-							self.windspeed['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1]) * 0.91)
+							self.windspeed['Windspeed']= '%3.02f ft/s' % (float(line.split('windspeed')[1].split('"')[1]) * 0.91)
 				# mp/h
 						elif self.windtype == 'mph':
-							self.windspeed['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1]) * 0.62)
+							self.windspeed['Windspeed'] = '%3.02f mp/h' % (float(line.split('windspeed')[1].split('"')[1]) * 0.62)
 				# knots
 						elif self.windtype == 'knots':
-							self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1]) * 0.54)
+							self.windspeed['Windspeed'] = '%3.02f knots' % (float(line.split('windspeed')[1].split('"')[1]) * 0.54)
 				# km/h
 						elif self.windtype == 'kmh':
-							self.windspeed['Windspeed'] = _('%s km/h') % line.split('windspeed')[1].split('"')[1]
+							self.windspeed['Windspeed'] = '%s km/h' % line.split('windspeed')[1].split('"')[1]
 					if line.split('attribution2')[1].split('"')[1] == 'wdt':
 				# m/s
-						if self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
-							self.windspeed['Windspeed'] = _('%s m/s') % line.split('windspeed')[1].split('"')[1].split(" ")[0]
-						elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
-							self.windspeed['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.28)
-						elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
-							self.windspeed['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.45)
+						if self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
+							self.windspeed['Windspeed'] = _('%s m/s') % line.split('windspeed')[1].split('"')[1].split(' ')[0]
+						elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
+							self.windspeed['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.28)
+						elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
+							self.windspeed['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.45)
 				# ft/s
-						elif self.windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
-							self.windspeed['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 3.28)
-						elif self.windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
-							self.windspeed['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.91)
-						elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
-							self.windspeed['Windspeed'] = _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 1.47)
+						elif self.windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
+							self.windspeed['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 3.28)
+						elif self.windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
+							self.windspeed['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.91)
+						elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
+							self.windspeed['Windspeed'] = _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.47)
 				# mp/h
-						elif self.windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
-							self.windspeed['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 2.24)
-						elif self.windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
-							self.windspeed['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.62)
-						elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
-							self.windspeed['Windspeed'] =  _('%s mp/h') % line.split('windspeed')[1].split('"')[1].split(" ")[0]
+						elif self.windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
+							self.windspeed['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 2.24)
+						elif self.windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
+							self.windspeed['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.62)
+						elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
+							self.windspeed['Windspeed'] =  _('%s mp/h') % line.split('windspeed')[1].split('"')[1].split(' ')[0]
 				# knots
-						elif self.windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
-							self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 1.94)
-						elif self.windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
-							self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.54)
-						elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
-							self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.87)
+						elif self.windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
+							self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.94)
+						elif self.windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
+							self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.54)
+						elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
+							self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.87)
 				# km/h
-						elif self.windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
-							self.windspeed['Windspeed'] = _('%3.02f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 3.6)
-						elif self.windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
-							self.windspeed['Windspeed'] = _('%s km/h') % line.split('windspeed')[1].split('"')[1].split(" ")[0]
-						elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
-							self.windspeed['Windspeed'] = _('%3.02f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 1.61)
+						elif self.windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
+							self.windspeed['Windspeed'] = _('%3.02f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 3.6)
+						elif self.windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
+							self.windspeed['Windspeed'] = _('%s km/h') % line.split('windspeed')[1].split('"')[1].split(' ')[0]
+						elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
+							self.windspeed['Windspeed'] = _('%3.02f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.61)
 #	today	#
 				if "<forecast" in line:
 					if not line.split('low')[1].split('"')[1][0] is '-' and not line.split('low')[1].split('"')[1][0] is '0':
@@ -407,7 +407,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 					else:
 						self.hightemp0['Hightemp0'] = line.split('high')[1].split('"')[1]
 					self.pic0['Pic0'] = line.split('skycodeday')[1].split('"')[1]
-					self.date0['Date0'] = line.split('date')[2].split('"')[1].split("-")[2].strip() + '.' + line.split('date')[2].split('"')[1].split("-")[1].strip() + '.' + line.split('date')[2].split('"')[1].split("-")[0].strip()
+					self.date0['Date0'] = line.split('date')[2].split('"')[1].split('-')[2].strip() + '.' + line.split('date')[2].split('"')[1].split('-')[1].strip() + '.' + line.split('date')[2].split('"')[1].split('-')[0].strip()
 					self.day0['Day0'] = line.split(' day')[2].split('"')[1]
 					self.skytext0['Skytext0'] = line.split('skytextday')[1].split('"')[1]
 					self.precip0['Precip0'] = line.split('precip')[1].split('"')[1]
@@ -422,7 +422,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 					else:
 						self.hightemp1['Hightemp1'] = line.split('high')[2].split('"')[1]
 					self.pic1['Pic1'] = line.split('skycodeday')[2].split('"')[1]
-					self.date1['Date1'] = line.split('date')[3].split('"')[1].split("-")[2].strip() + '.' + line.split('date')[3].split('"')[1].split("-")[1].strip() + '.' + line.split('date')[3].split('"')[1].split("-")[0].strip()
+					self.date1['Date1'] = line.split('date')[3].split('"')[1].split('-')[2].strip() + '.' + line.split('date')[3].split('"')[1].split('-')[1].strip() + '.' + line.split('date')[3].split('"')[1].split('-')[0].strip()
 					self.day1['Day1'] = line.split(' day')[3].split('"')[1]
 					self.skytext1['Skytext1'] = line.split('skytextday')[2].split('"')[1]
 					self.precip1['Precip1'] = line.split('precip')[2].split('"')[1]
@@ -437,7 +437,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 					else:
 						self.hightemp2['Hightemp2'] = line.split('high')[3].split('"')[1]
 					self.pic2['Pic2'] = line.split('skycodeday')[3].split('"')[1]
-					self.date2['Date2'] = line.split('date')[4].split('"')[1].split("-")[2].strip() + '.' + line.split('date')[4].split('"')[1].split("-")[1].strip() + '.' + line.split('date')[4].split('"')[1].split("-")[0].strip()
+					self.date2['Date2'] = line.split('date')[4].split('"')[1].split('-')[2].strip() + '.' + line.split('date')[4].split('"')[1].split('-')[1].strip() + '.' + line.split('date')[4].split('"')[1].split('-')[0].strip()
 					self.day2['Day2'] = line.split(' day')[4].split('"')[1]
 					self.skytext2['Skytext2'] = line.split('skytextday')[3].split('"')[1]
 					self.precip2['Precip2'] = line.split('precip')[3].split('"')[1]
@@ -452,7 +452,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 					else:
 						self.hightemp3['Hightemp3'] = line.split('high')[4].split('"')[1]
 					self.pic3['Pic3'] = line.split('skycodeday')[4].split('"')[1]
-					self.date3['Date3'] = line.split('date')[5].split('"')[1].split("-")[2].strip() + '.' + line.split('date')[5].split('"')[1].split("-")[1].strip() + '.' + line.split('date')[5].split('"')[1].split("-")[0].strip()
+					self.date3['Date3'] = line.split('date')[5].split('"')[1].split('-')[2].strip() + '.' + line.split('date')[5].split('"')[1].split('-')[1].strip() + '.' + line.split('date')[5].split('"')[1].split('-')[0].strip()
 					self.day3['Day3'] = line.split(' day')[5].split('"')[1]
 					self.skytext3['Skytext3'] = line.split('skytextday')[4].split('"')[1]
 					self.precip3['Precip3'] = line.split('precip')[4].split('"')[1]
@@ -467,7 +467,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 					else:
 						self.hightemp4['Hightemp4'] = line.split('high')[5].split('"')[1]
 					self.pic4['Pic4'] = line.split('skycodeday')[5].split('"')[1]
-					self.date4['Date4'] = line.split('date')[6].split('"')[1].split("-")[2].strip() + '.' + line.split('date')[6].split('"')[1].split("-")[1].strip() + '.' + line.split('date')[6].split('"')[1].split("-")[0].strip()
+					self.date4['Date4'] = line.split('date')[6].split('"')[1].split('-')[2].strip() + '.' + line.split('date')[6].split('"')[1].split('-')[1].strip() + '.' + line.split('date')[6].split('"')[1].split('-')[0].strip()
 					self.day4['Day4'] = line.split(' day')[6].split('"')[1]
 					self.skytext4['Skytext4'] = line.split('skytextday')[5].split('"')[1]
 					self.precip4['Precip4'] = line.split('precip')[5].split('"')[1]
@@ -714,7 +714,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 
 SKIN_CONF = """
 	<!-- Config WeatherMSN -->
-	<screen name="ConfigWeatherMSN" position="center,160" size="750,370" title=" ">
+	<screen name="ConfigWeatherMSN" position="center,160" size="750,370" title=' '>
 		<eLabel position="20,325" size="710,3" backgroundColor="#00555555" zPosition="1" />
 		<widget name="config" position="15,10" size="720,300" scrollbarMode="showOnDemand" transparent="1" />
 		<widget source="key_red" render="Label" position="80,330" size="165,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />

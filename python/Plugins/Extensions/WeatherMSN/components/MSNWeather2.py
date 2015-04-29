@@ -249,8 +249,8 @@ class MSNWeather2(Poll, Converter, object):
 			self.write_none()
 
 	def write_none(self):
-		with open('/tmp/weathermsn.xml', 'w') as noneweather:
-			noneweather.write('None')
+		with open("/tmp/weathermsn.xml", "w") as noneweather:
+			noneweather.write("None")
 		noneweather.close()
 
 	def get_xmlfile(self):
@@ -270,19 +270,19 @@ class MSNWeather2(Poll, Converter, object):
 			}
 		low0weather, hi0weather, low1weather, hi1weather, low2weather, hi2weather, low3weather, hi3weather, low4weather, hi4weather = '', '', '', '', '', '', '', '', '', ''
 		if fileExists("/tmp/weathermsn.xml"):
-			if int((time.time() - os.stat('/tmp/weathermsn.xml').st_mtime)/60) >= time_update:
+			if int((time.time() - os.stat("/tmp/weathermsn.xml").st_mtime)/60) >= time_update:
 				self.get_xmlfile()
 		else:
 			self.get_xmlfile()
-		if not fileExists('/tmp/weathermsn.xml'):
+		if not fileExists("/tmp/weathermsn.xml"):
 			self.write_none()
 			return info
-		if fileExists('/tmp/weathermsn.xml') and open('/tmp/weathermsn.xml').read() is 'None':
+		if fileExists("/tmp/weathermsn.xml") and open("/tmp/weathermsn.xml").read() is 'None':
 			return info
 		for line in open("/tmp/weathermsn.xml"):
 			try:
 				if "<weather" in line:
-					msnweather['Location'] = line.split('weatherlocationname')[1].split('"')[1].split(",")[0]
+					msnweather['Location'] = line.split('weatherlocationname')[1].split('"')[1].split(',')[0]
 					if not line.split('timezone')[1].split('"')[1][0] is '0':
 						msnweather['Timezone'] = '+' + line.split('timezone')[1].split('"')[1] + ' h'
 					else:
@@ -323,42 +323,42 @@ class MSNWeather2(Poll, Converter, object):
 							msnweather['Windspeed'] = '%s km/h' % line.split('windspeed')[1].split('"')[1]
 					if line.split('attribution2')[1].split('"')[1] == 'wdt':
 				# m/s
-						if windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
-							msnweather['Windspeed'] = '%s m/s' % line.split('windspeed')[1].split('"')[1].split(" ")[0]
-						elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
-							msnweather['Windspeed'] = '%3.02f m/s' % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.28)
-						elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
-							msnweather['Windspeed'] = '%3.02f m/s' % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.45)
+						if windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
+							msnweather['Windspeed'] = _('%s m/s') % line.split('windspeed')[1].split('"')[1].split(' ')[0]
+						elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
+							msnweather['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.28)
+						elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
+							msnweather['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.45)
 				# ft/s
-						elif windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
-							msnweather['Windspeed']= '%3.02f ft/s' % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 3.28)
-						elif windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
-							msnweather['Windspeed']= '%3.02f ft/s' % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.91)
-						elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
-							msnweather['Windspeed'] = '%3.02f ft/s' % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 1.47)
+						elif windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
+							msnweather['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 3.28)
+						elif windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
+							msnweather['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.91)
+						elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
+							msnweather['Windspeed'] = _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.47)
 				# mp/h
-						elif windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
-							msnweather['Windspeed'] = '%3.02f mp/h' % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 2.24)
-						elif windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
-							msnweather['Windspeed'] = '%3.02f mp/h' % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.62)
-						elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
-							msnweather['Windspeed'] =  '%s mp/h' % line.split('windspeed')[1].split('"')[1].split(" ")[0]
+						elif windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
+							msnweather['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 2.24)
+						elif windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
+							msnweather['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.62)
+						elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
+							msnweather['Windspeed'] =  _('%s mp/h') % line.split('windspeed')[1].split('"')[1].split(' ')[0]
 				# knots
-						elif windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
-							msnweather['Windspeed'] = '%3.02f knots' % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 1.94)
-						elif windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
-							msnweather['Windspeed'] = '%3.02f knots' % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.54)
-						elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
-							msnweather['Windspeed'] = '%3.02f knots' % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 0.87)
+						elif windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
+							msnweather['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.94)
+						elif windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
+							msnweather['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.54)
+						elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
+							msnweather['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.87)
 				# km/h
-						elif windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'm/s':
-							msnweather['Windspeed'] = '%3.02f km/h' % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 3.6)
-						elif windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'kmph':
-							msnweather['Windspeed'] = '%s km/h' % line.split('windspeed')[1].split('"')[1].split(" ")[0]
-						elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(" ")[1] == 'mph':
-							msnweather['Windspeed'] = '%3.02f km/h' % (float(line.split('windspeed')[1].split('"')[1].split(" ")[0]) * 1.61)
-					msnweather['Date'] = line.split('date')[1].split('"')[1].split("-")[2].strip() + '.' + line.split('date')[1].split('"')[1].split("-")[1].strip() + '.' + line.split('date')[1].split('"')[1].split("-")[0].strip()
-					msnweather['Shortdate'] = line.split('shortday')[1].split('"')[1] + ' ' + line.split('date')[1].split('"')[1].split("-")[2].strip()
+						elif windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
+							msnweather['Windspeed'] = _('%3.02f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 3.6)
+						elif windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
+							msnweather['Windspeed'] = _('%s km/h') % line.split('windspeed')[1].split('"')[1].split(' ')[0]
+						elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
+							msnweather['Windspeed'] = _('%3.02f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.61)
+					msnweather['Date'] = line.split('date')[1].split('"')[1].split('-')[2].strip() + '.' + line.split('date')[1].split('"')[1].split('-')[1].strip() + '.' + line.split('date')[1].split('"')[1].split('-')[0].strip()
+					msnweather['Shortdate'] = line.split('shortday')[1].split('"')[1] + ' ' + line.split('date')[1].split('"')[1].split('-')[2].strip()
 					msnweather['Day'] = line.split(' day')[1].split('"')[1]
 					msnweather['Shortday'] = line.split('shortday')[1].split('"')[1]
 #	today	#
@@ -377,8 +377,8 @@ class MSNWeather2(Poll, Converter, object):
 						msnweather['Hightemp0'] = '%s%s' % (hi0weather, degreetype)
 					msnweather['Temp0'] =  '%s / %s' % (hi0weather, low0weather)
 					msnweather['Picon0'] = line.split('skycodeday')[1].split('"')[1]
-					msnweather['Date0'] = line.split('date')[2].split('"')[1].split("-")[2].strip() + '.' + line.split('date')[2].split('"')[1].split("-")[1].strip() + '.' + line.split('date')[2].split('"')[1].split("-")[0].strip()
-					msnweather['Shortdate0'] = line.split('shortday')[2].split('"')[1] + ' ' + line.split('date')[2].split('"')[1].split("-")[2].strip()
+					msnweather['Date0'] = line.split('date')[2].split('"')[1].split('-')[2].strip() + '.' + line.split('date')[2].split('"')[1].split('-')[1].strip() + '.' + line.split('date')[2].split('"')[1].split('-')[0].strip()
+					msnweather['Shortdate0'] = line.split('shortday')[2].split('"')[1] + ' ' + line.split('date')[2].split('"')[1].split('-')[2].strip()
 					msnweather['Day0'] = line.split(' day')[2].split('"')[1]
 					msnweather['Shortday0'] = line.split('shortday')[2].split('"')[1]
 					msnweather['Skytext0'] = line.split('skytextday')[1].split('"')[1]
@@ -399,8 +399,8 @@ class MSNWeather2(Poll, Converter, object):
 						msnweather['Hightemp1'] = '%s%s' % (hi1weather, degreetype)
 					msnweather['Temp1'] =  '%s / %s' % (hi1weather, low1weather)
 					msnweather['Picon1'] = line.split('skycodeday')[2].split('"')[1]
-					msnweather['Date1'] = line.split('date')[3].split('"')[1].split("-")[2].strip() + '.' + line.split('date')[3].split('"')[1].split("-")[1].strip() + '.' + line.split('date')[3].split('"')[1].split("-")[0].strip()
-					msnweather['Shortdate1'] = line.split('shortday')[3].split('"')[1] + ' ' + line.split('date')[3].split('"')[1].split("-")[2].strip()
+					msnweather['Date1'] = line.split('date')[3].split('"')[1].split('-')[2].strip() + '.' + line.split('date')[3].split('"')[1].split('-')[1].strip() + '.' + line.split('date')[3].split('"')[1].split('-')[0].strip()
+					msnweather['Shortdate1'] = line.split('shortday')[3].split('"')[1] + ' ' + line.split('date')[3].split('"')[1].split('-')[2].strip()
 					msnweather['Day1'] = line.split(' day')[3].split('"')[1]
 					msnweather['Shortday1'] = line.split('shortday')[3].split('"')[1]
 					msnweather['Skytext1'] = line.split('skytextday')[2].split('"')[1]
@@ -421,8 +421,8 @@ class MSNWeather2(Poll, Converter, object):
 						msnweather['Hightemp2'] = '%s%s' % (hi2weather, degreetype)
 					msnweather['Temp2'] =  '%s / %s' % (hi2weather, low2weather)
 					msnweather['Picon2'] = line.split('skycodeday')[3].split('"')[1]
-					msnweather['Date2'] = line.split('date')[4].split('"')[1].split("-")[2].strip() + '.' + line.split('date')[4].split('"')[1].split("-")[1].strip() + '.' + line.split('date')[4].split('"')[1].split("-")[0].strip()
-					msnweather['Shortdate2'] = line.split('shortday')[4].split('"')[1] + ' ' + line.split('date')[4].split('"')[1].split("-")[2].strip()
+					msnweather['Date2'] = line.split('date')[4].split('"')[1].split('-')[2].strip() + '.' + line.split('date')[4].split('"')[1].split('-')[1].strip() + '.' + line.split('date')[4].split('"')[1].split('-')[0].strip()
+					msnweather['Shortdate2'] = line.split('shortday')[4].split('"')[1] + ' ' + line.split('date')[4].split('"')[1].split('-')[2].strip()
 					msnweather['Day2'] = line.split(' day')[4].split('"')[1]
 					msnweather['Shortday2'] = line.split('shortday')[4].split('"')[1]
 					msnweather['Skytext2'] = line.split('skytextday')[3].split('"')[1]
@@ -443,8 +443,8 @@ class MSNWeather2(Poll, Converter, object):
 						msnweather['Hightemp3'] = '%s%s' % (hi3weather, degreetype)
 					msnweather['Temp3'] =  '%s / %s' % (hi3weather, low3weather)
 					msnweather['Picon3'] = line.split('skycodeday')[4].split('"')[1]
-					msnweather['Date3'] = line.split('date')[5].split('"')[1].split("-")[2].strip() + '.' + line.split('date')[5].split('"')[1].split("-")[1].strip() + '.' + line.split('date')[5].split('"')[1].split("-")[0].strip()
-					msnweather['Shortdate3'] = line.split('shortday')[5].split('"')[1] + ' ' + line.split('date')[5].split('"')[1].split("-")[2].strip()
+					msnweather['Date3'] = line.split('date')[5].split('"')[1].split('-')[2].strip() + '.' + line.split('date')[5].split('"')[1].split('-')[1].strip() + '.' + line.split('date')[5].split('"')[1].split('-')[0].strip()
+					msnweather['Shortdate3'] = line.split('shortday')[5].split('"')[1] + ' ' + line.split('date')[5].split('"')[1].split('-')[2].strip()
 					msnweather['Day3'] = line.split(' day')[5].split('"')[1]
 					msnweather['Shortday3'] = line.split('shortday')[5].split('"')[1]
 					msnweather['Skytext3'] = line.split('skytextday')[4].split('"')[1]
@@ -465,8 +465,8 @@ class MSNWeather2(Poll, Converter, object):
 						msnweather['Hightemp4'] = '%s%s' % (hi4weather, degreetype)
 					msnweather['Temp4'] =  '%s / %s' % (hi4weather, low4weather)
 					msnweather['Picon4'] = line.split('skycodeday')[5].split('"')[1]
-					msnweather['Date4'] = line.split('date')[6].split('"')[1].split("-")[2].strip() + '.' + line.split('date')[6].split('"')[1].split("-")[1].strip() + '.' + line.split('date')[6].split('"')[1].split("-")[0].strip()
-					msnweather['Shortdate4'] = line.split('shortday')[6].split('"')[1] + ' ' + line.split('date')[6].split('"')[1].split("-")[2].strip()
+					msnweather['Date4'] = line.split('date')[6].split('"')[1].split('-')[2].strip() + '.' + line.split('date')[6].split('"')[1].split('-')[1].strip() + '.' + line.split('date')[6].split('"')[1].split('-')[0].strip()
+					msnweather['Shortdate4'] = line.split('shortday')[6].split('"')[1] + ' ' + line.split('date')[6].split('"')[1].split('-')[2].strip()
 					msnweather['Day4'] = line.split(' day')[6].split('"')[1]
 					msnweather['Shortday4'] = line.split('shortday')[6].split('"')[1]
 					msnweather['Skytext4'] = line.split('skytextday')[5].split('"')[1]
@@ -476,10 +476,10 @@ class MSNWeather2(Poll, Converter, object):
 #
 		if self.type is self.VFD:
 			try:
-				weze = msnweather['Skytext'].split(" ")[1]
+				weze = msnweather['Skytext'].split(' ')[1]
 			except:
 				weze = msnweather['Skytext']
-			info = msnweather['Temp'] + " " + weze
+			info = msnweather['Temp'] + ' ' + weze
 		if self.type is self.DATE:
 			info = msnweather['Date']
 		if self.type is self.SHORTDATE:
