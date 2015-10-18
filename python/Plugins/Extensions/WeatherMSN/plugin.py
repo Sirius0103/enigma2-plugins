@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 ## Weather MSN
 ## Coded by Sirius
+## Patch Showsearch by Nikolasi
 ##
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
@@ -10,10 +11,15 @@ from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 from Components.Language import language
+from Components.MenuList import MenuList
 from Components.ConfigList import ConfigListScreen
 from Components.config import getConfigListEntry, ConfigText, ConfigYesNo, ConfigSubsection, ConfigSelection, config, configfile, NoSave
 from Components.Pixmap import Pixmap
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_LANGUAGE
+#Nikolasi
+from urllib2 import Request, urlopen, URLError, HTTPError
+from xml.etree.cElementTree import fromstring as cet_fromstring
+#end
 from twisted.web.client import downloadPage
 from enigma import eTimer, ePoint
 from os import system, environ
@@ -702,8 +708,10 @@ SKIN_CONF = """
 		<widget name="config" position="15,10" size="720,300" scrollbarMode="showOnDemand" transparent="1" />
 		<widget source="key_red" render="Label" position="80,330" size="165,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
 		<widget source="key_green" render="Label" position="310,330" size="165,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
+		<widget source="key_green" render="Label" position="440,330" size="165,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
 		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_red.png" position="30,335" size="40,20" alphatest="blend" />
 		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_green.png" position="260,335" size="40,20" alphatest="blend" />
+		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_blue.png" position="390,335" size="40,20" alphatest="blend" />
 		<widget name="HelpWindow" position="285,300" zPosition="1" size="1,1" backgroundColor="background" transparent="1" alphatest="blend" />
 	</screen>"""
 
@@ -727,17 +735,28 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		self.windtype = config.plugins.weathermsn.windtype.value
 		self.createSetup()
 
-		self["setupActions"] = ActionMap(["DirectionActions", "SetupActions", "ColorActions"],
+		self["setupActions"] = ActionMap(["DirectionActions", "SetupActions", "ColorActions"], 
 		{ "red": self.cancel,
 		"cancel": self.cancel,
 		"green": self.save,
+		"blue": self.openVirtualKeyBoard,
 		"ok": self.save
 		}, -2)
 
 		self["key_red"] = StaticText(_("Close"))
 		self["key_green"] = StaticText(_("Save"))
+		self["key_blue"] = StaticText(_("Search Location"))
 		self["HelpWindow"] = Pixmap()
 
+#Nikolasi
+	def openVirtualKeyBoard(self):
+		self.session.openWithCallback(self.ShowsearchBarracuda, VirtualKeyBoard, title=_('Enter text to search city'))
+
+	def ShowsearchBarracuda(self, name):
+		if name is not None:
+			self.session.open(SearchLocationMSN, name)
+#end
+		
 	def createSetup(self):
 		self.list = []
 		self.list.append(getConfigListEntry(_("Show Weather MSN in menu information:"), config.plugins.weathermsn.menu))
@@ -772,6 +791,79 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		self.createConvertor()
 		self.mbox = self.session.open(MessageBox,(_("Configuration is saved")), MessageBox.TYPE_INFO, timeout = 3 )
 		self.close()
+
+#Nikolasi
+SKIN_LOC = """
+	<!-- Search LocationMSN -->
+	<screen name="SearchLocationMSN" position="center,160" size="750,370" title=" ">
+	<widget name="menu" position="15,10" size="720,300" scrollbarMode="showOnDemand" transparent="1" />
+	</screen>"""
+
+class SearchLocationMSN(Screen):
+	def __init__(self, session, name):
+		Screen.__init__(self, session)
+		self.session = session
+		self.skin = SKIN_LOC
+		self.eventname = name
+		self.resultlist = []
+		self.setTitle(_("Search Location Weather MSN"))
+		self["menu"] = MenuList(self.resultlist)
+
+		self["actions"] = ActionMap(["OkCancelActions", "DirectionActions"], 
+		{"ok": self.okClicked,
+		"cancel": self.close,
+		"up": self.pageUp,
+		"down": self.pageDown
+		}, -1)
+
+		self.showMenu()
+
+	def pageUp(self):
+		self['menu'].instance.moveSelection(self['menu'].instance.moveUp)
+
+	def pageDown(self):
+		self['menu'].instance.moveSelection(self['menu'].instance.moveDown)
+
+	def showMenu(self):
+		try:
+			results = search_title(self.eventname)
+		except:
+			results = []
+
+		if len(results) == 0:
+			return False
+		self.resultlist = []
+		for searchResult in results:
+			try:
+				self.resultlist.append(searchResult)
+			except:
+				pass
+		self['menu'].l.setList(self.resultlist)
+
+	def okClicked(self):
+		id = self['menu'].getCurrent()
+		if id:
+			config.plugins.weathermsn.city.value = id.replace(', ', ',')
+			config.plugins.weathermsn.city.save()
+			self.close()
+
+def search_title(id):
+	url = 'http://weather.service.msn.com/find.aspx?outputview=search&weasearchstr=%s&culture=en-US&src=outlook' % id
+	watchrequest = Request(url)
+	try:
+		watchvideopage = urlopen(watchrequest)
+	except (URLError, HTTPException, socket.error) as err:
+		print '[Location] Error: Unable to retrieve page - Error code: ', str(err)
+	content = watchvideopage.read()
+	root = cet_fromstring(content)
+	search_results = []
+	if content:
+		for childs in root:
+			if childs.tag == 'weather':
+				locationcode = childs.attrib.get('weatherlocationname').encode('utf-8', 'ignore')
+				search_results.append(locationcode)
+	return search_results
+#end
 
 def WeatherMenu(menuid):
 	if menuid != "information":
