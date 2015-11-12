@@ -1,8 +1,23 @@
 # -*- coding: UTF-8 -*-
-## Weather MSN
-## Coded by Sirius
-## Patch Showsearch by Nikolasi
-##
+#
+# Plugin - Weather MSN
+# Developer - Sirius
+# Patch Showsearch - Nikolasi
+# Homepage - http://www.gisclub.tv
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -16,10 +31,8 @@ from Components.ConfigList import ConfigListScreen
 from Components.config import getConfigListEntry, ConfigText, ConfigYesNo, ConfigSubsection, ConfigSelection, config, configfile, NoSave
 from Components.Pixmap import Pixmap
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_LANGUAGE
-#Nikolasi
-from urllib2 import Request, urlopen, URLError, HTTPError
 from xml.etree.cElementTree import fromstring as cet_fromstring
-#end
+from urllib2 import Request, urlopen, URLError, HTTPError
 from twisted.web.client import downloadPage
 from enigma import eTimer, ePoint
 from os import system, environ
@@ -301,8 +314,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 
 	def get_xmlfile(self):
 #		xmlfile = "http://weather.service.msn.com/data.aspx?weadegreetype=C&culture=ru-RU&weasearchstr=Moscow,Moscow-City,Russia&src=outlook"
+
 		xmlfile = "http://weather.service.msn.com/data.aspx?weadegreetype=%s&culture=%s&weasearchstr=%s&src=outlook" % (self.degreetype, self.language, self.city)
+		xmlfile1 = "http://weather.service.msn.com/data.aspx?weadegreetype=%s&culture=en-US&weasearchstr=%s&src=outlook" % (self.degreetype, self.city)
 		downloadPage(xmlfile, "/tmp/weathermsn.xml").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
+		downloadPage(xmlfile1, "/tmp/weathermsn.xml").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
 
 	def get_weather_data(self):
 		if not os.path.exists("/tmp/weathermsn.xml") or int((time.time() - os.stat("/tmp/weathermsn.xml").st_mtime)/60) >= self.time_update or self.notdata:
@@ -354,37 +370,37 @@ class WeatherMSN(ConfigListScreen, Screen):
 					if self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
 						self.windspeed['Windspeed'] = _('%s m/s') % line.split('windspeed')[1].split('"')[1].split(' ')[0]
 					elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
-						self.windspeed['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.28)
+						self.windspeed['Windspeed'] = _('%.01f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.28)
 					elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
-						self.windspeed['Windspeed'] = _('%3.02f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.45)
+						self.windspeed['Windspeed'] = _('%.01f m/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.45)
 			# ft/s
 					elif self.windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
-						self.windspeed['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 3.28)
+						self.windspeed['Windspeed']= _('%.01f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 3.28)
 					elif self.windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
-						self.windspeed['Windspeed']= _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.91)
+						self.windspeed['Windspeed']= _('%.01f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.91)
 					elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
-						self.windspeed['Windspeed'] = _('%3.02f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.47)
+						self.windspeed['Windspeed'] = _('%.01f ft/s') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.47)
 			# mp/h
 					elif self.windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
-						self.windspeed['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 2.24)
+						self.windspeed['Windspeed'] = _('%.01f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 2.24)
 					elif self.windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
-						self.windspeed['Windspeed'] = _('%3.02f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.62)
+						self.windspeed['Windspeed'] = _('%.01f mp/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.62)
 					elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
 						self.windspeed['Windspeed'] =  _('%s mp/h') % line.split('windspeed')[1].split('"')[1].split(' ')[0]
 			# knots
 					elif self.windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
-						self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.94)
+						self.windspeed['Windspeed'] = _('%.01f knots') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.94)
 					elif self.windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
-						self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.54)
+						self.windspeed['Windspeed'] = _('%.01f knots') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.54)
 					elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
-						self.windspeed['Windspeed'] = _('%3.02f knots') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.87)
+						self.windspeed['Windspeed'] = _('%.01f knots') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.87)
 			# km/h
 					elif self.windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
-						self.windspeed['Windspeed'] = _('%3.02f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 3.6)
+						self.windspeed['Windspeed'] = _('%.01f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 3.6)
 					elif self.windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'kmph':
 						self.windspeed['Windspeed'] = _('%s km/h') % line.split('windspeed')[1].split('"')[1].split(' ')[0]
 					elif self.windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
-						self.windspeed['Windspeed'] = _('%3.02f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.61)
+						self.windspeed['Windspeed'] = _('%.01f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.61)
 #	today	#
 				if "<forecast" in line:
 					if not line.split('low')[1].split('"')[1][0] is '-' and not line.split('low')[1].split('"')[1][0] is '0':
@@ -698,7 +714,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self.session.open(MessageBox, _("Weather MSN\nDeveloper: Sirius0103 \nHomepage: www.gisclub.tv \n\nDonate:\nWMZ  Z395874509364\nWME  E284580190260\nWMR  R213063691482\nWMU  U658742613505"), MessageBox.TYPE_INFO)
 
 	def exit(self):
-		os.system("rm -f /tmp/weathermsn.xml")
 		self.close()
 
 SKIN_CONF = """
@@ -748,14 +763,13 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		self["key_blue"] = StaticText(_("Search Location"))
 		self["HelpWindow"] = Pixmap()
 
-#Nikolasi
 	def openVirtualKeyBoard(self):
 		self.session.openWithCallback(self.ShowsearchBarracuda, VirtualKeyBoard, title=_('Enter text to search city'))
 
 	def ShowsearchBarracuda(self, name):
 		if name is not None:
 			self.session.open(SearchLocationMSN, name)
-#end
+
 		
 	def createSetup(self):
 		self.list = []
@@ -792,7 +806,6 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		self.mbox = self.session.open(MessageBox,(_("Configuration is saved")), MessageBox.TYPE_INFO, timeout = 3 )
 		self.close()
 
-#Nikolasi
 SKIN_LOC = """
 	<!-- Search LocationMSN -->
 	<screen name="SearchLocationMSN" position="center,160" size="750,370" title=" ">
@@ -863,7 +876,6 @@ def search_title(id):
 				locationcode = childs.attrib.get('weatherlocationname').encode('utf-8', 'ignore')
 				search_results.append(locationcode)
 	return search_results
-#end
 
 def WeatherMenu(menuid):
 	if menuid != "information":
