@@ -314,11 +314,8 @@ class WeatherMSN(ConfigListScreen, Screen):
 
 	def get_xmlfile(self):
 #		xmlfile = "http://weather.service.msn.com/data.aspx?weadegreetype=C&culture=ru-RU&weasearchstr=Moscow,Moscow-City,Russia&src=outlook"
-
 		xmlfile = "http://weather.service.msn.com/data.aspx?weadegreetype=%s&culture=%s&weasearchstr=%s&src=outlook" % (self.degreetype, self.language, self.city)
-		xmlfile1 = "http://weather.service.msn.com/data.aspx?weadegreetype=%s&culture=en-US&weasearchstr=%s&src=outlook" % (self.degreetype, self.city)
 		downloadPage(xmlfile, "/tmp/weathermsn.xml").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
-		downloadPage(xmlfile1, "/tmp/weathermsn.xml").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
 
 	def get_weather_data(self):
 		if not os.path.exists("/tmp/weathermsn.xml") or int((time.time() - os.stat("/tmp/weathermsn.xml").st_mtime)/60) >= self.time_update or self.notdata:
@@ -714,6 +711,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self.session.open(MessageBox, _("Weather MSN\nDeveloper: Sirius0103 \nHomepage: www.gisclub.tv \n\nDonate:\nWMZ  Z395874509364\nWME  E284580190260\nWMR  R213063691482\nWMU  U658742613505"), MessageBox.TYPE_INFO)
 
 	def exit(self):
+		os.system("rm -f /tmp/weathermsn.xml")
 		self.close()
 
 SKIN_CONF = """
