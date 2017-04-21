@@ -13,17 +13,17 @@ msgstr ""
 "Language: uk\n"
 "X-Generator: Poedit 1.5.5\n"
 
-msgid "%3.02f ft/s"
-msgstr "%3.02f фут/с"
+msgid "%.01f ft/s"
+msgstr "%.01f фут/с"
 
-msgid "%3.02f knots"
-msgstr "%3.02f вузла"
+msgid "%.01f knots"
+msgstr "%.01f вузла"
 
-msgid "%3.02f m/s"
-msgstr "%3.02f м/с"
+msgid "%.01f m/s"
+msgstr "%.01f м/с"
 
-msgid "%3.02f mp/h"
-msgstr "%3.02f миль/г"
+msgid "%.01f mp/h"
+msgstr "%.01f миль/г"
 
 msgid "%s h"
 msgstr "%s г"
