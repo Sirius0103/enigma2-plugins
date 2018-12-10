@@ -111,7 +111,7 @@ class DownSkinLIB(Screen):
 
 	def infogit(self):
 		try:
-			urllib.urlretrieve ("https://raw.githubusercontent.com/Sirius0103/enigma2-skins/master/python/Plugins/Extensions/DownSkinLIB/version","/tmp/version-")
+			urllib.urlretrieve ("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/version","/tmp/version-")
 		except:
 			pass
 		version = ""
@@ -280,8 +280,8 @@ class DownSkinLIB(Screen):
 	def download_pl(self):
 		try:
 	# download plugin
-			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-skins/master/python/Plugins/Extensions/DownSkinLIB/plugin.py","/tmp/plugin.py")
-			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-skins/master/python/Plugins/Extensions/DownSkinLIB/locale/ru/LC_MESSAGES/DownSkinLIB.mo","/tmp/ruDownSkinLIB.mo")
+			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/plugin.py","/tmp/plugin.py")
+			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/locale/ru/LC_MESSAGES/DownSkinLIB.mo","/tmp/ruDownSkinLIB.mo")
 	# end
 			self.install_pl()
 		except:
