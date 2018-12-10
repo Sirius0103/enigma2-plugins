@@ -111,7 +111,7 @@ class DownSkinLIB(Screen):
 
 	def infogit(self):
 		try:
-			urllib.urlretrieve ("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/version","/tmp/version-")
+			urllib.urlretrieve ("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/version","/tmp/version")
 		except:
 			pass
 		version = ""
