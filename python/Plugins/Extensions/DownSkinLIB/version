@@ -1,6 +1,7 @@
 Плагин: DownloadSkinLIB
-Версия плагина: 1.1-r1 Версия библиотек компонентов скинов: 9.0-r6
+Версия плагина: 1.1-r1 Версия библиотек компонентов скинов: 9.0-r7
 
-Изменения: 07.01.2019 добавлена поддержка FHD скинов 05.01.2019 FanTempInfo 23.12.2018 ServiceInfoEX, LabelDuoColors 20.12.2018 MovieInfo2, MovieCover
+Изменения: 08.01.2019 ServiceInfoEX, ServiceName2 07.01.2019 добавлена поддержка FHD скинов 05.01.2019 FanTempInfo 23.12.2018 ServiceInfoEX, LabelDuoColors
+20.12.2018 MovieInfo2, MovieCover
 13.12.2018 MovieInfo2, AnimatedWeatherPixmap
 10.12.2018 ServiceInfoEX, ServiceInfo2, FanTempInfo
