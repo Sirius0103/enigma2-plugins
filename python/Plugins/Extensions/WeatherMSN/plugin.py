@@ -34,10 +34,13 @@ from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_
 from xml.etree.cElementTree import fromstring as cet_fromstring
 from urllib2 import Request, urlopen, URLError, HTTPError
 from twisted.web.client import downloadPage
+from time import localtime, strftime
 from enigma import eTimer, ePoint
 from os import system, environ
+from datetime import date
+import datetime, time
 import gettext
-import time
+import math
 import os
 
 lang = language.getLanguage()
@@ -70,99 +73,105 @@ config.plugins.weathermsn.degreetype = ConfigSelection(default="C", choices = [
 SKIN_MSN = """
 	<!-- WeatherMSN -->
 	<screen name="WeatherMSN" position="40,55" size="1200,650" title=' ' >
-		<eLabel position="600,10" size="3,590" backgroundColor="#00555555" zPosition="1" />
-		<eLabel position="20,310" size="570,3" backgroundColor="#00555555" zPosition="1" />
-		<eLabel position="20,460" size="570,3" backgroundColor="#00555555" zPosition="1" />
+		<eLabel position="600,10" size="3,590" backgroundColor="un555555" zPosition="1" />
+		<eLabel position="20,310" size="570,3" backgroundColor="un555555" zPosition="1" />
+		<eLabel position="20,460" size="570,3" backgroundColor="un555555" zPosition="1" />
+		<eLabel position="610,160" size="570,3" backgroundColor="un555555" zPosition="1" />
+		<eLabel position="610,310" size="570,3" backgroundColor="un555555" zPosition="1" />
+		<eLabel position="610,460" size="570,3" backgroundColor="un555555" zPosition="1" />
+		<eLabel position="20,610" size="1160,3" backgroundColor="un555555" zPosition="1" />
 
-		<eLabel position="610,160" size="570,3" backgroundColor="#00555555" zPosition="1" />
-		<eLabel position="610,310" size="570,3" backgroundColor="#00555555" zPosition="1" />
-		<eLabel position="610,460" size="570,3" backgroundColor="#00555555" zPosition="1" />
-		<eLabel position="20,610" size="1160,3" backgroundColor="#00555555" zPosition="1" />
+		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/logo.png" position="30,15" size="550,125" alphatest="blend" />
+		<widget source="locationtxt" render="Label" position="20,175" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="timezonetxt" render="Label" position="20,250" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="latitudetxt" render="Label" position="20,200" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="longitudetxt" render="Label" position="20,225" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="pointtxt" render="Label" position="20,275" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="location" render="Label" position="90,175" size="500,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="timezone" render="Label" position="90,250" size="500,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="latitude" render="Label" position="90,200" size="500,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="longitude" render="Label" position="90,225" size="500,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="observationtime" render="Label" position="20,620" size="100,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="observationpoint" render="Label" position="90,275" size="500,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="attribution" render="Label" position="120,620" size="500,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
 
-		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/logo.png" position="30,20" size="550,125" alphatest="blend" />
+		<widget source="yuliandaytxt" render="Label" position="20,150" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="sunrisetxt" render="Label" position="250,325" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="sunsettxt" render="Label" position="250,350" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="solsticetxt" render="Label" position="250,375" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="moonlighttxt" render="Label" position="250,400" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="yulianday" render="Label" position="90,150" size="500,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="sunrise" render="Label" position="440,325" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="sunset" render="Label" position="440,350" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="solstice" render="Label" position="440,375" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="moonlight" render="Label" position="440,400" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="moonphase" render="Label" position="20,425" size="570,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget name="picmoon" position="90,330" size="90,90" zPosition="2" alphatest="blend" />
 
-		<widget source="locationtxt" render="Label" position="20,175" size="200,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="timezonetxt" render="Label" position="20,250" size="200,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="latitudetxt" render="Label" position="20,200" size="200,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="longitudetxt" render="Label" position="20,225" size="200,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="temperaturetxt" render="Label" position="250,325" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="feelsliketxt" render="Label" position="250,350" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="humiditytxt" render="Label" position="250,375" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="windtxt" render="Label" position="250,400" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />		
-		<widget source="pointtxt" render="Label" position="20,275" size="200,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="temperaturetxt" render="Label" position="250,475" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="feelsliketxt" render="Label" position="250,500" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="humiditytxt" render="Label" position="250,525" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="windtxt" render="Label" position="250,550" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="temperature" render="Label" position="440,475" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="feelslike" render="Label" position="440,500" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="skytext" render="Label" position="20,575" size="570,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="humidity" render="Label" position="440,525" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="wind" render="Label" position="300,550" size="290,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget name="pic" position="70,470" size="128,128" zPosition="2" alphatest="blend" />
 
-		<widget source="location" render="Label" position="90,175" size="500,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="timezone" render="Label" position="90,250" size="500,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="latitude" render="Label" position="90,200" size="500,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="longitude" render="Label" position="90,225" size="500,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="observationtime" render="Label" position="20,620" size="100,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="observationpoint" render="Label" position="90,275" size="500,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="attribution" render="Label" position="120,620" size="500,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="temperature" render="Label" position="440,325" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="feelslike" render="Label" position="440,350" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="skytext" render="Label" position="20,425" size="570,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="humidity" render="Label" position="440,375" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="wind" render="Label" position="300,400" size="290,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget name="pic" position="70,320" size="128,128" zPosition="2" alphatest="blend" />
-
-		<widget source="temperaturetxt" render="Label" position="250,525" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="preciptxt" render="Label" position="250,550" size="250,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="daytxt" render="Label" position="250,475" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="datetxt" render="Label" position="250,500" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-
-		<widget source="temperature0" render="Label" position="440,525" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="skytext0" render="Label" position="20,575" size="570,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="precip0" render="Label" position="440,550" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="date0" render="Label" position="440,500" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="day0" render="Label" position="440,475" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
+<!--	<widget source="temperaturetxt" render="Label" position="250,525" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="preciptxt" render="Label" position="250,550" size="250,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="daytxt" render="Label" position="250,475" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="datetxt" render="Label" position="250,500" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="temperature0" render="Label" position="440,525" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="skytext0" render="Label" position="20,575" size="570,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="precip0" render="Label" position="440,550" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="date0" render="Label" position="440,500" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="day0" render="Label" position="440,475" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
 		<widget name="pic0" position="70,470" size="128,128" zPosition="2" alphatest="blend" />
-
-		<widget source="temperaturetxt" render="Label" position="840,75" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="preciptxt" render="Label" position="840,100" size="250,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="daytxt" render="Label" position="840,25" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="datetxt" render="Label" position="840,50" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-
-		<widget source="temperature1" render="Label" position="1030,75" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="skytext1" render="Label" position="610,125" size="570,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="precip1" render="Label" position="1030,100" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="date1" render="Label" position="1030,50" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="day1" render="Label" position="1030,25" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
+-->
+		<widget source="temperaturetxt" render="Label" position="840,75" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="preciptxt" render="Label" position="840,100" size="250,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="daytxt" render="Label" position="840,25" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="datetxt" render="Label" position="840,50" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="temperature1" render="Label" position="1030,75" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="skytext1" render="Label" position="610,125" size="570,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="precip1" render="Label" position="1030,100" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="date1" render="Label" position="1030,50" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="day1" render="Label" position="1030,25" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
 		<widget name="pic1" position="660,20" size="128,128" zPosition="2" alphatest="blend" />
 
-		<widget source="temperaturetxt" render="Label" position="840,225" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="preciptxt" render="Label" position="840,250" size="250,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="daytxt" render="Label" position="840,175" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="datetxt" render="Label" position="840,200" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-
-		<widget source="temperature2" render="Label" position="1030,225" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="skytext2" render="Label" position="610,275" size="570,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="precip2" render="Label" position="1030,250" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="date2" render="Label" position="1030,200" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="day2" render="Label" position="1030,175" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="temperaturetxt" render="Label" position="840,225" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="preciptxt" render="Label" position="840,250" size="250,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="daytxt" render="Label" position="840,175" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="datetxt" render="Label" position="840,200" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="temperature2" render="Label" position="1030,225" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="skytext2" render="Label" position="610,275" size="570,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="precip2" render="Label" position="1030,250" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="date2" render="Label" position="1030,200" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="day2" render="Label" position="1030,175" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
 		<widget name="pic2" position="660,170" size="128,128" zPosition="2" alphatest="blend" />
 
-		<widget source="temperaturetxt" render="Label" position="840,375" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="preciptxt" render="Label" position="840,400" size="250,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="daytxt" render="Label" position="840,325" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="datetxt" render="Label" position="840,350" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-
-		<widget source="temperature3" render="Label" position="1030,375" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="skytext3" render="Label" position="610,425" size="570,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="precip3" render="Label" position="1030,400" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="date3" render="Label" position="1030,350" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="day3" render="Label" position="1030,325" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="temperaturetxt" render="Label" position="840,375" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="preciptxt" render="Label" position="840,400" size="250,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="daytxt" render="Label" position="840,325" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="datetxt" render="Label" position="840,350" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="temperature3" render="Label" position="1030,375" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="skytext3" render="Label" position="610,425" size="570,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="precip3" render="Label" position="1030,400" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="date3" render="Label" position="1030,350" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="day3" render="Label" position="1030,325" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
 		<widget name="pic3" position="660,320" size="128,128" zPosition="2" alphatest="blend" />
 
-		<widget source="temperaturetxt" render="Label" position="840,525" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="preciptxt" render="Label" position="840,550" size="250,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="daytxt" render="Label" position="840,475" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-		<widget source="datetxt" render="Label" position="840,500" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-
-		<widget source="temperature4" render="Label" position="1030,525" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="skytext4" render="Label" position="610,575" size="570,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="precip4" render="Label" position="1030,550" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="date4" render="Label" position="1030,500" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
-		<widget source="day4" render="Label" position="1030,475" size="150,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="temperaturetxt" render="Label" position="840,525" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="preciptxt" render="Label" position="840,550" size="250,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="daytxt" render="Label" position="840,475" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="datetxt" render="Label" position="840,500" size="200,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+		<widget source="temperature4" render="Label" position="1030,525" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="skytext4" render="Label" position="610,575" size="570,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="precip4" render="Label" position="1030,550" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="date4" render="Label" position="1030,500" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
+		<widget source="day4" render="Label" position="1030,475" size="150,25" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="right" transparent="1" />
 		<widget name="pic4" position="660,470" size="128,128" zPosition="2" alphatest="blend" />
 
 		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_menu.png" position="1080,620" size="40,20" alphatest="on" />
@@ -182,6 +191,14 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self.city = config.plugins.weathermsn.city.value
 		self.degreetype = config.plugins.weathermsn.degreetype.value
 		self.windtype = config.plugins.weathermsn.windtype.value
+
+		self.yulianday = {'Julianday':''}
+		self.sunrise = {'Sunrise':''}
+		self.sunset = {'Sunset':''}
+		self.solstice = {'Solstice':''}
+		self.moonphase = {'Moonphase':''}
+		self.moonlight = {'Moonlight':''}
+		self.picmoon = {'PicMoon':''}
 
 		self.location = {'Location':''}
 		self.timezone = {'Timezone':''}
@@ -247,6 +264,21 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self.forecast = []
 		self.forecastdata = {}
 		self["Title"] = StaticText(_("Weather MSN"))
+
+		self["yuliandaytxt"] = StaticText(_("Julian day:"))
+		self["sunrisetxt"] = StaticText(_("Sunrise:"))
+		self["sunsettxt"] = StaticText(_("Sunset:"))
+		self["solsticetxt"] = StaticText(_("Solstice:"))
+		self["moonlighttxt"] = StaticText(_("Moonlight:"))
+
+		self["yulianday"] = StaticText()
+		self["sunrise"] = StaticText()
+		self["sunset"] = StaticText()
+		self["solstice"] = StaticText()
+		self["moonphase"] = StaticText()
+		self["moonlight"] = StaticText()
+		self["picmoon"] = Pixmap()
+
 		self["locationtxt"] = StaticText(_("Location:"))
 		self["timezonetxt"] = StaticText(_("Timezone:"))
 		self["latitudetxt"] = StaticText(_("Latitude:"))
@@ -315,13 +347,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 	def get_xmlfile(self):
 #		xmlfile = "http://weather.service.msn.com/data.aspx?weadegreetype=C&culture=ru-RU&weasearchstr=Moscow,Moscow-City,Russia&src=outlook"
 		xmlfile = "http://weather.service.msn.com/data.aspx?weadegreetype=%s&culture=%s&weasearchstr=%s&src=outlook" % (self.degreetype, self.language, self.city)
-		downloadPage(xmlfile, "/tmp/weathermsn.xml").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
-
-	def get_weather_data(self):
-		if not os.path.exists("/tmp/weathermsn.xml") or int((time.time() - os.stat("/tmp/weathermsn.xml").st_mtime)/60) >= self.time_update or self.notdata:
-			self.get_xmlfile()
-		else:
-			self.parse_weather_data()
+		downloadPage(xmlfile, "/tmp/weathermsn1.xml").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
 
 	def downloadFinished(self, result):
 		print "[WeatherMSN] Download finished"
@@ -332,18 +358,26 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self.notdata = True
 		print "[WeatherMSN] Download failed!"
 
+	def get_weather_data(self):
+		if not os.path.exists("/tmp/weathermsn1.xml") or int((time.time() - os.stat("/tmp/weathermsn1.xml").st_mtime)/60) >= self.time_update or self.notdata:
+			self.get_xmlfile()
+		else:
+			self.parse_weather_data()
+
 	def parse_weather_data(self):
 		self.forecast = []
-		for line in open("/tmp/weathermsn.xml"):
+		for line in open("/tmp/weathermsn1.xml"):
 			try:
 				if "<weather" in line:
 					self.location['Location'] = line.split('weatherlocationname')[1].split('"')[1].split(',')[0]
 					if not line.split('timezone')[1].split('"')[1][0] is '0':
+						timezone = '%s' % (float(line.split('timezone')[1].split('"')[1]) - 1)
 						self.timezone['Timezone'] = '+' + line.split('timezone')[1].split('"')[1]
 					else:
+						timezone = '%s' % (float(line.split('timezone')[1].split('"')[1]) - 1)
 						self.timezone['Timezone'] = line.split('timezone')[1].split('"')[1]
-					self.latitude['Latitude'] = line.split(' lat')[1].split('"')[1]
-					self.longitude['Longitude'] = line.split(' long')[1].split('"')[1]
+					self.latitude['Latitude'] = latitude = line.split(' lat')[1].split('"')[1].replace(',', '.')
+					self.longitude['Longitude'] = longitude = line.split(' long')[1].split('"')[1].replace(',', '.')
 					self.observationtime['Time'] = line.split('observationtime')[1].split('"')[1]
 					self.observationpoint['Point'] = line.split('observationpoint')[1].split('"')[1]
 					self.attribution['Attribution'] = line.split('attribution')[1].split('"')[1]
@@ -475,7 +509,244 @@ class WeatherMSN(ConfigListScreen, Screen):
 					self.precip4['Precip4'] = line.split('precip')[5].split('"')[1]
 			except:
 				pass
-		defpic = "%sExtensions/WeatherMSN/icons/na.png" % resolveFilename(SCOPE_PLUGINS)
+
+		pi = 3.1415926535
+		rad = pi / 180
+		year = float(strftime('%Y'))
+		month = float(strftime('%m'))
+		day = float(strftime('%d'))
+		hour = float(strftime('%H'))
+		min = float(strftime('%M'))
+		sec = float(strftime('%S'))
+		try:
+			long = float(longitude)
+			lat = float(latitude)
+			zone = float(timezone)
+		except:
+			long = lat = zone = 0
+#	julian day
+		A = (14 - month)/12
+		M = month + 12 * A - 3
+		Y = year + 4800 - A
+		jday = day + int((153 * M + 2) / 5) + int(365 * Y) + int(Y / 4) - int(Y / 100) + int(Y / 400) - 32045.6 + hour / 24 + min / 1440 + sec / 86400
+		self.yulianday['Julianday'] = jday
+#	sun
+		if month <= 2:
+			M = month + 12
+			Y = year - 1
+		else:
+			M = month
+			Y = year
+		L1 = int(year / 100)
+		L2 = int(365.25 * (Y + 4716)) + int(30.6001 * (M + 1)) + day + (2 - L1 + int(L1 / 4)) - 1524.5
+		T = (L2 - 2451545) / 36525
+		K1 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T
+		K2 = 357.52911 + 35999.05029 * T - 0.0001537 * T * T
+		N1 = K2 / 360
+		O1 = (N1 - int(N1)) * 360
+		K3 = (1.914602 - 0.004817 * T - 1.4e-05 * T * T) * math.sin(O1 * rad)
+		K4 = (0.019993 - 0.000101 * T) * math.sin(2 * O1 * rad)
+		K5 = 0.000289 * math.sin(3 * O1 * rad)
+		N2 = K1 / 360
+		O2 = (N2 - int(N2)) * 360
+		N3 = 125.04 - 1934.136 * T
+		if N3 < 0:
+			N4 = N3 + 360
+		else:
+			N4 = N3
+		N5 = O2 + K3 + K4 + K5 - 0.00569 - 0.00478 * math.sin(N4 * rad)
+		K6 = 23.43930278 - 0.0130042 * T - 1.63e-07 * T * T
+		N6 = math.sin(K6 * rad) * math.sin(N5 * rad)
+		N7 = math.asin(N6) * 180 / pi
+		K7 = (7.7 * math.sin((O2 + 78) * rad) - 9.5 * math.sin(2 * O2 * rad)) / 60
+		O3 = math.cos(N7 * rad) * math.cos(lat * rad)
+		N8 = -0.01483 - math.sin(N7 * rad) * math.sin(lat * rad)
+		SRh = int((13 - long / 15 + K7 - (2 * (math.acos(N8 / O3) * 57.29577951) / 15) / 2) + zone)
+		SRm = int(round(((13 - long / 15 + K7 - (2 * (math.acos(N8 / O3) * 57.29577951) / 15) / 2) + zone - SRh) * 60))
+		SSh = int((13 - long / 15 + K7 + (2 * (math.acos(N8 / O3) * 57.29577951) / 15) / 2) + zone)
+		SSm = int(round(((13 - long / 15 + K7 + (2 * (math.acos(N8 / O3) * 57.29577951) / 15) / 2) + zone - SSh) * 60))
+		Sh = int((13 - long / 15 + K7) + zone)
+		Sm = int(round(((13 - long / 15 + K7) + zone - Sh) * 60))
+		if SRm == 60:
+			SRm = 0
+			SRh = SRh + 1
+		if SRm < 10:
+			SR = '0'
+		else:
+			SR = ''
+		if SSm == 60:
+			SSm = 0
+			SSh = SSh + 1
+		if SSm < 10:
+			SS = '0'
+		else:
+			SS = ''
+		if Sm == 60:
+			Sm = 0
+			Sh = Sh + 1
+		if Sm < 10:
+			S = '0'
+		else:
+			S = ''
+		try:
+			self.sunrise['Sunrise'] = '%s%s%s%s' % (SRh, unichr(58).encode("latin-1"), SR, SRm)
+			self.sunset['Sunset'] = '%s%s%s%s' % (SSh, unichr(58).encode("latin-1"), SS, SSm)
+			self.solstice['Solstice'] = '%s%s%s%s' % (Sh, unichr(58).encode("latin-1"), S, Sm)
+		except:
+			self.sunrise['Sunrise'] = self.sunset['Sunset'] = self.solstice['Solstice'] = ''
+#	moon
+		T = (jday - 2451545) / 36525
+		K1 = 297.8502042 + 445267.1115168 * T - 0.00163 * T * T + T * T * T / 545868 - T * T * T * T / 113065000
+		K2 = 357.5291092 + 35999.0502909 * T - 0.0001536 * T * T + T * T * T / 24490000
+		K3 = 134.9634114 + 477198.8676313 * T - 0.008997 * T * T + T * T * T / 69699 - T * T * T * T / 14712000
+		K4 = 180 - K1 - 6.289 * math.sin(rad * K3) + 2.1 * math.sin(rad * K2) - 1.274 * math.sin(rad * (2 * K1 - K3)) - 0.658 * math.sin(rad * (2 * K1)) - 0.214 * math.sin(rad * (2 * K3)) - 0.11 * math.sin(rad * K1)
+		pha1 = (1 + math.cos(rad * K4)) / 2
+		T = (jday + 0.5 / 24 - 2451545) / 36525
+		K1 = 297.8502042 + 445267.1115168 * T - 0.00163 * T * T + T * T * T / 545868 - T * T * T * T / 113065000
+		K2 = 357.5291092 + 35999.0502909 * T - 0.0001536 * T * T + T * T * T / 24490000
+		K3 = 134.9634114 + 477198.8676313 * T - 0.008997 * T * T + T * T * T / 69699 - T * T * T * T / 14712000
+		K4 = 180 - K1 - 6.289 * math.sin(rad * K3) + 2.1 * math.sin(rad * K2) - 1.274 * math.sin(rad * (2 * K1 - K3)) - 0.658 * math.sin(rad * (2 * K1)) - 0.214 * math.sin(rad * (2 * K3)) - 0.11 * math.sin(rad * K1)
+		pha2 = (1 + math.cos(rad * K4)) / 2
+		if pha2 - pha1 < 0:
+			trend = -1
+		else:
+			trend = 1
+		light = 100 * pha1
+		light = round(light, 1)
+		if light > 0 and light < 5:
+			pic = '5'
+			phase = _('New moon')
+			if trend == -1:
+				pic = '05'
+				phase = _('New moon')
+		elif light > 5 and light < 10:
+			pic = '10'
+			phase = _('Waxing cresent')
+			if trend == -1:
+				pic = '010'
+				phase = _('Waning crescent')
+		elif light > 10 and light < 15:
+			pic = '15'
+			phase = _('Waxing cresent')
+			if trend == -1:
+				pic = '015'
+				phase = _('Waning crescent')
+		elif light > 15 and light < 20:
+			pic = '20'
+			phase = _('Waxing cresent')
+			if trend == -1:
+				pic = '020'
+				phase = _('Waning crescent')
+		elif light > 20 and light < 25:
+			pic = '25'
+			phase = _('Waxing cresent')
+			if trend == -1:
+				pic = '025'
+				phase = _('Waning crescent')
+		elif light > 25 and light < 30:
+			pic = '30'
+			phase = _('Waxing cresent')
+			if trend == -1:
+				pic = '030'
+				phase = _('Waning crescent')
+		elif light > 30 and light < 35:
+			pic = '35'
+			phase = _('Waxing cresent')
+			if trend == -1:
+				pic = '035'
+				phase = _('Waning crescent')
+		elif light > 35 and light < 40:
+			pic = '40'
+			phase = _('Waxing cresent')
+			if trend == -1:
+				pic = '040'
+				phase = _('Waning crescent')
+		elif light > 40 and light < 45:
+			pic = '45'
+			phase = _('Waxing cresent')
+			if trend == -1:
+				pic = '045'
+				phase = _('Waning crescent')
+		elif light > 45 and light < 50:
+			pic = '50'
+			phase = _('First quarter')
+			if trend == -1:
+				pic = '050'
+				phase = _('Last quarter')
+		elif light > 50 and light < 55:
+			pic = '55'
+			phase = _('First quarter')
+			if trend == -1:
+				pic = '055'
+				phase = _('Last quarter')
+		elif light > 55 and light < 60:
+			pic = '60'
+			phase = _('Waxing gibbous')
+			if trend == -1:
+				pic = '060'
+				phase = _('Waning gibbous')
+		elif light > 60 and light < 65:
+			pic = '65'
+			phase = _('Waxing gibbous')
+			if trend == -1:
+				pic = '065'
+				phase = _('Waning gibbous')
+		elif light > 65 and light < 70:
+			pic = '70'
+			phase = _('Waxing gibbous')
+			if trend == -1:
+				pic = '070'
+				phase = _('Waning gibbous')
+		elif light > 70 and light < 75:
+			pic = '75'
+			phase = _('Waxing gibbous')
+			if trend == -1:
+				pic = '075'
+				phase = _('Waning gibbous')
+		elif light > 75 and light < 80:
+			pic = '80'
+			phase = _('Waxing gibbous')
+			if trend == -1:
+				pic = '080'
+				phase = _('Waning gibbous')
+		elif light > 80 and light < 85:
+			pic = '85'
+			phase = _('Waxing gibbous')
+			if trend == -1:
+				pic = '085'
+				phase = _('Waning gibbous')
+		elif light > 85 and light < 90:
+			pic = '90'
+			phase = _('Waxing gibbous')
+			if trend == -1:
+				pic = '090'
+				phase = _('Waning gibbous')
+		elif light > 90 and light < 95:
+			pic = '95'
+			phase = _('Waxing gibbous')
+			if trend == -1:
+				pic = '095'
+				phase = _('Waning gibbous')
+		elif light > 95 and light < 100:
+			pic = '100'
+			phase = _('Full moon')
+			if trend == -1:
+				pic = '100'
+				phase = _('Full moon')
+		else:
+			self.moonphase['Moonphase'] = 'n/a'
+			self.picmoon['PicMoon'] = '99'
+		try:
+			self.moonphase['Moonphase'] = '%s' % phase
+			self.moonlight['Moonlight'] = '%s %s' % (light, unichr(37).encode("latin-1"))
+			self.picmoon['PicMoon'] = '%s' % pic
+		except:
+			self.moonphase['Moonphase'] = self.moonlight['Moonlight'] = ''
+			self.picmoon['PicMoon'] = '99'
+		self.get_widgets()
+
+	def get_widgets(self):
+		defpic = "%sExtensions/WeatherMSN/icons/weather/na.png" % resolveFilename(SCOPE_PLUGINS)
 		if self.location['Location'] is not '':
 			self["location"].text = _('%s') % self.location['Location']
 		else:
@@ -506,7 +777,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		else:
 			self["observationpoint"].text = _('n/a')
 			self.notdata = True
-			
+
 		if self.attribution['Attribution'] is not '':
 			self["attribution"].text = _('%s') % self.attribution['Attribution']
 		else:
@@ -539,7 +810,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self.notdata = True
 		self["pic"].instance.setScale(1)
 		if self.pic['Pic'] is not '':
-			self["pic"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic['Pic']))
+			self["pic"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/weather/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic['Pic']))
 		else:
 			self["pic"].instance.setPixmapFromFile(defpic)
 		self["pic"].instance.show()
@@ -571,7 +842,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self.notdata = True
 		self["pic0"].instance.setScale(1)
 		if self.pic0['Pic0'] is not '':
-			self["pic0"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic0['Pic0']))
+			self["pic0"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/weather/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic0['Pic0']))
 		else:
 			self["pic0"].instance.setPixmapFromFile(defpic)
 		self["pic0"].instance.show()
@@ -603,7 +874,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self.notdata = True
 		self["pic1"].instance.setScale(1)
 		if self.pic1['Pic1'] is not '':
-			self["pic1"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic1['Pic1']))
+			self["pic1"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/weather/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic1['Pic1']))
 		else:
 			self["pic1"].instance.setPixmapFromFile(defpic)
 		self["pic1"].instance.show()
@@ -635,7 +906,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self.notdata = True
 		self["pic2"].instance.setScale(1)
 		if self.pic2['Pic2'] is not '':
-			self["pic2"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic2['Pic2']))
+			self["pic2"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/weather/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic2['Pic2']))
 		else:
 			self["pic2"].instance.setPixmapFromFile(defpic)
 		self["pic2"].instance.show()
@@ -667,7 +938,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self.notdata = True
 		self["pic3"].instance.setScale(1)
 		if self.pic3['Pic3'] is not '':
-			self["pic3"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic3['Pic3']))
+			self["pic3"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/weather/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic3['Pic3']))
 		else:
 			self["pic3"].instance.setPixmapFromFile(defpic)
 		self["pic3"].instance.show()
@@ -699,10 +970,48 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self.notdata = True
 		self["pic4"].instance.setScale(1)
 		if self.pic4['Pic4'] is not '':
-			self["pic4"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic4['Pic4']))
+			self["pic4"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/weather/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic4['Pic4']))
 		else:
 			self["pic4"].instance.setPixmapFromFile(defpic)
 		self["pic4"].instance.show()
+
+		if self.yulianday['Julianday'] is not '':
+			self["yulianday"].text = '%s' % self.yulianday['Julianday']
+		else:
+			self["yulianday"].text = _('n/a')
+			self.notdata = True
+		if self.sunrise['Sunrise'] is not '':
+			self["sunrise"].text = '%s' % self.sunrise['Sunrise']
+		else:
+			self["sunrise"].text = _('n/a')
+			self.notdata = True
+			
+		if self.sunset['Sunset'] is not '':
+			self["sunset"].text = '%s' % self.sunset['Sunset']
+		else:
+			self["sunset"].text = _('n/a')
+			self.notdata = True
+		if self.solstice['Solstice'] is not '':
+			self["solstice"].text = '%s' % self.solstice['Solstice']
+		else:
+			self["solstice"].text = _('n/a')
+			self.notdata = True
+		if self.moonphase['Moonphase'] is not '':
+			self["moonphase"].text = '%s' % self.moonphase['Moonphase']
+		else:
+			self["moonphase"].text = _('n/a')
+			self.notdata = True
+		if self.moonlight['Moonlight'] is not '':
+			self["moonlight"].text = '%s' % self.moonlight['Moonlight']
+		else:
+			self["moonlight"].text = _('n/a')
+			self.notdata = True
+		self["picmoon"].instance.setScale(1)
+		if self.picmoon['PicMoon'] is not '':
+			self["picmoon"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/moon/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.picmoon['PicMoon']))
+		else:
+			self["picmoon"].instance.setPixmapFromFile(defpic)
+		self["picmoon"].instance.show()
 
 	def config (self):
 		self.session.open(ConfigWeatherMSN)
@@ -711,7 +1020,8 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self.session.open(MessageBox, _("Weather MSN\nDeveloper: Sirius0103 \nHomepage: www.gisclub.tv \nGithub: www.github.com/Sirius0103 \n\nDonate:\nVISA 4276 4000 5465 0552"), MessageBox.TYPE_INFO)
 
 	def exit(self):
-		os.system("rm -f /tmp/weathermsn.xml")
+		os.system("rm -f /tmp/weathermsn1.xml")
+		os.system("rm -f /tmp/weathermsn2.xml")
 		self.close()
 
 SKIN_CONF = """
@@ -859,12 +1169,12 @@ class SearchLocationMSN(Screen):
 			self.close()
 
 def search_title(id):
-	url = 'http://weather.service.msn.com/find.aspx?outputview=search&weasearchstr=%s&culture=en-US&src=outlook' % id
+	url = "http://weather.service.msn.com/find.aspx?outputview=search&weasearchstr=%s&culture=en-US&src=outlook" % id
 	watchrequest = Request(url)
 	try:
 		watchvideopage = urlopen(watchrequest)
 	except (URLError, HTTPException, socket.error) as err:
-		print '[Location] Error: Unable to retrieve page - Error code: ', str(err)
+		print "[Location] Error: Unable to retrieve page - Error code: ", str(err)
 	content = watchvideopage.read()
 	root = cet_fromstring(content)
 	search_results = []
