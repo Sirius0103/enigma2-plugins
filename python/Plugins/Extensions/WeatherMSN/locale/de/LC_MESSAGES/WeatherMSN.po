@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WeatherMSN\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-07-29 01:13+0100\n"
-"PO-Revision-Date: 2018-06-07 09:35+0300\n"
+"PO-Revision-Date: 2019-01-14 14:44+0100\n"
 "Last-Translator: Sirius <sirius.altech@gmail.com>\n"
 "Language-Team: sirius.al@rambler.ru\n"
 "MIME-Version: 1.0\n"
@@ -11,49 +11,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "Language: de\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 2.2\n"
 
-msgid "Weather MSN"
-msgstr "Wetter MSN"
+msgid "%.01f ft/s"
+msgstr "%.01f ft/s"
 
-msgid "Weather forecast for 5 days"
-msgstr "Wetter forecast für 5 Tage"
+msgid "%.01f knots"
+msgstr "%.01f Knoten"
 
-msgid "Config Weather MSN"
-msgstr "Config Wetter MSN"
+msgid "%.01f m/s"
+msgstr "%.01f m/s"
 
-msgid "Show Weather MSN in menu information:"
-msgstr "Wetter MSN im menü informationen Zeigen:"
+msgid "%.01f mp/h"
+msgstr "%.01f mp/h"
 
-msgid "Location:"
-msgstr "Ort:"
+msgid "%s h"
+msgstr "%s h"
 
-msgid "Timezone:"
-msgstr "Zeitzone:"
+msgid "%s km/h"
+msgstr "%s km/h"
 
-msgid "Latitude:"
-msgstr "Breite:"
+msgid "%s m/s"
+msgstr "%s m/s"
 
-msgid "Longitude:"
-msgstr "Laenge:"
+msgid "%s mp/h"
+msgstr "%s mp/h"
 
-msgid "Temperature:"
-msgstr "Temperatur:"
-
-msgid "Feels like:"
-msgstr "Gefühlt:"
-
-msgid "Humidity:"
-msgstr "Luftfeuchtigkeit:"
+msgid "Celsius"
+msgstr "Celsius"
 
 msgid "Chance precip:"
 msgstr "Niederschlagswahrscheinlichkeit:"
 
-msgid "Wind:"
-msgstr "Wind:"
+msgid "Config Weather MSN"
+msgstr "Config Wetter MSN"
 
-msgid "Observation point:"
-msgstr "Aussichtspunkt:"
+msgid "Configuration is saved"
+msgstr "Konfiguration wird gespeichert"
 
 msgid "Date:"
 msgstr "Datum:"
@@ -61,8 +55,112 @@ msgstr "Datum:"
 msgid "Day week:"
 msgstr "Wochen Tag:"
 
-msgid "m/s"
-msgstr "m/s"
+msgid "Fahrenheit"
+msgstr "Fahrenheit"
+
+msgid "Feels like:"
+msgstr "Gefühlt:"
+
+msgid "First quarter"
+msgstr "Erstes Quartal"
+
+msgid "Full moon"
+msgstr "Vollmond"
+
+msgid "Humidity:"
+msgstr "Luftfeuchtigkeit:"
+
+msgid "Julian day:"
+msgstr "Julianischer Tag:"
+
+msgid "Last quarter"
+msgstr "Letztes Quartal"
+
+msgid "Latitude:"
+msgstr "Breite:"
+
+msgid "Location:"
+msgstr "Ort:"
+
+msgid "Longitude:"
+msgstr "Längengrad:"
+
+msgid "Moonlight:"
+msgstr "Mondlicht:"
+
+msgid "New moon"
+msgstr "Neumond"
+
+msgid "Observation point:"
+msgstr "Aussichtspunkt:"
+
+msgid "Scale of temperature:"
+msgstr "Temperaturskala:"
+
+msgid "Scale of wind speed:"
+msgstr "Skala von Windgeschwindigkeit:"
+
+msgid "Search Location"
+msgstr "Standort Suchen"
+
+msgid "Search Location Weather MSN"
+msgstr "Standort Suchen Wetter MSN"
+
+msgid "Show Weather MSN in menu information:"
+msgstr "Wetter MSN im menü informationen Zeigen:"
+
+msgid "Solstice:"
+msgstr "Sonnenwende:"
+
+msgid "Sunrise:"
+msgstr "Sonnenaufgang:"
+
+msgid "Sunset:"
+msgstr "Sonnenuntergang:"
+
+msgid "Temperature:"
+msgstr "Temperatur:"
+
+msgid "Timezone:"
+msgstr "Zeitzone:"
+
+msgid "Waning crescent"
+msgstr "Wankender Halbmond"
+
+msgid "Waning gibbous"
+msgstr "Abnehmender Mond"
+
+msgid "Waxing cresent"
+msgstr "Zunehmender Halbmond"
+
+msgid "Waxing gibbous"
+msgstr "Zunehmender Mond"
+
+msgid "Weather MSN"
+msgstr "Wetter MSN"
+
+msgid ""
+"Weather MSN\n"
+"Developer: Sirius0103 \n"
+"Homepage: www.gisclub.tv \n"
+"Github: www.github.com/Sirius0103 \n"
+"\n"
+"Donate:\n"
+"VISA 4276 4000 5465 0552"
+msgstr ""
+"Weather MSN\n"
+"Developer: Sirius0103 \n"
+"Homepage: www.gisclub.tv \n"
+"Github: www.github.com/Sirius0103 \n"
+"\n"
+"Donate:\n"
+"VISA 4276 4000 5465 0552"
+
+msgid "Weather forecast for 5 days"
+msgstr "Wetter forecast für 5 Tage"
+
+msgid "Wind:"
+msgstr "Wind:"
 
 msgid "ft/s"
 msgstr "ft/s"
@@ -70,41 +168,11 @@ msgstr "ft/s"
 msgid "km/h"
 msgstr "km/h"
 
-msgid "mp/h"
-msgstr "mp/h"
-
 msgid "knots"
 msgstr "Knoten"
 
-msgid "Configuration is saved"
-msgstr "Konfiguration wird gespeichert"
+msgid "m/s"
+msgstr "m/s"
 
-msgid "%s h"
-msgstr "%s h"
-
-msgid "Scale of wind speed:"
-msgstr "Skala von Windgeschwindigkeit:"
-
-msgid "%.01f m/s"
-msgstr "%.01f m/s"
-
-msgid "%.01f ft/s"
-msgstr "%.01f ft/s"
-
-msgid "%.01f mp/h"
-msgstr "%.01f mp/h"
-
-msgid "%.01f knots"
-msgstr "%.01f Knoten"
-
-msgid "%s km/h"
-msgstr "%s km/h"
-
-msgid "Scale of temperature:"
-msgstr "Temperaturskala:"
-
-msgid "Celsius"
-msgstr "Celsius"
-
-msgid "Fahrenheit"
-msgstr "Fahrenheit"
+msgid "mp/h"
+msgstr "mp/h"
