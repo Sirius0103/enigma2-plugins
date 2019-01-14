@@ -106,7 +106,7 @@ class MSNWeather2(Poll, Converter, object):
 	TEMP3 = 64
 	LOWTEMP3 = 65
 	HIGHTEMP3 = 66
-	PICOrad = 67
+	PICON3 = 67
 	SKYTEXT3 = 68
 	PRECIP3 = 69
 	DATE4 = 70
@@ -247,8 +247,8 @@ class MSNWeather2(Poll, Converter, object):
 			self.type = self.LOWTEMP3
 		elif type == "Hightemp3":
 			self.type = self.HIGHTEMP3
-		elif type == "Picorad":
-			self.type = self.PICOrad
+		elif type == "Picon3":
+			self.type = self.PICON3
 		elif type == "Skytext3":
 			self.type = self.SKYTEXT3
 		elif type == "Precip3":
@@ -307,7 +307,7 @@ class MSNWeather2(Poll, Converter, object):
 			'Date0':'', 'Shortdate0':'', 'Day0':'', 'Shortday0':'', 'Temp0':'', 'Lowtemp0':'', 'Hightemp0':'', 'Picon0':'', 'Skytext0':'', 'Precip0':'',\
 			'Date1':'', 'Shortdate1':'', 'Day1':'', 'Shortday1':'', 'Temp1':'', 'Lowtemp1':'', 'Hightemp1':'', 'Picon1':'', 'Skytext1':'', 'Precip1':'',\
 			'Date2':'', 'Shortdate2':'', 'Day2':'', 'Shortday2':'', 'Temp2':'', 'Lowtemp2':'', 'Hightemp2':'', 'Picon2':'', 'Skytext2':'', 'Precip2':'',\
-			'Date3':'', 'Shortdate3':'', 'Day3':'', 'Shortday3':'', 'Temp3':'', 'Lowtemp3':'', 'Hightemp3':'', 'Picorad':'', 'Skytext3':'', 'Precip3':'',\
+			'Date3':'', 'Shortdate3':'', 'Day3':'', 'Shortday3':'', 'Temp3':'', 'Lowtemp3':'', 'Hightemp3':'', 'Picon3':'', 'Skytext3':'', 'Precip3':'',\
 			'Date4':'', 'Shortdate4':'', 'Day4':'', 'Shortday4':'', 'Temp4':'', 'Lowtemp4':'', 'Hightemp4':'', 'Picon4':'', 'Skytext4':'', 'Precip4':'',\
 			}
 		low0weather, hi0weather, low1weather, hi1weather, low2weather, hi2weather, low3weather, hi3weather, low4weather, hi4weather = '', '', '', '', '', '', '', '', '', ''
@@ -471,7 +471,7 @@ class MSNWeather2(Poll, Converter, object):
 						hi3weather = line.split('high')[4].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Hightemp3'] = '%s%s' % (hi3weather, degreetype)
 					msnweather['Temp3'] = '%s / %s' % (hi3weather, low3weather)
-					msnweather['Picorad'] = line.split('skycodeday')[4].split('"')[1]
+					msnweather['Picon3'] = line.split('skycodeday')[4].split('"')[1]
 					msnweather['Date3'] = line.split('date')[5].split('"')[1].split('-')[2].strip() + '.' + line.split('date')[5].split('"')[1].split('-')[1].strip() + '.' + line.split('date')[5].split('"')[1].split('-')[0].strip()
 					msnweather['Shortdate3'] = line.split('shortday')[5].split('"')[1] + ' ' + line.split('date')[5].split('"')[1].split('-')[2].strip()
 					msnweather['Day3'] = line.split(' day')[5].split('"')[1]
@@ -859,8 +859,8 @@ class MSNWeather2(Poll, Converter, object):
 			info = msnweather['Lowtemp3']
 		if self.type is self.HIGHTEMP3:
 			info = msnweather['Hightemp3']
-		if self.type is self.PICOrad:
-			info = msnweather['Picorad']
+		if self.type is self.PICON3:
+			info = msnweather['Picon3']
 		if self.type is self.SKYTEXT3:
 			info = msnweather['Skytext3']
 		if self.type is self.PRECIP3:
