@@ -47,19 +47,19 @@ if getDesktop(0).size().width() >= 1920: #FHD
 	SKIN_SKINLIB = """
 		<!-- Download SkinLIB -->
 		<screen name="DownSkinLIB" position="60,55" size="1800,1000" title="Download SkinLIB">
-			<eLabel position="20,950" size="1760,3" backgroundColor="un555555" zPosition="1" />
+			<eLabel position="20,950" size="1760,3" backgroundColor=""#00555555"" zPosition="1" />
 
-			<widget name="info_conv_l" position="20,20" size="500,800" font="Regular; 25" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
-			<widget name="info_conv_r" position="540,20" size="500,800" font="Regular; 25" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
-			<widget name="info_rend" position="1060,20" size="500,800" font="Regular; 25" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+			<widget name="info_conv_l" position="20,20" size="500,800" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+			<widget name="info_conv_r" position="540,20" size="500,800" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+			<widget name="info_rend" position="1060,20" size="500,800" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget name="info_git" position="20,840" size="1760,60" font="Regular; 25" foregroundColor="un8f8f8f" backgroundColor="background" halign="left" transparent="1" />
 			<widget name="info_pl" position="20,910" size="1760,30" font="Regular; 25" foregroundColor="un8f8f8f" backgroundColor="background" halign="left" transparent="1" />
 
 			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DownSkinLIB/buttons/key_epg.png" position="1720,975" size="40,20" alphatest="on" />
-			<widget source="key_red" render="Label" position="70,960" size="280,30" font="Regular; 25" halign="left" valign="center" foregroundColor="unf4f4f4" backgroundColor="background" transparent="1" />
-			<widget source="key_green" render="Label" position="410,960" size="280,30" font="Regular; 25" halign="left" valign="center" foregroundColor="unf4f4f4" backgroundColor="background" transparent="1" />
-			<widget source="key_yellow" render="Label" position="750,960" size="280,30" font="Regular; 25" halign="left" valign="center" foregroundColor="unf4f4f4" backgroundColor="background" transparent="1" />
-			<widget source="key_blue" render="Label" position="1090,960" size="280,30" font="Regular; 25" halign="left" valign="center" foregroundColor="unf4f4f4" backgroundColor="background" transparent="1" />
+			<widget source="key_red" render="Label" position="70,960" size="280,30" font="Regular; 25" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
+			<widget source="key_green" render="Label" position="410,960" size="280,30" font="Regular; 25" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
+			<widget source="key_yellow" render="Label" position="750,960" size="280,30" font="Regular; 25" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
+			<widget source="key_blue" render="Label" position="1090,960" size="280,30" font="Regular; 25" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
 			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DownSkinLIB/buttons/key_red.png" position="20,965" size="40,20" alphatest="blend" />
 			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DownSkinLIB/buttons/key_green.png" position="360,965" size="40,20" alphatest="blend" />
 			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DownSkinLIB/buttons/key_yellow.png" position="700,965" size="40,20" alphatest="blend" />
@@ -69,19 +69,19 @@ else: #HD
 	SKIN_SKINLIB = """
 		<!-- Download SkinLIB -->
 		<screen name="DownSkinLIB" position="40,55" size="1200,650" title="Download SkinLIB">
-			<eLabel position="20,610" size="1160,3" backgroundColor="un555555" zPosition="1" />
+			<eLabel position="20,610" size="1160,3" backgroundColor=""#00555555"" zPosition="1" />
 
-			<widget name="info_conv_l" position="10,10" size="300,500" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
-			<widget name="info_conv_r" position="320,10" size="300,500" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
-			<widget name="info_rend" position="630,10" size="300,500" font="Regular; 20" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+			<widget name="info_conv_l" position="10,10" size="300,500" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+			<widget name="info_conv_r" position="320,10" size="300,500" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+			<widget name="info_rend" position="630,10" size="300,500" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget name="info_git" position="10,520" size="1180,50" font="Regular; 20" foregroundColor="un8f8f8f" backgroundColor="background" halign="left" transparent="1" />
 			<widget name="info_pl" position="10,580" size="1180,25" font="Regular; 20" foregroundColor="un8f8f8f" backgroundColor="background" halign="left" transparent="1" />
 
 			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DownSkinLIB/buttons/key_epg.png" position="1140,620" size="40,20" alphatest="on" />
-			<widget source="key_red" render="Label" position="65,615" size="230,30" font="Regular; 22" halign="left" valign="center" foregroundColor="unf4f4f4" backgroundColor="background" transparent="1" />
-			<widget source="key_green" render="Label" position="345,615" size="230,30" font="Regular; 22" halign="left" valign="center" foregroundColor="unf4f4f4" backgroundColor="background" transparent="1" />
-			<widget source="key_yellow" render="Label" position="625,615" size="230,30" font="Regular; 22" halign="left" valign="center" foregroundColor="unf4f4f4" backgroundColor="background" transparent="1" />
-			<widget source="key_blue" render="Label" position="905,616" size="230,30" font="Regular; 22" halign="left" valign="center" foregroundColor="unf4f4f4" backgroundColor="background" transparent="1" />
+			<widget source="key_red" render="Label" position="65,615" size="230,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
+			<widget source="key_green" render="Label" position="345,615" size="230,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
+			<widget source="key_yellow" render="Label" position="625,615" size="230,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
+			<widget source="key_blue" render="Label" position="905,616" size="230,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
 			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DownSkinLIB/buttons/key_red.png" position="20,620" size="40,20" alphatest="blend" />
 			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DownSkinLIB/buttons/key_green.png" position="300,620" size="40,20" alphatest="blend" />
 			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DownSkinLIB/buttons/key_yellow.png" position="580,620" size="40,20" alphatest="blend" />
@@ -190,6 +190,7 @@ class DownSkinLIB(Screen):
 			\n   MovieRating.py\
 			\n   PiconUni.py\
 			\n   RendVolumeText.py\
+			\n   RendVolumeTextP.py\
 			\n   RunningText.py\
 			\n   Watches.py\
 			"
@@ -250,6 +251,7 @@ class DownSkinLIB(Screen):
 			and "/tmp/MovieRating.py"\
 			and "/tmp/PiconUni.py"\
 			and "/tmp/RendVolumeText.py"\
+			and "/tmp/RendVolumeTextP.py"\
 			and "/tmp/RunningText.py"\
 			and "/tmp/Watches.py"):
 
@@ -292,6 +294,7 @@ class DownSkinLIB(Screen):
 			os.system("cp /tmp/MovieRating.py %sRenderer/MovieRating.py" % (componentspath))
 			os.system("cp /tmp/PiconUni.py %sRenderer/PiconUni.py" % (componentspath))
 			os.system("cp /tmp/RendVolumeText.py %sRenderer/RendVolumeText.py" % (componentspath))
+			os.system("cp /tmp/RendVolumeTextP.py %sRenderer/RendVolumeTextP.py" % (componentspath))
 			os.system("cp /tmp/RunningText.py %sRenderer/RunningText.py" % (componentspath))
 			os.system("cp /tmp/Watches.py %sRenderer/Watches.py" % (componentspath))
 	# end
@@ -304,6 +307,7 @@ class DownSkinLIB(Screen):
 	# download plugin
 			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/plugin.py","/tmp/plugin.py")
 			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/locale/ru/LC_MESSAGES/DownSkinLIB.mo","/tmp/ruDownSkinLIB.mo")
+			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/locale/de/LC_MESSAGES/DownSkinLIB.mo","/tmp/deDownSkinLIB.mo")
 	# end
 			self.install_pl()
 		except:
@@ -349,6 +353,7 @@ class DownSkinLIB(Screen):
 			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Renderer/MovieRating.py","/tmp/MovieRating.py")
 			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Renderer/PiconUni.py","/tmp/PiconUni.py")
 			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Renderer/RendVolumeText.py","/tmp/RendVolumeText.py")
+			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Renderer/RendVolumeTextP.py","/tmp/RendVolumeTextP.py")
 			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Renderer/RunningText.py","/tmp/RunningText.py")
 			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Renderer/Watches.py","/tmp/Watches.py")
 	# end
