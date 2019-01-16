@@ -47,7 +47,7 @@ if getDesktop(0).size().width() >= 1920: #FHD
 	SKIN_SKINLIB = """
 		<!-- Download SkinLIB -->
 		<screen name="DownSkinLIB" position="60,55" size="1800,1000" title="Download SkinLIB">
-			<eLabel position="20,950" size="1760,3" backgroundColor=""#00555555"" zPosition="1" />
+			<eLabel position="20,950" size="1760,3" backgroundColor="#00555555" zPosition="1" />
 
 			<widget name="info_conv_l" position="20,20" size="500,800" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget name="info_conv_r" position="540,20" size="500,800" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
@@ -69,7 +69,7 @@ else: #HD
 	SKIN_SKINLIB = """
 		<!-- Download SkinLIB -->
 		<screen name="DownSkinLIB" position="40,55" size="1200,650" title="Download SkinLIB">
-			<eLabel position="20,610" size="1160,3" backgroundColor=""#00555555"" zPosition="1" />
+			<eLabel position="20,610" size="1160,3" backgroundColor="#00555555" zPosition="1" />
 
 			<widget name="info_conv_l" position="10,10" size="300,500" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget name="info_conv_r" position="320,10" size="300,500" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
