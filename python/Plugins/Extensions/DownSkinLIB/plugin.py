@@ -52,8 +52,8 @@ if getDesktop(0).size().width() >= 1920: #FHD
 			<widget name="info_conv_l" position="20,20" size="500,800" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget name="info_conv_r" position="540,20" size="500,800" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget name="info_rend" position="1060,20" size="500,800" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-			<widget name="info_git" position="20,840" size="1760,60" font="Regular; 25" foregroundColor=""#008f8f8f"" backgroundColor="background" halign="left" transparent="1" />
-			<widget name="info_pl" position="20,910" size="1760,30" font="Regular; 25" foregroundColor=""#008f8f8f"" backgroundColor="background" halign="left" transparent="1" />
+			<widget name="info_git" position="20,840" size="1760,60" font="Regular; 25" foregroundColor=""#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
+			<widget name="info_pl" position="20,910" size="1760,30" font="Regular; 25" foregroundColor=""#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
 
 			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DownSkinLIB/buttons/key_epg.png" position="1720,975" size="40,20" alphatest="on" />
 			<widget source="key_red" render="Label" position="70,960" size="280,30" font="Regular; 25" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
@@ -74,8 +74,8 @@ else: #HD
 			<widget name="info_conv_l" position="10,10" size="300,500" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget name="info_conv_r" position="320,10" size="300,500" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget name="info_rend" position="630,10" size="300,500" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-			<widget name="info_git" position="10,520" size="1180,50" font="Regular; 20" foregroundColor=""#008f8f8f"" backgroundColor="background" halign="left" transparent="1" />
-			<widget name="info_pl" position="10,580" size="1180,25" font="Regular; 20" foregroundColor=""#008f8f8f"" backgroundColor="background" halign="left" transparent="1" />
+			<widget name="info_git" position="10,520" size="1180,50" font="Regular; 20" foregroundColor=""#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
+			<widget name="info_pl" position="10,580" size="1180,25" font="Regular; 20" foregroundColor=""#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
 
 			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DownSkinLIB/buttons/key_epg.png" position="1140,620" size="40,20" alphatest="on" />
 			<widget source="key_red" render="Label" position="65,615" size="230,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
