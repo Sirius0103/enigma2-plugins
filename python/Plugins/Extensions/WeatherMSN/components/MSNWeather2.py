@@ -545,6 +545,7 @@ class MSNWeather2(Poll, Converter, object):
 		DEC = math.asin(math.sin(OES * DEG2RAD) * math.sin(SLong * DEG2RAD)) * RAD2DEG # склонение солнца
 		ALFA = (7.7 * math.sin((LS + 78) * DEG2RAD) - 9.5 * math.sin(2 * LS * DEG2RAD)) / 60
 		BETA = math.acos((-0.014485 - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG
+
 		SSS = ALFA + zone + (195 - long) / 15
 # Время восхода/захода
 		SCh = int(SSS)
