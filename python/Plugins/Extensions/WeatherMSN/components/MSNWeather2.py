@@ -2,8 +2,11 @@
 #
 # Converter - MSNWeather
 # Developer - Sirius
-# Version 1.0
+# Version 1.1
 # Homepage - http://www.gisclub.tv
+#
+# Jean Meeus - Astronomical Algorithms
+# David Vallado - Fundamentals of Astrodynamics and Applications
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -41,7 +44,7 @@ weather_location = config.osd.language.value.replace('_', '-') # 'ru-RU'
 if weather_location == 'en-EN':
 	weather_location = 'en-US'
 
-time_update = 20
+time_update = 30
 time_update_ms = 3000
 
 class MSNWeather2(Poll, Converter, object):
@@ -59,16 +62,19 @@ class MSNWeather2(Poll, Converter, object):
 	SUNRISE = 11
 	SUNSET = 12
 	SOLSTICE = 13
-	MOONPHASE = 14
-	MOONLIGHT = 15
-	MOONPICON = 16
-	TEMP = 17
-	PICON = 18
-	SKYTEXT = 19
-	FEELSLIKE = 20
-	HUMIDITY = 21
-	WIND = 22
-	WINDSPEED = 23
+	MOONRISE = 14
+	MOONSET = 15
+	MOONDIST = 16
+	MOONPHASE = 17
+	MOONLIGHT = 18
+	MOONPICON = 19
+	TEMP = 20
+	PICON = 21
+	SKYTEXT = 22
+	FEELSLIKE = 23
+	HUMIDITY = 24
+	WIND = 25
+	WINDSPEED = 26
 	DATE0 = 30
 	SHORTDATE0 = 31
 	DAY0 = 32
@@ -149,6 +155,12 @@ class MSNWeather2(Poll, Converter, object):
 			self.type = self.SUNSET
 		elif type == "Solstice":
 			self.type = self.SOLSTICE
+		elif type == "Moonrise":
+			self.type = self.MOONRISE
+		elif type == "Moonset":
+			self.type = self.MOONSET
+		elif type == "Moondist":
+			self.type = self.MOONDIST
 		elif type == "Moonphase":
 			self.type = self.MOONPHASE
 		elif type == "Moonlight":
@@ -169,7 +181,7 @@ class MSNWeather2(Poll, Converter, object):
 			self.type = self.WIND
 		elif type == "Windspeed":
 			self.type = self.WINDSPEED
-#	today	#
+# День 0
 		elif type == "Date0":
 			self.type = self.DATE0
 		elif type == "Shortdate0":
@@ -190,7 +202,7 @@ class MSNWeather2(Poll, Converter, object):
 			self.type = self.SKYTEXT0
 		elif type == "Precip0":
 			self.type = self.PRECIP0
-#	day 1	#
+# День 1
 		elif type == "Date1":
 			self.type = self.DATE1
 		elif type == "Shortdate1":
@@ -211,7 +223,7 @@ class MSNWeather2(Poll, Converter, object):
 			self.type = self.SKYTEXT1
 		elif type == "Precip1":
 			self.type = self.PRECIP1
-#	day 2	#
+# День 2
 		elif type == "Date2":
 			self.type = self.DATE2
 		elif type == "Shortdate2":
@@ -232,7 +244,7 @@ class MSNWeather2(Poll, Converter, object):
 			self.type = self.SKYTEXT2
 		elif type == "Precip2":
 			self.type = self.PRECIP2
-#	day 3	#
+# День 3
 		elif type == "Date3":
 			self.type = self.DATE3
 		elif type == "Shortdate3":
@@ -253,7 +265,7 @@ class MSNWeather2(Poll, Converter, object):
 			self.type = self.SKYTEXT3
 		elif type == "Precip3":
 			self.type = self.PRECIP3
-#	day 4	#
+# День 4
 		elif type == "Date4":
 			self.type = self.DATE4
 		elif type == "Shortdate4":
@@ -300,9 +312,8 @@ class MSNWeather2(Poll, Converter, object):
 		min = float(strftime('%M'))
 		sec = float(strftime('%S'))
 		info, weze = 'n/a', ''
-		msnweather = {'Vfd':'', 'Date':'', 'Shortdate':'', 'Day':'', 'Shortday':'',\
-			'Location':'', 'Timezone':'', 'Latitude':'', 'Longitude':'',\
-			'Julianday':'', 'Sunrise':'', 'Sunset':'', 'Solstice':'', 'Moonphase':'', 'Moonlight':'', 'PiconMoon':'99',\
+		msnweather = {'Vfd':'', 'Date':'', 'Shortdate':'', 'Day':'', 'Shortday':'','Location':'', 'Timezone':'', 'Latitude':'', 'Longitude':'',\
+			'Julianday':'', 'Sunrise':'', 'Sunset':'', 'Solstice':'', 'Moonrise':'', 'Moonset':'', 'Moondist':'', 'Moonphase':'', 'Moonlight':'', 'PiconMoon':'99',\
 			'Temp':'', 'Picon':'', 'Skytext':'', 'Feelslike':'', 'Humidity':'', 'Wind':'', 'Windspeed':'',\
 			'Date0':'', 'Shortdate0':'', 'Day0':'', 'Shortday0':'', 'Temp0':'', 'Lowtemp0':'', 'Hightemp0':'', 'Picon0':'', 'Skytext0':'', 'Precip0':'',\
 			'Date1':'', 'Shortdate1':'', 'Day1':'', 'Shortday1':'', 'Temp1':'', 'Lowtemp1':'', 'Hightemp1':'', 'Picon1':'', 'Skytext1':'', 'Precip1':'',\
@@ -351,35 +362,35 @@ class MSNWeather2(Poll, Converter, object):
 						msnweather['Wind'] = line.split('winddisplay')[1].split('"')[1].split(' ')[2]
 					except:
 						pass
-			# m/s
+# m/s
 					if windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
 						msnweather['Windspeed'] = '%s m/s' % line.split('windspeed')[1].split('"')[1].split(' ')[0]
 					elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'km/h':
 						msnweather['Windspeed'] = '%.01f m/s' % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.28)
 					elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
 						msnweather['Windspeed'] = '%.01f m/s' % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.45)
-			# ft/s
+# ft/s
 					elif windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
 						msnweather['Windspeed']= '%.01f ft/s' % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 3.28)
 					elif windtype == 'fts' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'km/h':
 						msnweather['Windspeed']= '%.01f ft/s' % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.91)
 					elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
 						msnweather['Windspeed'] = '%.01f ft/s' % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.47)
-			# mp/h
+# mp/h
 					elif windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
 						msnweather['Windspeed'] = '%.01f mp/h' % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 2.24)
 					elif windtype == 'mph' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'km/h':
 						msnweather['Windspeed'] = '%.01f mp/h' % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.62)
 					elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
 						msnweather['Windspeed'] = '%s mp/h' % line.split('windspeed')[1].split('"')[1].split(' ')[0]
-			# knots
+# knots
 					elif windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
 						msnweather['Windspeed'] = '%.01f knots' % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.94)
 					elif windtype == 'knots' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'km/h':
 						msnweather['Windspeed'] = '%.01f knots' % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.54)
 					elif windtype == 'ms' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'mph':
 						msnweather['Windspeed'] = '%.01f knots' % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 0.87)
-			# km/h
+# km/h
 					elif windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'm/s':
 						msnweather['Windspeed'] = '%.01f km/h' % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 3.6)
 					elif windtype == 'kmh' and line.split('windspeed')[1].split('"')[1].split(' ')[1] == 'km/h':
@@ -390,7 +401,7 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Shortdate'] = line.split('shortday')[1].split('"')[1] + ' ' + line.split('date')[1].split('"')[1].split('-')[2].strip()
 					msnweather['Day'] = line.split(' day')[1].split('"')[1]
 					msnweather['Shortday'] = line.split('shortday')[1].split('"')[1]
-#	today	#
+# День 0
 				if "<forecast" in line:
 					if not line.split('low')[1].split('"')[1][0] is '-' and not line.split('low')[1].split('"')[1][0] is '0':
 						low0weather = '+' + line.split('low')[1].split('"')[1] + '%s' % unichr(176).encode("latin-1")
@@ -412,7 +423,7 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Shortday0'] = line.split('shortday')[2].split('"')[1]
 					msnweather['Skytext0'] = line.split('skytextday')[1].split('"')[1]
 					msnweather['Precip0'] = line.split('precip')[1].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
-#	day 1	#
+# День 1
 				if "<forecast" in line:
 					if not line.split('low')[2].split('"')[1][0] is '-' and not line.split('low')[2].split('"')[1][0] is '0':
 						low1weather = '+' + line.split('low')[2].split('"')[1] + '%s' % unichr(176).encode("latin-1")
@@ -434,7 +445,7 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Shortday1'] = line.split('shortday')[3].split('"')[1]
 					msnweather['Skytext1'] = line.split('skytextday')[2].split('"')[1]
 					msnweather['Precip1'] = line.split('precip')[2].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
-#	day 2	#
+# День 2
 				if "<forecast" in line:
 					if not line.split('low')[3].split('"')[1][0] is '-' and not line.split('low')[3].split('"')[1][0] is '0':
 						low2weather = '+' + line.split('low')[3].split('"')[1] + '%s' % unichr(176).encode("latin-1")
@@ -456,7 +467,7 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Shortday2'] = line.split('shortday')[4].split('"')[1]
 					msnweather['Skytext2'] = line.split('skytextday')[3].split('"')[1]
 					msnweather['Precip2'] = line.split('precip')[3].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
-#	day 3	#
+# День 3
 				if "<forecast" in line:
 					if not line.split('low')[4].split('"')[1][0] is '-' and not line.split('low')[4].split('"')[1][0] is '0':
 						low3weather = '+' + line.split('low')[4].split('"')[1] + '%s' % unichr(176).encode("latin-1")
@@ -478,7 +489,7 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Shortday3'] = line.split('shortday')[5].split('"')[1]
 					msnweather['Skytext3'] = line.split('skytextday')[4].split('"')[1]
 					msnweather['Precip3'] = line.split('precip')[4].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
-#	day 4	#
+# День 4
 				if "<forecast" in line:
 					if not line.split('low')[5].split('"')[1][0] is '-' and not line.split('low')[5].split('"')[1][0] is '0':
 						low4weather = '+' + line.split('low')[5].split('"')[1] + '%s' % unichr(176).encode("latin-1")
@@ -503,57 +514,52 @@ class MSNWeather2(Poll, Converter, object):
 			except:
 				pass
 #
-		pi = 3.1415926535
-		rad = pi / 180
+		PI = 3.14159265359
+		DEG2RAD = PI / 180
+		RAD2DEG = 180 / PI
 		try:
 			long = float(longitude)
 			lat = float(latitude)
 			zone = float(timezone)
 		except:
 			long = lat = zone = 0
-#	julian day
-		A = (14 - month)/12
+		UT = hour - zone + min / 60 + sec / 3600 - 13
+# Юлианская дата
+		A = (14 - month) / 12
 		M = month + 12 * A - 3
 		Y = year + 4800 - A
-		jday = day + int((153 * M + 2) / 5) + int(365 * Y) + int(Y / 4) - int(Y / 100) + int(Y / 400) - 32045.6 + hour / 24 + min / 1440 + sec / 86400
-		msnweather['Julianday'] = '%s' % jday
-#	sun
-		if month <= 2:
-			M = month + 12
-			Y = year - 1
+		JDN = day + int((153 * M + 2) / 5) + int(365 * Y) + int(Y / 4) - int(Y / 100) + int(Y / 400) - 32045
+		JD = JDN + UT / 24
+# Орбита Земли
+		T = (JD - 2451545) / 36525
+		LS = 280.46646 + 36000.76983 * T + 0.0003032 * T * T # ср долгота солнца
+		MS = 357.52911 + 35999.05029 * T - 0.0001537 * T * T # ср аномалия солнца
+		CS = (1.914602 - 0.004817 * T - 0.000014 * T * T) * math.sin(MS * DEG2RAD) + (0.019993 - 0.000101 * T) * math.sin(2 * MS * DEG2RAD) + 0.000289 * math.sin(3 * MS * DEG2RAD) # уравнение центра солнца
+
+		LAMBDA = 125.04 - 1934.136 * T
+		if LAMBDA < 0:
+			LAMBDA = LAMBDA + 360
+
+		SLong = LS + CS - 0.00569 - 0.00478 * math.sin(LAMBDA * DEG2RAD) # истинная долгота солнца
+		OES = 23.439291 - 0.0130042 * T # наклон эклиптики земли
+		DEC = math.asin(math.sin(OES * DEG2RAD) * math.sin(SLong * DEG2RAD)) * RAD2DEG # склонение солнца
+		ALFA = (7.7 * math.sin((LS + 78) * DEG2RAD) - 9.5 * math.sin(2 * LS * DEG2RAD)) / 60
+		BETA = math.acos((-0.014485 - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG
+		SSS = ALFA + zone + (195 - long) / 15
+# Время восхода/захода
+		SCh = int(SSS)
+		SCm = int(round((SSS - SCh) * 60))
+		SRh = int(SSS - BETA / 15)
+		SRm = int(round(((SSS - BETA / 15) - SRh) * 60))
+		SSh = int(SSS + BETA / 15)
+		SSm = int(round(((SSS + BETA / 15) - SSh) * 60))
+		if SCm == 60:
+			SCm = 0
+			SCh = SCh + 1
+		if SCm < 10:
+			SC = '0'
 		else:
-			M = month
-			Y = year
-		L1 = int(year / 100)
-		L2 = int(365.25 * (Y + 4716)) + int(30.6001 * (M + 1)) + day + (2 - L1 + int(L1 / 4)) - 1524.5
-		T = (L2 - 2451545) / 36525
-		K1 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T
-		K2 = 357.52911 + 35999.05029 * T - 0.0001537 * T * T
-		N1 = K2 / 360
-		O1 = (N1 - int(N1)) * 360
-		K3 = (1.914602 - 0.004817 * T - 1.4e-05 * T * T) * math.sin(O1 * rad)
-		K4 = (0.019993 - 0.000101 * T) * math.sin(2 * O1 * rad)
-		K5 = 0.000289 * math.sin(3 * O1 * rad)
-		N2 = K1 / 360
-		O2 = (N2 - int(N2)) * 360
-		N3 = 125.04 - 1934.136 * T
-		if N3 < 0:
-			N4 = N3 + 360
-		else:
-			N4 = N3
-		N5 = O2 + K3 + K4 + K5 - 0.00569 - 0.00478 * math.sin(N4 * rad)
-		K6 = 23.43930278 - 0.0130042 * T - 1.63e-07 * T * T
-		N6 = math.sin(K6 * rad) * math.sin(N5 * rad)
-		N7 = math.asin(N6) * 180 / pi
-		K7 = (7.7 * math.sin((O2 + 78) * rad) - 9.5 * math.sin(2 * O2 * rad)) / 60
-		O3 = math.cos(N7 * rad) * math.cos(lat * rad)
-		N8 = -0.01483 - math.sin(N7 * rad) * math.sin(lat * rad)
-		SRh = int((13 - long / 15 + K7 - (2 * (math.acos(N8 / O3) * 57.29577951) / 15) / 2) + zone)
-		SRm = int(round(((13 - long / 15 + K7 - (2 * (math.acos(N8 / O3) * 57.29577951) / 15) / 2) + zone - SRh) * 60))
-		SSh = int((13 - long / 15 + K7 + (2 * (math.acos(N8 / O3) * 57.29577951) / 15) / 2) + zone)
-		SSm = int(round(((13 - long / 15 + K7 + (2 * (math.acos(N8 / O3) * 57.29577951) / 15) / 2) + zone - SSh) * 60))
-		Sh = int((13 - long / 15 + K7) + zone)
-		Sm = int(round(((13 - long / 15 + K7) + zone - Sh) * 60))
+			SC = ''
 		if SRm == 60:
 			SRm = 0
 			SRh = SRh + 1
@@ -568,39 +574,86 @@ class MSNWeather2(Poll, Converter, object):
 			SS = '0'
 		else:
 			SS = ''
-		if Sm == 60:
-			Sm = 0
-			Sh = Sh + 1
-		if Sm < 10:
-			S = '0'
-		else:
-			S = ''
 		try:
+			msnweather['Julianday'] = '%s' % JD
 			msnweather['Sunrise'] = '%s%s%s%s' % (SRh, unichr(58).encode("latin-1"), SR, SRm)
 			msnweather['Sunset'] = '%s%s%s%s' % (SSh, unichr(58).encode("latin-1"), SS, SSm)
-			msnweather['Solstice'] = '%s%s%s%s' % (Sh, unichr(58).encode("latin-1"), S, Sm)
+			msnweather['Solstice'] = '%s%s%s%s' % (SCh, unichr(58).encode("latin-1"), SC, SCm)
 		except:
-			msnweather['Sunrise'] = msnweather['Sunset'] = msnweather['Solstice'] = 'n/a'
-#	moon
-		T = (jday - 2451545) / 36525
-		K1 = 297.8502042 + 445267.1115168 * T - 0.00163 * T * T + T * T * T / 545868 - T * T * T * T / 113065000
-		K2 = 357.5291092 + 35999.0502909 * T - 0.0001536 * T * T + T * T * T / 24490000
-		K3 = 134.9634114 + 477198.8676313 * T - 0.008997 * T * T + T * T * T / 69699 - T * T * T * T / 14712000
-		K4 = 180 - K1 - 6.289 * math.sin(rad * K3) + 2.1 * math.sin(rad * K2) - 1.274 * math.sin(rad * (2 * K1 - K3)) - 0.658 * math.sin(rad * (2 * K1)) - 0.214 * math.sin(rad * (2 * K3)) - 0.11 * math.sin(rad * K1)
-		pha1 = (1 + math.cos(rad * K4)) / 2
-		T = (jday + 0.5 / 24 - 2451545) / 36525
-		K1 = 297.8502042 + 445267.1115168 * T - 0.00163 * T * T + T * T * T / 545868 - T * T * T * T / 113065000
-		K2 = 357.5291092 + 35999.0502909 * T - 0.0001536 * T * T + T * T * T / 24490000
-		K3 = 134.9634114 + 477198.8676313 * T - 0.008997 * T * T + T * T * T / 69699 - T * T * T * T / 14712000
-		K4 = 180 - K1 - 6.289 * math.sin(rad * K3) + 2.1 * math.sin(rad * K2) - 1.274 * math.sin(rad * (2 * K1 - K3)) - 0.658 * math.sin(rad * (2 * K1)) - 0.214 * math.sin(rad * (2 * K3)) - 0.11 * math.sin(rad * K1)
-		pha2 = (1 + math.cos(rad * K4)) / 2
+			msnweather['Julianday'] = msnweather['Sunrise'] = msnweather['Sunset'] = msnweather['Solstice'] = 'n/a'
+# Орбита Луны
+		T = (JD - 2451545) / 36525
+		LM = 218.3164477 + 481267.88123421 * T - 0.0015786 * T * T + T * T * T / 538841 - T * T * T * T / 65194000 # ср долгота луны
+		FM = 93.272095 + 483202.0175233 * T - 0.0036539 * T * T - T * T * T / 3526000 + T * T * T * T / 863310000 # ср растояние луны
+		DM = 297.8501921 + 445267.1114034 * T - 0.0018819 * T * T + T * T * T / 545868 - T * T * T * T / 113065000 # ср удлинение луны
+		MS = 357.5291092 + 35999.0502909 * T - 0.0001536 * T * T + T * T * T / 24490000 # ср солнечная аномалия
+		MM = 134.9633964 + 477198.8675055 * T + 0.0087414 * T * T + T * T * T / 69699 - T * T * T * T / 14712000 # ср лунная аномалия
+		IM = 180 - DM - 6.289 * math.sin(MM * DEG2RAD) + 2.100 * math.sin(MS * DEG2RAD) - 1.274 * math.sin((2 * DM - MM) * DEG2RAD) - 0.658 * math.sin(2 * DM * DEG2RAD) - 0.214 * math.sin(2 * MM * DEG2RAD) - 0.114 * math.sin(DM * DEG2RAD)
+		pha1 = (1 + math.cos(IM * DEG2RAD)) / 2
+
+		ER = 1 + 0.0545 * math.cos(MM * DEG2RAD) + 0.0100 * math.cos((2 * DM - MM) * DEG2RAD) + 0.0082 * math.cos(2 * DM * DEG2RAD) + 0.0030 * math.cos(2 * MM * DEG2RAD) + 0.0009 * math.cos((2 * DM + MM) * DEG2RAD) + 0.0006 * math.cos((2 * DM - MS) * DEG2RAD) + 0.0004 * math.cos((2 * DM - MS - MM) * DEG2RAD) - 0.0003 * math.cos((MS - MM) * DEG2RAD)
+		EL = 6.289 * math.sin(MM * DEG2RAD) + 1.274 * math.sin((2 * DM - MM) * DEG2RAD) + 0.658 * math.sin(2 * DM * DEG2RAD) + 0.214 * math.sin(2 * MM * DEG2RAD) - 0.186 * math.sin(MS * DEG2RAD) - 0.114 * math.sin(2 * FM * DEG2RAD) + 0.059 * math.sin((2 * DM - 2 * MM) * DEG2RAD) + 0.057 * math.sin((2 * DM - MS - MM) * DEG2RAD) + 0.053 * math.sin((2 * DM + MM) * DEG2RAD) + 0.046 * math.sin((2 * DM - MS) * DEG2RAD) - 0.041 * math.sin((MS - MM) * DEG2RAD) - 0.035 * math.sin(DM * DEG2RAD) - 0.030 * math.sin((MS + MM) * DEG2RAD)
+		EB = 5.128 * math.sin(FM * DEG2RAD) + 0.281 * math.sin((MM + FM) * DEG2RAD) + 0.278 * math.sin((MM - FM) * DEG2RAD) + 0.173 * math.sin((2 * DM - FM) * DEG2RAD) + 0.055 * math.sin((2 * DM - MM + FM) * DEG2RAD) + 0.046 * math.sin((2 * DM - MM - FM) * DEG2RAD) + 0.033 * math.sin((2 * DM + FM) * DEG2RAD) + 0.017 * math.sin((2 * MM + FM) * DEG2RAD) + 0.009 * math.sin((2 * DM + MM - FM) * DEG2RAD) + 0.009 * math.sin((2 * MM - FM) * DEG2RAD)
+
+		T = (JD + 0.5 / 24 - 2451545) / 36525
+		DM = 297.8501921 + 445267.1114034 * T - 0.0018819 * T * T + T * T * T / 545868 - T * T * T * T / 113065000 # ср удлинение луны
+		MS = 357.5291092 + 35999.0502909 * T - 0.0001536 * T * T + T * T * T / 24490000 # ср солнечная аномалия
+		MM = 134.9633964 + 477198.8675055 * T + 0.0087414 * T * T + T * T * T / 69699 - T * T * T * T / 14712000 # ср лунная аномалия
+		IM = 180 - DM - 6.289 * math.sin(MM * DEG2RAD) + 2.100 * math.sin(MS * DEG2RAD) - 1.274 * math.sin((2 * DM - MM) * DEG2RAD) - 0.658 * math.sin(2 * DM * DEG2RAD) - 0.214 * math.sin(2 * MM * DEG2RAD) - 0.114 * math.sin(DM * DEG2RAD)
+		pha2 = (1 + math.cos(IM * DEG2RAD)) / 2
+
 		if pha2 - pha1 < 0:
 			trend = -1
 		else:
 			trend = 1
+
+		LAMBDA = 125.04452 - 1934.13261 * T + 0.00220708 * T * T
+		if LAMBDA < 0:
+			LAMBDA = LAMBDA + 360
+
+		EPS1 = 23.439291 - 0.0130042 * T - 0.000000164 * T * T + 0.000000504 * T * T * T
+		EPS2 = 0.002555 * math.cos(LAMBDA) + 0.000158 * math.cos(2 * LS) + 0.000028 * math.cos(2 * LM) - 0.000025 * math.cos(2 * LAMBDA)
+		OEM = EPS1 + EPS2 # наклон эклиптики луны
+		Mdist = int(384404 / ER) # расстояние до луны км
+		MLat = EB # - широта луны
+		MLong = LM + EL # - долгота луны
+		RA = math.atan2((math.sin(MLong * DEG2RAD) * math.cos(OEM * DEG2RAD) - math.tan(MLat * DEG2RAD) * math.sin(OEM * DEG2RAD)) , math.cos(MLong * DEG2RAD)) * RAD2DEG # прямое восхождение луны
+		DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(OEM * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(OEM * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # склонение луны
+		BETA = math.acos((0.002094 - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG
+
+		SMR = RA - BETA + 180 + long
+		if SMR < 0:
+			SMR = SMR + 360
+		elif SMR >= 360:
+			SMR = SMR - 360
+		SMS = RA + BETA + 180 + long
+		if SMS < 0:
+			SMS = SMS + 360
+		elif SMS >= 360:
+			SMS = SMS - 360
+# Время восхода/захода
+		MRh = int(SMR / 15)
+		MRm = int(round(((SMR / 15) - MRh) * 60))
+		MSh = int(SMS / 15)
+		MSm = int(round(((SMS / 15) - MSh) * 60))
+		if MRm == 60:
+			MRm = 0
+			MRh = MRh + 1
+		if MRm < 10:
+			MR = '0'
+		else:
+			MR = ''
+		if MSm == 60:
+			MSm = 0
+			MSh = MSh + 1
+		if MSm < 10:
+			MS = '0'
+		else:
+			MS = ''
+# Фазы Луны
 		light = 100 * pha1
 		light = round(light, 1)
-		if light > 0 and light < 5:
+		if light >= 0 and light < 5:
 			pic = '5'
 			phase = _('New moon')
 			if trend == -1:
@@ -714,22 +767,22 @@ class MSNWeather2(Poll, Converter, object):
 			if trend == -1:
 				pic = '095'
 				phase = _('Waning gibbous')
-		elif light > 95 and light < 100:
+		elif light > 95 and light <= 100:
 			pic = '100'
 			phase = _('Full moon')
 			if trend == -1:
 				pic = '100'
 				phase = _('Full moon')
-		else:
-			msnweather['Moonphase'] = 'n/a'
-			msnweather['PiconMoon'] = '99'
 		try:
+			msnweather['Moondist'] = '%s km' % Mdist
+			msnweather['Moonrise'] = '%s%s%s%s' % (MRh, unichr(58).encode("latin-1"), MR, MRm)
+			msnweather['Moonset'] = '%s%s%s%s' % (MSh, unichr(58).encode("latin-1"), MS, MSm)
 			msnweather['Moonphase'] = '%s' % phase
 			msnweather['Moonlight'] = '%s %s' % (light, unichr(37).encode("latin-1"))
 			msnweather['PiconMoon'] = '%s' % pic
 		except:
-			msnweather['Moonphase'] = msnweather['Moonlight'] = 'n/a'
-			msnweather['PiconMoon'] = '99'
+			msnweather['Moondist'] = msnweather['Moonrise'] = msnweather['Moonset'] = msnweather['Moonphase'] = msnweather['Moonlight'] = 'n/a'
+			msnweather['PiconMoon'] = '1'
 #
 		if self.type is self.VFD:
 			try:
@@ -761,6 +814,12 @@ class MSNWeather2(Poll, Converter, object):
 			info = msnweather['Sunset']
 		if self.type is self.SOLSTICE:
 			info = msnweather['Solstice']
+		if self.type is self.MOONRISE:
+			info = msnweather['Moonrise']
+		if self.type is self.MOONSET:
+			info = msnweather['Moonset']
+		if self.type is self.MOONDIST:
+			info = msnweather['Moondist']
 		if self.type is self.MOONPHASE:
 			info = msnweather['Moonphase']
 		if self.type is self.MOONLIGHT:
@@ -781,7 +840,7 @@ class MSNWeather2(Poll, Converter, object):
 			info = msnweather['Wind']
 		if self.type is self.WINDSPEED:
 			info = msnweather['Windspeed']
-#	today	#
+# День 0
 		if self.type is self.DATE0:
 			info = msnweather['Date0']
 		if self.type is self.SHORTDATE0:
@@ -802,7 +861,7 @@ class MSNWeather2(Poll, Converter, object):
 			info = msnweather['Skytext0']
 		if self.type is self.PRECIP0:
 			info = msnweather['Precip0']
-#	day 1	#
+# День 1
 		if self.type is self.DATE1:
 			info = msnweather['Date1']
 		if self.type is self.SHORTDATE1:
@@ -823,7 +882,7 @@ class MSNWeather2(Poll, Converter, object):
 			info = msnweather['Skytext1']
 		if self.type is self.PRECIP1:
 			info = msnweather['Precip1']
-#	day 2	#
+# День 2
 		if self.type is self.DATE2:
 			info = msnweather['Date2']
 		if self.type is self.SHORTDATE2:
@@ -844,7 +903,7 @@ class MSNWeather2(Poll, Converter, object):
 			info = msnweather['Skytext2']
 		if self.type is self.PRECIP2:
 			info = msnweather['Precip2']
-#	day 3	#
+# День 3
 		if self.type is self.DATE3:
 			info = msnweather['Date3']
 		if self.type is self.SHORTDATE3:
@@ -865,7 +924,7 @@ class MSNWeather2(Poll, Converter, object):
 			info = msnweather['Skytext3']
 		if self.type is self.PRECIP3:
 			info = msnweather['Precip3']
-#	day 4	#
+# День 4
 		if self.type is self.DATE4:
 			info = msnweather['Date4']
 		if self.type is self.SHORTDATE4:
