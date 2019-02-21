@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WeatherMSN\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-07-29 01:13+0100\n"
-"PO-Revision-Date: 2019-01-14 14:44+0100\n"
+"PO-Revision-Date: 2019-01-18 18:16+0100\n"
 "Last-Translator: Sirius <sirius.altech@gmail.com>\n"
 "Language-Team: sirius.al@rambler.ru\n"
 "MIME-Version: 1.0\n"
@@ -44,7 +44,7 @@ msgid "Chance precip:"
 msgstr "Niederschlagswahrscheinlichkeit:"
 
 msgid "Config Weather MSN"
-msgstr "Config Wetter MSN"
+msgstr "Wetter MSN Einstellungen"
 
 msgid "Configuration is saved"
 msgstr "Konfiguration wird gespeichert"
@@ -77,10 +77,10 @@ msgid "Last quarter"
 msgstr "Letztes Quartal"
 
 msgid "Latitude:"
-msgstr "Breite:"
+msgstr "Breitengrad:"
 
 msgid "Location:"
-msgstr "Ort:"
+msgstr "Standort:"
 
 msgid "Longitude:"
 msgstr "Längengrad:"
@@ -92,13 +92,13 @@ msgid "New moon"
 msgstr "Neumond"
 
 msgid "Observation point:"
-msgstr "Aussichtspunkt:"
+msgstr "Beobachtungspunkt:"
 
 msgid "Scale of temperature:"
 msgstr "Temperaturskala:"
 
 msgid "Scale of wind speed:"
-msgstr "Skala von Windgeschwindigkeit:"
+msgstr "Windgeschwindigkeitskala:"
 
 msgid "Search Location"
 msgstr "Standort Suchen"

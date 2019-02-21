@@ -39,8 +39,8 @@ from urllib2 import Request, urlopen, URLError, HTTPError
 from twisted.web.client import downloadPage
 from time import localtime, strftime
 from enigma import eTimer, ePoint
-from os import system, environ
 from enigma import getDesktop
+from os import system, environ
 from datetime import date
 import os, math, gettext
 import datetime, time
@@ -393,7 +393,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self["moondisttxt"] = StaticText(_("Moon distance:"))
 		self["moonrisetxt"] = StaticText(_("Moonrise:"))
 		self["moonsettxt"] = StaticText(_("Moonset:"))
-		self["moonlighttxt"] = StaticText(_("Moon light:"))
+		self["moonlighttxt"] = StaticText(_("Moonlight:"))
 
 		self["yulianday"] = StaticText()
 		self["sunrise"] = StaticText()
@@ -904,7 +904,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 				pic = '100'
 				phase = _('Full moon')
 		try:
-			self.moondist['Moondist'] = '%s km' % Mdist
+			self.moondist['Moondist'] = _('%s km') % Mdist
 			self.moonrise['Moonrise'] = '%s%s%s%s' % (MRh, unichr(58).encode("latin-1"), MR, MRm)
 			self.moonset['Moonset'] = '%s%s%s%s' % (MSh, unichr(58).encode("latin-1"), MS, MSm)
 			self.moonphase['Moonphase'] = '%s' % phase
@@ -1208,19 +1208,34 @@ class WeatherMSN(ConfigListScreen, Screen):
 		os.system("rm -f /tmp/weathermsn2.xml")
 		self.close()
 
-SKIN_CONF = """
-	<!-- Config WeatherMSN -->
-	<screen name="ConfigWeatherMSN" position="center,160" size="750,370" title=' '>
-		<eLabel position="20,325" size="710,3" backgroundColor="#00555555" zPosition="1" />
-		<widget name="config" position="15,10" size="720,300" scrollbarMode="showOnDemand" transparent="1" />
-		<widget source="key_red" render="Label" position="80,330" size="165,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
-		<widget source="key_green" render="Label" position="310,330" size="165,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
-		<widget source="key_blue" render="Label" position="540,330" size="165,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
-		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_red.png" position="30,335" size="40,20" alphatest="blend" />
-		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_green.png" position="260,335" size="40,20" alphatest="blend" />
-		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_blue.png" position="490,335" size="40,20" alphatest="blend" />
-		<widget name="HelpWindow" position="285,300" zPosition="1" size="1,1" backgroundColor="background" transparent="1" alphatest="blend" />
-	</screen>"""
+if getDesktop(0).size().width() >= 1920: #FHD
+	SKIN_CONF = """
+		<!-- Config WeatherMSN -->
+		<screen name="ConfigWeatherMSN" position="center,260" size="950,570" title=' '>
+			<eLabel position="20,525" size="910,3" backgroundColor="#00555555" zPosition="1" />
+			<widget name="config" position="20,20" size="910,500" scrollbarMode="showOnDemand" transparent="1" />
+			<widget source="key_red" render="Label" position="80,535" size="220,30" font="Regular; 25" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
+			<widget source="key_green" render="Label" position="380,535" size="220,30" font="Regular; 25" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
+			<widget source="key_blue" render="Label" position="680,532" size="250,30" font="Regular; 25" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
+			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_red.png" position="30,535" size="40,20" alphatest="blend" />
+			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_green.png" position="320,535" size="40,20" alphatest="blend" />
+			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_blue.png" position="620,535" size="40,20" alphatest="blend" />
+			<widget name="HelpWindow" position="25,300" zPosition="1" size="1,1" backgroundColor="background" transparent="1" alphatest="blend" />
+		</screen>"""
+else: #HD
+	SKIN_CONF = """
+		<!-- Config WeatherMSN -->
+		<screen name="ConfigWeatherMSN" position="center,160" size="750,370" title=' '>
+			<eLabel position="20,325" size="710,3" backgroundColor="#00555555" zPosition="1" />
+			<widget name="config" position="15,10" size="720,300" scrollbarMode="showOnDemand" transparent="1" />
+			<widget source="key_red" render="Label" position="80,330" size="165,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
+			<widget source="key_green" render="Label" position="310,330" size="165,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
+			<widget source="key_blue" render="Label" position="540,330" size="165,30" font="Regular; 22" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
+			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_red.png" position="30,335" size="40,20" alphatest="blend" />
+			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_green.png" position="260,335" size="40,20" alphatest="blend" />
+			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/buttons/key_blue.png" position="490,335" size="40,20" alphatest="blend" />
+			<widget name="HelpWindow" position="25,300" zPosition="1" size="1,1" backgroundColor="background" transparent="1" alphatest="blend" />
+		</screen>"""
 
 class ConfigWeatherMSN(ConfigListScreen, Screen):
 	def __init__(self, session):
@@ -1262,7 +1277,6 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		if name is not None:
 			self.session.open(SearchLocationMSN, name)
 
-		
 	def createSetup(self):
 		self.list = []
 		self.list.append(getConfigListEntry(_("Show Weather MSN in menu information:"), config.plugins.weathermsn.menu))
@@ -1295,14 +1309,21 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 			x[1].save()
 		configfile.save()
 		self.createConvertor()
-		self.mbox = self.session.open(MessageBox,(_("Configuration is saved")), MessageBox.TYPE_INFO, timeout = 3 )
+		self.mbox = self.session.open(MessageBox,(_("Configuration is saved")), MessageBox.TYPE_INFO, timeout = 3)
 		self.close()
 
-SKIN_LOC = """
-	<!-- Search LocationMSN -->
-	<screen name="SearchLocationMSN" position="center,160" size="750,370" title=" ">
-	<widget name="menu" position="15,10" size="720,300" scrollbarMode="showOnDemand" transparent="1" />
-	</screen>"""
+if getDesktop(0).size().width() >= 1920: #FHD
+	SKIN_LOC = """
+		<!-- Search LocationMSN -->
+		<screen name="SearchLocationMSN" position="center,260" size="950,570" title=" ">
+			<widget name="menu" position="20,20" size="910,500" scrollbarMode="showOnDemand" transparent="1" />
+		</screen>"""
+else: #HD
+	SKIN_LOC = """
+		<!-- Search LocationMSN -->
+		<screen name="SearchLocationMSN" position="center,160" size="750,370" title=" ">
+			<widget name="menu" position="15,10" size="720,300" scrollbarMode="showOnDemand" transparent="1" />
+		</screen>"""
 
 class SearchLocationMSN(Screen):
 	def __init__(self, session, name):

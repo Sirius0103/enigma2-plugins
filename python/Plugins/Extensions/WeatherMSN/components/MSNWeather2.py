@@ -301,10 +301,7 @@ class MSNWeather2(Poll, Converter, object):
 		noneweather.close()
 
 	def get_xmlfile(self):
-		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/plugin.pyo"):
-			self.iConsole.ePopen("wget -P /tmp -T2 'http://weather.service.msn.com/data.aspx?weadegreetype=%s&culture=%s&weasearchstr=%s&src=outlook' -O /tmp/weathermsn2.xml" % (degreetype, weather_location, weather_city), self.control_xml)
-		else:
-			pass
+		self.iConsole.ePopen("wget -P /tmp -T2 'http://weather.service.msn.com/data.aspx?weadegreetype=%s&culture=%s&weasearchstr=%s&src=outlook' -O /tmp/weathermsn2.xml" % (degreetype, weather_location, weather_city), self.control_xml)
 
 	@cached
 	def getText(self):
@@ -316,7 +313,7 @@ class MSNWeather2(Poll, Converter, object):
 		sec = float(strftime('%S'))
 		info, weze = 'n/a', ''
 		msnweather = {'Vfd':'', 'Date':'', 'Shortdate':'', 'Day':'', 'Shortday':'','Location':'', 'Timezone':'', 'Latitude':'', 'Longitude':'',\
-			'Julianday':'', 'Sunrise':'', 'Sunset':'', 'Solstice':'', 'Moonrise':'', 'Moonset':'', 'Moondist':'', 'Moonphase':'', 'Moonlight':'', 'PiconMoon':'99',\
+			'Julianday':'', 'Sunrise':'', 'Sunset':'', 'Solstice':'', 'Moonrise':'', 'Moonset':'', 'Moondist':'', 'Moonphase':'', 'Moonlight':'', 'PiconMoon':'1',\
 			'Temp':'', 'Picon':'', 'Skytext':'', 'Feelslike':'', 'Humidity':'', 'Wind':'', 'Windspeed':'',\
 			'Date0':'', 'Shortdate0':'', 'Day0':'', 'Shortday0':'', 'Temp0':'', 'Lowtemp0':'', 'Hightemp0':'', 'Picon0':'', 'Skytext0':'', 'Precip0':'',\
 			'Date1':'', 'Shortdate1':'', 'Day1':'', 'Shortday1':'', 'Temp1':'', 'Lowtemp1':'', 'Hightemp1':'', 'Picon1':'', 'Skytext1':'', 'Precip1':'',\
