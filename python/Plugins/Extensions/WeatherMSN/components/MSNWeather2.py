@@ -654,115 +654,115 @@ class MSNWeather2(Poll, Converter, object):
 # Фазы Луны
 		light = 100 * pha1
 		light = round(light, 1)
-		if light >= 0 and light < 5:
+		if light >= 0 and light <= 5:
 			pic = '5'
 			phase = _('New moon')
 			if trend == -1:
 				pic = '05'
 				phase = _('New moon')
-		elif light > 5 and light < 10:
+		elif light > 5 and light <= 10:
 			pic = '10'
 			phase = _('Waxing cresent')
 			if trend == -1:
 				pic = '010'
 				phase = _('Waning crescent')
-		elif light > 10 and light < 15:
+		elif light > 10 and light <= 15:
 			pic = '15'
 			phase = _('Waxing cresent')
 			if trend == -1:
 				pic = '015'
 				phase = _('Waning crescent')
-		elif light > 15 and light < 20:
+		elif light > 15 and light <= 20:
 			pic = '20'
 			phase = _('Waxing cresent')
 			if trend == -1:
 				pic = '020'
 				phase = _('Waning crescent')
-		elif light > 20 and light < 25:
+		elif light > 20 and light <= 25:
 			pic = '25'
 			phase = _('Waxing cresent')
 			if trend == -1:
 				pic = '025'
 				phase = _('Waning crescent')
-		elif light > 25 and light < 30:
+		elif light > 25 and light <= 30:
 			pic = '30'
 			phase = _('Waxing cresent')
 			if trend == -1:
 				pic = '030'
 				phase = _('Waning crescent')
-		elif light > 30 and light < 35:
+		elif light > 30 and light <= 35:
 			pic = '35'
 			phase = _('Waxing cresent')
 			if trend == -1:
 				pic = '035'
 				phase = _('Waning crescent')
-		elif light > 35 and light < 40:
+		elif light > 35 and light <= 40:
 			pic = '40'
 			phase = _('Waxing cresent')
 			if trend == -1:
 				pic = '040'
 				phase = _('Waning crescent')
-		elif light > 40 and light < 45:
+		elif light > 40 and light <= 45:
 			pic = '45'
 			phase = _('Waxing cresent')
 			if trend == -1:
 				pic = '045'
 				phase = _('Waning crescent')
-		elif light > 45 and light < 50:
+		elif light > 45 and light <= 50:
 			pic = '50'
 			phase = _('First quarter')
 			if trend == -1:
 				pic = '050'
 				phase = _('Last quarter')
-		elif light > 50 and light < 55:
+		elif light > 50 and light <= 55:
 			pic = '55'
 			phase = _('First quarter')
 			if trend == -1:
 				pic = '055'
 				phase = _('Last quarter')
-		elif light > 55 and light < 60:
+		elif light > 55 and light <= 60:
 			pic = '60'
 			phase = _('Waxing gibbous')
 			if trend == -1:
 				pic = '060'
 				phase = _('Waning gibbous')
-		elif light > 60 and light < 65:
+		elif light > 60 and light <= 65:
 			pic = '65'
 			phase = _('Waxing gibbous')
 			if trend == -1:
 				pic = '065'
 				phase = _('Waning gibbous')
-		elif light > 65 and light < 70:
+		elif light > 65 and light <= 70:
 			pic = '70'
 			phase = _('Waxing gibbous')
 			if trend == -1:
 				pic = '070'
 				phase = _('Waning gibbous')
-		elif light > 70 and light < 75:
+		elif light > 70 and light <= 75:
 			pic = '75'
 			phase = _('Waxing gibbous')
 			if trend == -1:
 				pic = '075'
 				phase = _('Waning gibbous')
-		elif light > 75 and light < 80:
+		elif light > 75 and light <= 80:
 			pic = '80'
 			phase = _('Waxing gibbous')
 			if trend == -1:
 				pic = '080'
 				phase = _('Waning gibbous')
-		elif light > 80 and light < 85:
+		elif light > 80 and light <= 85:
 			pic = '85'
 			phase = _('Waxing gibbous')
 			if trend == -1:
 				pic = '085'
 				phase = _('Waning gibbous')
-		elif light > 85 and light < 90:
+		elif light > 85 and light <= 90:
 			pic = '90'
 			phase = _('Waxing gibbous')
 			if trend == -1:
 				pic = '090'
 				phase = _('Waning gibbous')
-		elif light > 90 and light < 95:
+		elif light > 90 and light <= 95:
 			pic = '95'
 			phase = _('Waxing gibbous')
 			if trend == -1:
