@@ -523,19 +523,15 @@ class MSNWeather2(Poll, Converter, object):
 			zone = float(timezone)
 		except:
 			long = lat = zone = 0
-		UT = hour - zone + min / 60 + sec / 3600 - 1# 13
+		UT = hour - zone + min / 60 + sec / 3600 - 1
 # Юлианская дата
-#		A = (14 - month) / 12
-#		M = month + 12 * A - 3
-#		Y = year + 4800 - A
-#		JDN = day + int((153 * M + 2) / 5) + int(365 * Y) + int(Y / 4) - int(Y / 100) + int(Y / 400) - 32045
 		if month > 2:
 			year = year
 			month = month
 		else:
 			year = year - 1
 			month = month + 12
-		JDN = day + 2 + int(365.25 * (year + 4716)) + int(30.5 * (month + 1)) - int(year / 100) + int(year / 400) - 1524.5
+		JDN = day + int(365.25 * (year + 4716)) + int(30.5 * (month + 1)) - int(year / 100) + int(year / 400) - 1522.5
 		JD = JDN + UT / 24
 # Орбита Земли
 		T = (JD - 2451545) / 36525

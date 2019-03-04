@@ -24,6 +24,7 @@
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
+from Screens.Standby import TryQuitMainloop
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Components.ActionMap import ActionMap
 from Components.Label import Label
@@ -59,6 +60,9 @@ def _(txt):
 
 config.plugins.weathermsn = ConfigSubsection()
 config.plugins.weathermsn.menu = ConfigSelection(default="no", choices = [
+	("no", _("no")),
+	("yes", _("yes"))])
+config.plugins.weathermsn.converter = ConfigSelection(default="no", choices = [
 	("no", _("no")),
 	("yes", _("yes"))])
 config.plugins.weathermsn.city = ConfigText(default="Moscow,Moscow-City,Russia", visible_width = 250, fixed_size = False)
@@ -652,19 +656,15 @@ class WeatherMSN(ConfigListScreen, Screen):
 			zone = float(timezone)
 		except:
 			long = lat = zone = 0
-		UT = hour - zone + min / 60 + sec / 3600 - 1# 13
+		UT = hour - zone + min / 60 + sec / 3600 - 1
 # Юлианская дата
-#		A = (14 - month) / 12
-#		M = month + 12 * A - 3
-#		Y = year + 4800 - A
-#		JDN = day + int((153 * M + 2) / 5) + int(365 * Y) + int(Y / 4) - int(Y / 100) + int(Y / 400) - 32045
 		if month > 2:
 			year = year
 			month = month
 		else:
 			year = year - 1
 			month = month + 12
-		JDN = day + 2 + int(365.25 * (year + 4716)) + int(30.5 * (month + 1)) - int(year / 100) + int(year / 400) - 1524.5
+		JDN = day + int(365.25 * (year + 4716)) + int(30.5 * (month + 1)) - int(year / 100) + int(year / 400) - 1522.5
 		JD = JDN + UT / 24
 # Орбита Земли
 		T = (JD - 2451545) / 36525
@@ -1254,7 +1254,7 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		ConfigListScreen.__init__(self, self.list, session = session)
 
 		self.setTitle(_("Config Weather MSN"))
-		self.convertorpath = "/usr/lib/enigma2/python/Components/Converter/"
+		self.converterpath = "/usr/lib/enigma2/python/Components/Converter/"
 		self.pluginpath = "/usr/lib/enigma2/python/Plugins/Extensions/WeatherMSN/components/"
 		self.city = config.plugins.weathermsn.city.value
 		self.language = config.osd.language.value.replace('_', '-')
@@ -1262,6 +1262,7 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 			self.language = 'en-US'
 		self.degreetype = config.plugins.weathermsn.degreetype.value
 		self.windtype = config.plugins.weathermsn.windtype.value
+		self.converter = config.plugins.weathermsn.converter.value
 		self.createSetup()
 
 		self["setupActions"] = ActionMap(["DirectionActions", "SetupActions", "ColorActions"], 
@@ -1290,6 +1291,7 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		self.list.append(getConfigListEntry(_("Location:"), config.plugins.weathermsn.city))
 		self.list.append(getConfigListEntry(_("Scale of wind speed:"), config.plugins.weathermsn.windtype))
 		self.list.append(getConfigListEntry(_("Scale of temperature:"), config.plugins.weathermsn.degreetype))
+		self.list.append(getConfigListEntry(_("Create converter in system:"), config.plugins.weathermsn.converter))
 		self["config"].list = self.list
 		self["config"].l.setList(self.list)
 		self["config"].onSelectionChanged.append(self.selectionChanged)
@@ -1303,8 +1305,12 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		except:
 			pass
 
-	def createConvertor(self):
-		os.system("cp %sMSNWeather2.py %sMSNWeather2.py" % (self.pluginpath, self.convertorpath))
+	def createConverter(self):
+		os.system("cp %sMSNWeather2.py %sMSNWeather2.py" % (self.pluginpath, self.converterpath))
+
+	def restart(self, answer):
+		if answer is True:
+			self.session.open(TryQuitMainloop, 3)
 
 	def cancel(self):
 		for x in self["config"].list:
@@ -1315,9 +1321,12 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		for x in self["config"].list:
 			x[1].save()
 		configfile.save()
-		self.createConvertor()
-		self.mbox = self.session.open(MessageBox,(_("Configuration is saved")), MessageBox.TYPE_INFO, timeout = 3)
-		self.close()
+		if config.plugins.weathermsn.converter.value == 'yes':
+			self.createConverter()
+			self.session.openWithCallback(self.restart, MessageBox,_("Do you want to restart the GUI now ?"), MessageBox.TYPE_YESNO)
+		else:
+			self.mbox = self.session.open(MessageBox,(_("Configuration is saved")), MessageBox.TYPE_INFO, timeout = 3)
+			self.close()
 
 if getDesktop(0).size().width() >= 1920: #FHD
 	SKIN_LOC = """
@@ -1362,7 +1371,6 @@ class SearchLocationMSN(Screen):
 			results = search_title(self.eventname)
 		except:
 			results = []
-
 		if len(results) == 0:
 			return False
 		self.resultlist = []
