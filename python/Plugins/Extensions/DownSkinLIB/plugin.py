@@ -55,7 +55,7 @@ if getDesktop(0).size().width() >= 1920: #FHD
 			<widget name="info_git" position="20,840" size="1760,60" font="Regular; 25" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
 			<widget name="info_pl" position="20,910" size="1760,30" font="Regular; 25" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
 
-			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DownSkinLIB/buttons/key_epg.png" position="1720,975" size="40,20" alphatest="on" />
+			<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DownSkinLIB/buttons/key_epg.png" position="1720,965" size="40,20" alphatest="on" />
 			<widget source="key_red" render="Label" position="70,960" size="280,30" font="Regular; 25" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
 			<widget source="key_green" render="Label" position="410,960" size="280,30" font="Regular; 25" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
 			<widget source="key_yellow" render="Label" position="750,960" size="280,30" font="Regular; 25" halign="left" valign="center" foregroundColor="#00f4f4f4" backgroundColor="background" transparent="1" />
@@ -185,6 +185,7 @@ class DownSkinLIB(Screen):
 
 		lib = "Renderer:\
 			\n   AnimatedWeatherPixmap.py\
+			\n   AnimatedMoonPixmap.py\
 			\n   LabelDuoColors.py\
 			\n   MovieCover.py\
 			\n   MovieRating.py\
@@ -246,6 +247,7 @@ class DownSkinLIB(Screen):
 			and "/tmp/WiFiInfo.py"\
 	# renderer
 			and "/tmp/AnimatedWeatherPixmap.py"\
+			and "/tmp/AnimatedMoonPixmap.py"\
 			and "/tmp/LabelDuoColors.py"\
 			and "/tmp/MovieCover.py"\
 			and "/tmp/MovieRating.py"\
@@ -289,6 +291,7 @@ class DownSkinLIB(Screen):
 			os.system("cp /tmp/WiFiInfo.py %sConverter/WiFiInfo.py" % (componentspath))
 	# install renderer
 			os.system("cp /tmp/AnimatedWeatherPixmap.py %sRenderer/AnimatedWeatherPixmap.py" % (componentspath))
+			os.system("cp /tmp/AnimatedMoonPixmap.py %sRenderer/AnimatedMoonPixmap.py" % (componentspath))
 			os.system("cp /tmp/LabelDuoColors.py %sRenderer/LabelDuoColors.py" % (componentspath))
 			os.system("cp /tmp/MovieCover.py %sRenderer/MovieCover.py" % (componentspath))
 			os.system("cp /tmp/MovieRating.py %sRenderer/MovieRating.py" % (componentspath))
@@ -348,6 +351,7 @@ class DownSkinLIB(Screen):
 			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Converter/WiFiInfo.py","/tmp/WiFiInfo.py")
 	# download renderer
 			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Renderer/AnimatedWeatherPixmap.py","/tmp/AnimatedWeatherPixmap.py")
+			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Renderer/AnimatedMoonPixmap.py","/tmp/AnimatedMoonPixmap.py")
 			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Renderer/LabelDuoColors.py","/tmp/LabelDuoColors.py")
 			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Renderer/MovieCover.py","/tmp/MovieCover.py")
 			urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Renderer/MovieRating.py","/tmp/MovieRating.py")
