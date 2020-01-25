@@ -664,7 +664,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		else:
 			year = year - 1
 			month = month + 12
-		JDN = day + int(365.25 * (year + 4716)) + int(30.5 * (month + 1)) - int(year / 100) + int(year / 400) - 1522.5
+		JDN = 1 + day + int(365.25 * (year + 4716)) + int(30.5 * (month + 1)) - int(year / 100) + int(year / 400) - 1522.5
 		JD = JDN + UT / 24
 # Орбита Земли
 		T = (JD - 2451545) / 36525
@@ -758,12 +758,12 @@ class WeatherMSN(ConfigListScreen, Screen):
 		DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(OEM * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(OEM * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # склонение луны
 		BETA = math.acos((0.002094 - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG
 
-		SMR = RA - BETA + 180 + long
+		SMR = RA - BETA + 195 + long
 		if SMR < 0:
 			SMR = SMR + 360
 		elif SMR >= 360:
 			SMR = SMR - 360
-		SMS = RA + BETA + 180 + long
+		SMS = RA + BETA + 195 + long
 		if SMS < 0:
 			SMS = SMS + 360
 		elif SMS >= 360:
