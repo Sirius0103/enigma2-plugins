@@ -1017,8 +1017,7 @@ class MSNWeather2(Poll, Converter, object):
 			trend = -1
 		else:
 			trend = 1
-#		light = 100 * pha1
-		light = 98.5 * pha1
+		light = 100 * pha1
 		light = round(light, 1)
 		if light >= 0 and light <= 5:
 			pic = '5'

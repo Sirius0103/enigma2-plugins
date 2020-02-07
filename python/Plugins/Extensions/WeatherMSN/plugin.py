@@ -1062,8 +1062,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			trend = -1
 		else:
 			trend = 1
-#		light = 100 * pha1
-		light = 98.5 * pha1
+		light = 100 * pha1
 		light = round(light, 1)
 		if light >= 0 and light <= 5:
 			pic = '5'
@@ -1193,8 +1192,8 @@ class WeatherMSN(ConfigListScreen, Screen):
 
 			self.moondist['Moondist'] = _('%s km') % Mdist
 			self.moonazimuth['Moonazimuth'] = '%s %s' % (Mazim, unichr(176).encode("latin-1"))
-			self.moonrise['Moonrise'] = '%s%s%s%s' % ( MRh, unichr(58).encode("latin-1"), MRx, MRm)
-			self.moonset['Moonset'] = '%s%s%s%s' % ( MSh, unichr(58).encode("latin-1"), MSx, MSm)
+			self.moonrise['Moonrise'] = '%s%s%s%s' % (MRh, unichr(58).encode("latin-1"), MRx, MRm)
+			self.moonset['Moonset'] = '%s%s%s%s' % (MSh, unichr(58).encode("latin-1"), MSx, MSm)
 			self.moonphase['Moonphase'] = '%s' % phase
 			self.moonlight['Moonlight'] = '%s %s' % (light, unichr(37).encode("latin-1"))
 			self.picmoon['PicMoon'] = '%s' % pic
