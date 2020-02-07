@@ -715,7 +715,7 @@ class MSNWeather2(Poll, Converter, object):
 #		RA = math.atan2(math.sin(SLong * DEG2RAD) * math.cos(EPS * DEG2RAD), math.cos(SLong * DEG2RAD)) * RAD2DEG  # геоцентрическое прямое восхождение
 #		if RA < 0:
 #			RA = RA + 2 * PI
-#		QS = math.asin(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(STT - ALFA)) + 0.8332 * DEG2RAD # действительная высота Солнца над горизонтом на момент времени в радианах
+#		QS = math.asin(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(STT - ALFA)) + 0.8332 * DEG2RAD # действительная высота солнца над горизонтом на момент времени в радианах
 
 		DEC = math.asin(math.sin(EPS * DEG2RAD) * math.sin(SLong * DEG2RAD)) * RAD2DEG # склонение солнца
 		ALFA = (7.53 * math.cos(LS * DEG2RAD) + 1.5 * math.sin(LS * DEG2RAD) - 9.87 * math.sin(2 * LS * DEG2RAD)) / 60 # уравнение времени
@@ -749,8 +749,189 @@ class MSNWeather2(Poll, Converter, object):
 			SSx = '0'
 		else:
 			SSx = ''
-# Орбита Луны
+# Орбита луны
 		T = (JDN - 2451545) / 36525
+		LM = 218.3164477 + 481267.88123421 * T - 0.0015786 * T * T + T * T * T / 538841 - T * T * T * T / 65194000 # ср долгота луны
+		FM = 93.272095 + 483202.0175233 * T - 0.0036539 * T * T - T * T * T / 3526000 + T * T * T * T / 863310000 # ср аргумент широты луны
+		DM = 297.8501921 + 445267.114034 * T - 0.0018819 * T * T + T * T * T / 545868 - T * T * T * T / 113065000 # ср элонгация луны
+		MS = 357.5291092 + 35999.0502909 * T - 0.0001536 * T * T + T * T * T / 24490000 # ср солнечная аномалия
+		MM = 134.9633964 + 477198.8675055 * T + 0.0087414 * T * T + T * T * T / 69699 - T * T * T * T / 14712000 # ср лунная аномалия
+		EM = 1 - 0.002516 * T - 0.0000074 * T * T # поправка на изменяющийся эксцентриситет
+		A1 = 119.75 + 131.849 * T
+		A2 = 53.09 + 479264.29 * T
+		A3 = 313.45 + 481266.484 * T
+
+		EL = 6.288774 * math.sin(MM * DEG2RAD)\
+			+ 1.274027 * math.sin((2 * DM - MM) * DEG2RAD)\
+			+ 0.658314 * math.sin(2 * DM * DEG2RAD)\
+			+ 0.213618 * math.sin(2 * MM * DEG2RAD)\
+			- 0.185116 * math.sin(MS * DEG2RAD) * EM\
+			- 0.114332 * math.sin(2 * FM * DEG2RAD)\
+			+ 0.058793 * math.sin((2 * DM - 2 * MM) * DEG2RAD)\
+			+ 0.057066 * math.sin((2 * DM - MS - MM) * DEG2RAD) * EM\
+			+ 0.053322 * math.sin((2 * DM + MM) * DEG2RAD)\
+			+ 0.045758 * math.sin((2 * DM - MS) * DEG2RAD) * EM\
+			- 0.040923 * math.sin((MM - MS) * DEG2RAD)  * EM\
+			- 0.034720 * math.sin(DM * DEG2RAD)\
+			- 0.030383 * math.sin((MS + MM) * DEG2RAD) * EM\
+			+ 0.015327 * math.sin((2 * DM - 2 * FM) * DEG2RAD)\
+			- 0.012528 * math.sin((2 * FM + MM) * DEG2RAD)\
+			+ 0.010980 * math.sin((2 * FM - MM) * DEG2RAD)\
+			+ 0.010675 * math.sin((4 * DM - MM) * DEG2RAD)\
+			+ 0.010034 * math.sin(3 * MM * DEG2RAD)\
+			+ 0.008548 * math.sin((4 * DM - 2 * MM) * DEG2RAD)\
+			- 0.007888 * math.sin((2 * DM + MS - MM) * DEG2RAD) * EM\
+			- 0.006766 * math.sin((2 * DM + MS) * DEG2RAD) * EM\
+			- 0.005163 * math.sin((MM - DM) * DEG2RAD)\
+			+ 0.004987 * math.sin((MS + DM) * DEG2RAD) * EM\
+			+ 0.004036 * math.sin((2 * DM + MM - MS) * DEG2RAD) * EM\
+			+ 0.003994 * math.sin((2 * MM + 2 * DM) * DEG2RAD)\
+			+ 0.003861 * math.sin(4 * DM * DEG2RAD)\
+			+ 0.003665 * math.sin((2 * DM - 3 * MM) * DEG2RAD)\
+			- 0.002689 * math.sin((2 * MM - MS) * DEG2RAD) * EM\
+			- 0.002602 * math.sin((2 * DM + 2 * FM - MM) * DEG2RAD)\
+			+ 0.002390 * math.sin((2 * DM - 2 * MM - MS) * DEG2RAD) * EM\
+			- 0.002348 * math.sin((MM + DM) * DEG2RAD)\
+			+ 0.002236 * math.sin((2 * DM - 2 * MS) * DEG2RAD) * EM * EM\
+			- 0.002120 * math.sin((2 * MM + MS) * DEG2RAD) * EM\
+			- 0.002069 * math.sin(2 * MS * DEG2RAD) * EM * EM\
+			+ 0.002048 * math.sin((2 * DM - 2 * MS - MM) * DEG2RAD) * EM * EM\
+			- 0.001773 * math.sin((2 * DM - 2 * FM + MM) * DEG2RAD)\
+			- 0.001595 * math.sin((2 * DM + 2 * FM) * DEG2RAD)\
+			+ 0.001215 * math.sin((4 * DM - MS - MM) * DEG2RAD) * EM\
+			- 0.001110 * math.sin((2 * MM + 2 * FM) * DEG2RAD)\
+			- 0.000892 * math.sin((3 * DM - MM) * DEG2RAD)\
+			- 0.000810 * math.sin((2 * DM + MS + MM) * DEG2RAD) * EM\
+			+ 0.000759 * math.sin((4 * DM - 2 * MM - MS) * DEG2RAD) * EM\
+			- 0.000713 * math.sin((2 * MS - MM) * DEG2RAD) * EM * EM\
+			- 0.000700 * math.sin((2 * DM + 2 * MS - MM) * DEG2RAD) * EM * EM\
+			+ 0.000691 * math.sin((2 * DM - 2 * MM + MS) * DEG2RAD) * EM\
+			+ 0.000596 * math.sin((2 * DM - 2 * FM - MS) * DEG2RAD) * EM\
+			+ 0.000549 * math.sin((4 * DM + MM) * DEG2RAD)\
+			+ 0.000537 * math.sin(4 * MM * DEG2RAD)\
+			+ 0.000520 * math.sin((4 * DM - MS) * DEG2RAD) * EM\
+			- 0.000487 * math.sin((2 * MM - DM) * DEG2RAD)\
+			- 0.000399 * math.sin((2 * DM - 2 * FM + MS) * DEG2RAD) * EM\
+			- 0.000381 * math.sin((2 * MM - 2 * FM) * DEG2RAD)\
+			+ 0.000351 * math.sin((DM + MS + MM) * DEG2RAD) * EM\
+			- 0.000340 * math.sin((3 * DM - 2 * MM) * DEG2RAD)\
+			+ 0.000330 * math.sin((4 * DM - 3 * MM) * DEG2RAD)\
+			+ 0.000327 * math.sin((2 * DM + 2 * MM - MS) * DEG2RAD) * EM\
+			- 0.000323 * math.sin((2 * MS + MM) * DEG2RAD) * EM * EM\
+			+ 0.000299 * math.sin((DM + MS - MM) * DEG2RAD) * EM\
+			+ 0.000294 * math.sin((2 * DM + 3 * MM) * DEG2RAD)\
+			+ 0.003958 * math.sin(A1 * DEG2RAD)\
+			+ 0.001962 * math.sin((LM - FM) * DEG2RAD)\
+			+ 0.000318 * math.sin(A2 * DEG2RAD)
+
+		EB = 5.128122 * math.sin(FM * DEG2RAD)\
+			+ 0.280602 * math.sin((MM + FM) * DEG2RAD)\
+			+ 0.277693 * math.sin((MM - FM) * DEG2RAD)\
+			+ 0.173237 * math.sin((2 * DM - FM) * DEG2RAD)\
+			+ 0.055413 * math.sin((2 * DM + FM - MM) * DEG2RAD)\
+			+ 0.046271 * math.sin((2 * DM - FM - MM) * DEG2RAD)\
+			+ 0.032573 * math.sin((2 * DM + FM) * DEG2RAD)\
+			+ 0.017198 * math.sin((2 * MM + FM) * DEG2RAD)\
+			+ 0.009266 * math.sin((2 * DM + MM - FM) * DEG2RAD)\
+			+ 0.008822 * math.sin((2 * MM - FM) * DEG2RAD)\
+			+ 0.008216 * math.sin((2 * DM - MS - FM) * DEG2RAD) * EM\
+			+ 0.004324 * math.sin((2 * DM - 2 * MM - FM) * DEG2RAD)\
+			+ 0.004200 * math.sin((2 * DM + FM + MM) * DEG2RAD)\
+			- 0.003359 * math.sin((2 * DM + MS -FM) * DEG2RAD) * EM\
+			+ 0.002463 * math.sin((2 * DM + FM - MS - MM) * DEG2RAD) * EM\
+			+ 0.002211 * math.sin((2 * DM + FM - MS) * DEG2RAD) * EM\
+			+ 0.002065 * math.sin((2 * DM - FM - MS - MM) * DEG2RAD) * EM\
+			- 0.001870 * math.sin((FM - MS + MM) * DEG2RAD) * EM\
+			+ 0.001828 * math.sin((4 * DM - FM - MM) * DEG2RAD)\
+			- 0.001794 * math.sin((FM + MS) * DEG2RAD) * EM\
+			- 0.001749 * math.sin(3 * FM * DEG2RAD)\
+			- 0.001565 * math.sin((FM + MS - MM) * DEG2RAD) * EM\
+			- 0.001491 * math.sin((FM + DM) * DEG2RAD)\
+			- 0.001475 * math.sin((FM + MS + MM) * DEG2RAD) * EM\
+			- 0.001410 * math.sin((MM + MS - FM) * DEG2RAD) * EM\
+			- 0.001344 * math.sin((FM - MS) * DEG2RAD) * EM\
+			- 0.001335 * math.sin((FM - DM) * DEG2RAD)\
+			+ 0.001107 * math.sin((3 * MM + FM) * DEG2RAD)\
+			+ 0.001021 * math.sin((4 * DM - FM) * DEG2RAD)\
+			+ 0.000833 * math.sin((4 * DM + FM - MM) * DEG2RAD)\
+			+ 0.000777 * math.sin((3 * FM - MM) * DEG2RAD)\
+			+ 0.000671 * math.sin((4 * DM - 2 * MM + FM) * DEG2RAD)\
+			+ 0.000607 * math.sin((2 * DM - 3 * FM) * DEG2RAD)\
+			+ 0.000596 * math.sin((2 * DM + 2 * MM - FM) * DEG2RAD)\
+			+ 0.000491 * math.sin((2 * DM + MM - MS - FM) * DEG2RAD) * EM\
+			- 0.000451 * math.sin((2 * MM - 2 * DM + FM) * DEG2RAD)\
+			+ 0.000439 * math.sin((3 * MM - FM) * DEG2RAD)\
+			+ 0.000422 * math.sin((2 * DM + 2 * MM + FM) * DEG2RAD)\
+			+ 0.000421 * math.sin((2 * DM - 3 * MM - FM) * DEG2RAD)\
+			- 0.000366 * math.sin((2 * DM + MS + FM - MM) * DEG2RAD) * EM\
+			- 0.000351 * math.sin((2 * DM + MS + FM) * DEG2RAD) * EM\
+			+ 0.000331 * math.sin((4 * DM + FM) * DEG2RAD)\
+			+ 0.000315 * math.sin((2 * DM + FM - MS + MM) * DEG2RAD) * EM\
+			+ 0.000302 * math.sin((2 * DM - 2 * MS - FM) * DEG2RAD) * EM * EM\
+			- 0.000283 * math.sin((3 * FM + MM) * DEG2RAD)\
+			- 0.000229 * math.sin((2 * DM + MS + MM - FM) * DEG2RAD) * EM\
+			+ 0.000223 * math.sin((DM + MS - FM) * DEG2RAD) * EM\
+			+ 0.000223 * math.sin((DM + MS + FM) * DEG2RAD) * EM\
+			- 0.000220 * math.sin((MS - 2 * MM - FM) * DEG2RAD) * EM\
+			- 0.000220 * math.sin((2 * DM + MS - MM - FM) * DEG2RAD) * EM\
+			- 0.000185 * math.sin((DM + MM + FM) * DEG2RAD)\
+			+ 0.000181 * math.sin((2 * DM - MS - 2 * MM - FM) * DEG2RAD) * EM\
+			- 0.000177 * math.sin((2 * MM + MS + FM) * DEG2RAD) * EM\
+			+ 0.000176 * math.sin((4 * DM - 2 * MM - FM) * DEG2RAD)\
+			+ 0.000166 * math.sin((4 * DM - MS - MM - FM) * DEG2RAD) * EM\
+			- 0.000164 * math.sin((DM + MM - FM) * DEG2RAD)\
+			+ 0.000132 * math.sin((4 * DM + MM - FM) * DEG2RAD)\
+			- 0.000119 * math.sin((DM - MM - FM) * DEG2RAD)\
+			+ 0.000115 * math.sin((4 * DM - MS - FM) * DEG2RAD) * EM\
+			+ 0.000107 * math.sin((2 * DM - 2 * MS + FM) * DEG2RAD) * EM * EM\
+			- 0.002235 * math.sin(LM * DEG2RAD)\
+			+ 0.000382 * math.sin(A3 * DEG2RAD)\
+			+ 0.000175 * math.sin((A1 - FM) * DEG2RAD)\
+			+ 0.000175 * math.sin((A1 + FM) * DEG2RAD)\
+			+ 0.000127 * math.sin((LM - MM) * DEG2RAD)\
+			- 0.000115 * math.sin((LM + MM) * DEG2RAD)
+
+		MLat = EB # широта луны
+		MLong = math.fmod(LM + EL, 360) # долгота луны
+		if MLong < 0:
+			MLong = MLong + 360
+
+		EPS = 23.43929111 - 0.01300416667 * T - 0.00000016389 * T * T + 0.00000050361 * T * T * T # наклон эклиптики
+		RA = math.atan2((math.sin(MLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(MLong * DEG2RAD)) * RAD2DEG # геоцентрическое прямое восхождение луны
+		DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение луны
+#		if RA < 0:
+#			RA = RA + 2 * PI
+		BETA = math.acos((math.cos(89.54 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол луны
+
+#		SMR = RA - BETA
+		SMR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
+		if SMR < 0:
+			SMR = SMR + 24
+#		SMS = RA + BETA
+		SMS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
+		if SMS < 0:
+			SMS = SMS + 24
+# Время восхода/захода
+		MRh = int(SMR)
+		MRm = int(round(((SMR) - MRh) * 60))
+		MSh = int(SMS)
+		MSm = int(round(((SMS) - MSh) * 60))
+		if MRm == 60:
+			MRm = 0
+			MRh = MRh + 1
+		if MRm < 10:
+			MRx = '0'
+		else:
+			MRx = ''
+		if MSm == 60:
+			MSm = 0
+			MSh = MSh + 1
+		if MSm < 10:
+			MSx = '0'
+		else:
+			MSx = ''
+# Фазы луны, расстояние до луны, азимут луны
+		T = (JD - 2451545) / 36525
 		LM = 218.3164477 + 481267.88123421 * T - 0.0015786 * T * T + T * T * T / 538841 - T * T * T * T / 65194000 # ср долгота луны
 		FM = 93.272095 + 483202.0175233 * T - 0.0036539 * T * T - T * T * T / 3526000 + T * T * T * T / 863310000 # ср аргумент широты луны
 		DM = 297.8501921 + 445267.114034 * T - 0.0018819 * T * T + T * T * T / 545868 - T * T * T * T / 113065000 # ср элонгация луны
@@ -938,60 +1119,23 @@ class MSNWeather2(Poll, Converter, object):
 			+ 0.001165 * math.cos((2 * MS + MM) * DEG2RAD) * EM * EM\
 			+ 0.008752 * math.cos((2 * DM - MM - 2 * FM) * DEG2RAD)
 
-		EPS = 23.43929111 - 0.01300416667 * T - 0.00000016389 * T * T + 0.00000050361 * T * T * T # наклон эклиптики
-
 		MLat = EB # широта луны
 		MLong = math.fmod(LM + EL, 360) # долгота луны
-		Mdist = int(385000.56 + ER * 1000) # расстояние до луны км
 		if MLong < 0:
 			MLong = MLong + 360
+		Mdist = int(385000.56 + ER * 1000) # расстояние до луны км
 
+		EPS = 23.43929111 - 0.01300416667 * T - 0.00000016389 * T * T + 0.00000050361 * T * T * T # наклон эклиптики
 		RA = math.atan2((math.sin(MLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(MLong * DEG2RAD)) * RAD2DEG # геоцентрическое прямое восхождение луны
 		DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение луны
 #		if RA < 0:
 #			RA = RA + 2 * PI
-		BETA = math.acos((math.cos(89.54 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол луны
-
 		TH = ST - RA
 		Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 		H = 90 - Z # угол места
-		AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут
+		AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 160 # азимут + 180
 		Mazim = round(AZ, 1)
 
-#		SMR = RA - BETA
-		SMR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
-		if SMR < 0:
-			SMR = SMR + 24
-#		SMS = RA + BETA
-		SMS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
-		if SMS < 0:
-			SMS = SMS + 24
-# Время восхода/захода
-		MRh = int(SMR)
-		MRm = int(round(((SMR) - MRh) * 60))
-		MSh = int(SMS)
-		MSm = int(round(((SMS) - MSh) * 60))
-		if MRm == 60:
-			MRm = 0
-			MRh = MRh + 1
-		if MRm < 10:
-			MRx = '0'
-		else:
-			MRx = ''
-		if MSm == 60:
-			MSm = 0
-			MSh = MSh + 1
-		if MSm < 10:
-			MSx = '0'
-		else:
-			MSx = ''
-# Фазы Луны
-		T = (JD - 2451545) / 36525
-#		LM = 218.3164477 + 481267.88123421 * T - 0.0015786 * T * T + T * T * T / 538841 - T * T * T * T / 65194000 # ср долгота луны
-#		FM = 93.272095 + 483202.0175233 * T - 0.0036539 * T * T - T * T * T / 3526000 + T * T * T * T / 863310000 # ср растояние луны
-		DM = 297.8501921 + 445267.114034 * T - 0.0018819 * T * T + T * T * T / 545868 - T * T * T * T / 113065000 # ср удлинение луны
-		MS = 357.5291092 + 35999.0502909 * T - 0.0001536 * T * T + T * T * T / 24490000 # ср солнечная аномалия
-		MM = 134.9633964 + 477198.8675055 * T + 0.0087414 * T * T + T * T * T / 69699 - T * T * T * T / 14712000 # ср лунная аномалия
 		IM = 180 - DM\
 			- 6.289 * math.sin(MM * DEG2RAD)\
 			+ 2.100 * math.sin(MS * DEG2RAD)\
@@ -1001,7 +1145,7 @@ class MSNWeather2(Poll, Converter, object):
 			- 0.114 * math.sin(DM * DEG2RAD)
 		pha1 = (1 + math.cos(IM * DEG2RAD)) / 2
 #
-		T = (JD + 0.5 / 24 - 2451545) / 36525
+		T = (JD + 1 / 24 - 2451545) / 36525
 		DM = 297.8501921 + 445267.114034 * T - 0.0018819 * T * T + T * T * T / 545868 - T * T * T * T / 113065000 # ср удлинение луны
 		MS = 357.5291092 + 35999.0502909 * T - 0.0001536 * T * T + T * T * T / 24490000 # ср солнечная аномалия
 		MM = 134.9633964 + 477198.8675055 * T + 0.0087414 * T * T + T * T * T / 69699 - T * T * T * T / 14712000 # ср лунная аномалия
