@@ -1193,8 +1193,8 @@ class WeatherMSN(ConfigListScreen, Screen):
 
 			self.moondist['Moondist'] = _('%s km') % Mdist
 			self.moonazimuth['Moonazimuth'] = '%s %s' % (Mazim, unichr(176).encode("latin-1"))
-			self.moonrise['Moonrise'] = '%s %s%s%s%s' % (DEC, MRh, unichr(58).encode("latin-1"), MRx, MRm)
-			self.moonset['Moonset'] = '%s %s%s%s%s' % (Mazim, MSh, unichr(58).encode("latin-1"), MSx, MSm)
+			self.moonrise['Moonrise'] = '%s%s%s%s' % ( MRh, unichr(58).encode("latin-1"), MRx, MRm)
+			self.moonset['Moonset'] = '%s%s%s%s' % ( MSh, unichr(58).encode("latin-1"), MSx, MSm)
 			self.moonphase['Moonphase'] = '%s' % phase
 			self.moonlight['Moonlight'] = '%s %s' % (light, unichr(37).encode("latin-1"))
 			self.picmoon['PicMoon'] = '%s' % pic
