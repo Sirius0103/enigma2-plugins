@@ -711,25 +711,23 @@ class MSNWeather2(Poll, Converter, object):
 		SLong = LS + CS - (20.4898 / 3600 / DS) # истинная долгота солнца
 		EPS = 23.43929111 - 0.01300416667 * T - 0.00000016389 * T * T + 0.00000050361 * T * T * T # наклон эклиптики
 
-#		склонение и прямое восхождение.  Широту Солнца считаем равной нулю.
-#		DEC = math.asin(math.sin(EPS * DEG2RAD) * math.sin(SLong * DEG2RAD)) * RAD2DEG # склонение солнца
-#		RA = math.atan2(math.sin(SLong * DEG2RAD) * math.cos(EPS * DEG2RAD), math.cos(SLong * DEG2RAD)) * RAD2DEG # прямое восхождение
+#		DEC = math.asin(math.sin(EPS * DEG2RAD) * math.sin(SLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение солнца
+#		RA = math.atan2(math.sin(SLong * DEG2RAD) * math.cos(EPS * DEG2RAD), math.cos(SLong * DEG2RAD)) * RAD2DEG  # геоцентрическое прямое восхождение
 #		if RA < 0:
 #			RA = RA + 2 * PI
-#		высота над горизонтом в момент τ относящийся к восходу или закату
-#		QS = math.asin(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(S0 - ALFA)) + 0.8332 * DEG2RAD # действительная высота Солнца над горизонтом на момент времени в радианах
+#		QS = math.asin(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(STT - ALFA)) + 0.8332 * DEG2RAD # действительная высота Солнца над горизонтом на момент времени в радианах
 
 		DEC = math.asin(math.sin(EPS * DEG2RAD) * math.sin(SLong * DEG2RAD)) * RAD2DEG # склонение солнца
 		ALFA = (7.53 * math.cos(LS * DEG2RAD) + 1.5 * math.sin(LS * DEG2RAD) - 9.87 * math.sin(2 * LS * DEG2RAD)) / 60 # уравнение времени
-		BETA = math.acos((math.cos(90.50 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG
+		BETA = math.acos((math.cos(90.51 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG
 		SSS = ALFA + (180 + 15 - long) / 15 + zone # дискретное время zone - long / 15
 # Время восхода/захода
 		SCh = int(SSS)
 		SCm = int(round((SSS - SCh) * 60))
 		SRh = int(SSS - BETA / 15)
-		SRm = int(round(((SSS - BETA / 15) - SRh) * 60))
+		SRm = int(round(((SSS - BETA / 15) - SRh - 0.065709833) * 60))
 		SSh = int(SSS + BETA / 15)
-		SSm = int(round(((SSS + BETA / 15) - SSh) * 60))
+		SSm = int(round(((SSS + BETA / 15) - SSh + 0.065709833) * 60))
 		if SCm == 60:
 			SCm = 0
 			SCh = SCh + 1
@@ -952,7 +950,7 @@ class MSNWeather2(Poll, Converter, object):
 		DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение луны
 #		if RA < 0:
 #			RA = RA + 2 * PI
-		BETA = math.acos((math.cos(89.50 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол луны
+		BETA = math.acos((math.cos(89.54 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол луны
 
 		TH = ST - RA
 		Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
@@ -961,24 +959,18 @@ class MSNWeather2(Poll, Converter, object):
 		Mazim = round(AZ, 1)
 
 #		SMR = RA - BETA
-# zone * 15 - long # дискретное время zone * 15 - long
-		SMR = RA - BETA - (zone * 15 - long) - (STT * 15 - long / 360 * 0.065709833 * 15) * 0.997269566423530
+		SMR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
 		if SMR < 0:
-			SMR = SMR + 360
-		elif SMR >= 360:
-			SMR = SMR - 360
+			SMR = SMR + 24
 #		SMS = RA + BETA
-# zone * 15 - long # дискретное время zone * 15 - long
-		SMS = RA + BETA - (zone * 15 - long) - (STT * 15 - long / 360 * 0.065709833 * 15) * 0.997269566423530
+		SMS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
 		if SMS < 0:
-			SMS = SMS + 360
-		elif SMS >= 360:
-			SMS = SMS - 360
+			SMS = SMS + 24
 # Время восхода/захода
-		MRh = int(SMR / 15)
-		MRm = int(round(((SMR / 15) - MRh) * 60))
-		MSh = int(SMS / 15)
-		MSm = int(round(((SMS / 15) - MSh) * 60))
+		MRh = int(SMR)
+		MRm = int(round(((SMR) - MRh) * 60))
+		MSh = int(SMS)
+		MSm = int(round(((SMS) - MSh) * 60))
 		if MRm == 60:
 			MRm = 0
 			MRh = MRh + 1
