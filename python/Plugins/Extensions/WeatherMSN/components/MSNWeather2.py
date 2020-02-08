@@ -64,32 +64,40 @@ class MSNWeather2(Poll, Converter, object):
 	SUNCULMINATION = 13
 	MERCURYRISE = 14
 	MERCURYSET = 15
-	MERCURYAZIMUTH = 16
-	VENUSRISE = 17
-	VENUSSET = 18
-	VENUSAZIMUTH = 19
-	MARSRISE = 20
-	MARSSET = 21
-	MARSAZIMUTH = 22
-	JUPITERRISE = 23
-	JUPITERSET = 24
-	JUPITERAZIMUTH = 25
-	SATURNRISE = 26
-	SATURNSET = 27
-	SATURNAZIMUTH = 28
-	URANUSRISE = 29
-	URANUSSET = 30
-	URANUSAZIMUTH = 31
-	NEPTUNERISE = 32
-	NEPTUNESET = 33
-	NEPTUNEAZIMUTH = 34
-	MOONRISE = 35
-	MOONSET = 36
-	MOONDIST = 37
-	MOONAZIMUTH = 38
-	MOONPHASE = 39
-	MOONLIGHT = 40
-	MOONPICON = 41
+	MERCURYCULMINATION = 16
+	MERCURYAZIMUTH = 17
+	VENUSRISE = 18
+	VENUSSET = 19
+	VENUSCULMINATION = 20
+	VENUSAZIMUTH = 21
+	MARSRISE = 22
+	MARSSET = 23
+	MARSCULMINATION = 24
+	MARSAZIMUTH = 25
+	JUPITERRISE = 26
+	JUPITERSET = 27
+	JUPITERCULMINATION = 28
+	JUPITERAZIMUTH = 29
+	SATURNRISE = 30
+	SATURNSET = 31
+	SATURNCULMINATION = 32
+	SATURNAZIMUTH = 33
+	URANUSRISE = 34
+	URANUSSET = 35
+	URANUSCULMINATION = 36
+	URANUSAZIMUTH = 37
+	NEPTUNERISE = 38
+	NEPTUNESET = 39
+	NEPTUNECULMINATION = 40
+	NEPTUNEAZIMUTH = 41
+	MOONRISE = 42
+	MOONSET = 43
+	MOONCULMINATION = 44
+	MOONDIST = 45
+	MOONAZIMUTH = 46
+	MOONPHASE = 47
+	MOONLIGHT = 48
+	MOONPICON = 49
 	TEMP = 50
 	PICON = 51
 	SKYTEXT = 52
@@ -182,48 +190,64 @@ class MSNWeather2(Poll, Converter, object):
 			self.type = self.MERCURYRISE
 		elif type == "Mercuryset":
 			self.type = self.MERCURYSET
+		elif type == "Mercuryculmination":
+			self.type = self.MERCURYCULMINATION
 		elif type == "Mercuryazimuth":
 			self.type = self.MERCURYAZIMUTH
 		elif type == "Venusrise":
 			self.type = self.VENUSRISE
 		elif type == "Venusset":
 			self.type = self.VENUSSET
+		elif type == "Venusculmination":
+			self.type = self.VENUSCULMINATION
 		elif type == "Venusazimuth":
 			self.type = self.VENUSAZIMUTH
 		elif type == "Marsrise":
 			self.type = self.MARSRISE
 		elif type == "Marsset":
 			self.type = self.MARSSET
+		elif type == "Marsculmination":
+			self.type = self.MARSCULMINATION
 		elif type == "Marsazimuth":
 			self.type = self.MARSAZIMUTH
 		elif type == "Jupiterrise":
 			self.type = self.JUPITERRISE
 		elif type == "Jupiterset":
 			self.type = self.JUPITERSET
+		elif type == "Jupiterculmination":
+			self.type = self.JUPITERCULMINATION
 		elif type == "Jupiterazimuth":
 			self.type = self.JUPITERAZIMUTH
 		elif type == "Saturnrise":
 			self.type = self.SATURNRISE
 		elif type == "Saturnset":
 			self.type = self.SATURNSET
+		elif type == "Saturnculmination":
+			self.type = self.SATURNCULMINATION
 		elif type == "Saturnazimuth":
 			self.type = self.SATURNAZIMUTH
 		elif type == "Uranusrise":
 			self.type = self.URANUSRISE
 		elif type == "Uranusset":
 			self.type = self.URANUSSET
+		elif type == "Uranusculmination":
+			self.type = self.URANUSCULMINATION
 		elif type == "Uranusazimuth":
 			self.type = self.URANUSAZIMUTH
 		elif type == "Neptunerise":
 			self.type = self.NEPTUNERISE
 		elif type == "Neptuneset":
 			self.type = self.NEPTUNESET
+		elif type == "Neptuneculmination":
+			self.type = self.NEPTUNECULMINATION
 		elif type == "Neptuneazimuth":
 			self.type = self.NEPTUNEAZIMUTH
 		elif type == "Moonrise":
 			self.type = self.MOONRISE
 		elif type == "Moonset":
 			self.type = self.MOONSET
+		elif type == "Moonculmination":
+			self.type = self.MOONCULMINATION
 		elif type == "Moondist":
 			self.type = self.MOONDIST
 		elif type == "Moonazimuth":
@@ -395,27 +419,35 @@ class MSNWeather2(Poll, Converter, object):
 			'Solstice':'',\
 			'Mercuryrise':'',\
 			'Mercuryset':'',\
+			'Mercuryculmination':'',\
 			'Mercuryazimuth':'',\
 			'Venusrise':'',\
 			'Venusset':'',\
+			'Venusculmination':'',\
 			'Venusazimuth':'',\
 			'Marsrise':'',\
 			'Marsset':'',\
+			'Marsculmination':'',\
 			'Marsazimuth':'',\
 			'Jupiterrise':'',\
 			'Jupiterset':'',\
+			'Jupiterculmination':'',\
 			'Jupiterazimuth':'',\
 			'Saturnrise':'',\
 			'Saturnset':'',\
+			'Saturnculmination':'',\
 			'Saturnazimuth':'',\
 			'Uranusrise':'',\
 			'Uranusset':'',\
+			'Uranusculmination':'',\
 			'Uranusazimuth':'',\
 			'Neptunerise':'',\
 			'Neptuneset':'',\
+			'Neptuneculmination':'',\
 			'Neptuneazimuth':'',\
 			'Moonrise':'',\
 			'Moonset':'',\
+			'Moonculmination':'',\
 			'Moondist':'',\
 			'Moonazimuth':'',\
 			'Moonphase':'',\
@@ -688,7 +720,7 @@ class MSNWeather2(Poll, Converter, object):
 		else:
 			year = year
 			month = month
-		JDN = day + int(365.25 * (year + 4716)) + int(30.6001 * (month + 1)) + 2 - int(year / 100) + int(year / 400) - 1524.5 # - 1522.61
+		JDN = day + int(365.25 * (year + 4716)) + int(30.6001 * (month + 1)) + 2 - int(year / 100) + int(year / 400) - 1524.5
 		JD = JDN + UT / 24
 # Звездное время
 		T = (JDN - 0.5 - 2451545) / 36525 # юлианское столетие на полночь по Гринвичу
@@ -899,19 +931,30 @@ class MSNWeather2(Poll, Converter, object):
 #			RA = RA + 2 * PI
 		BETA = math.acos((math.cos(89.54 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол луны
 
-#		SMR = RA - BETA
 		SMR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
 		if SMR < 0:
 			SMR = SMR + 24
-#		SMS = RA + BETA
 		SMS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
 		if SMS < 0:
 			SMS = SMS + 24
+		if SMR < SMS:
+			SMC = (SMR + SMS) / 2
+		else:
+			SMC = (SMR + SMS) / 2 + 12
 # Время восхода/захода
+		MCh = int(SMC)
+		MCm = int(round((SMC - MCh) * 60))
 		MRh = int(SMR)
 		MRm = int(round(((SMR) - MRh) * 60))
 		MSh = int(SMS)
 		MSm = int(round(((SMS) - MSh) * 60))
+		if MCm == 60:
+			MCm = 0
+			MCh = MCh + 1
+		if MCm < 10:
+			MCx = '0'
+		else:
+			MCx = ''
 		if MRm == 60:
 			MRm = 0
 			MRh = MRh + 1
@@ -1288,6 +1331,7 @@ class MSNWeather2(Poll, Converter, object):
 			msnweather['Moonazimuth'] = '%s %s' % (Mazim, unichr(176).encode("latin-1"))
 			msnweather['Moonrise'] = '%s%s%s%s' % (MRh, unichr(58).encode("latin-1"), MRx, MRm)
 			msnweather['Moonset'] = '%s%s%s%s' % (MSh, unichr(58).encode("latin-1"), MSx, MSm)
+			msnweather['Moonculmination'] = '%s%s%s%s' % (MCh, unichr(58).encode("latin-1"), MCx, MCm)
 			msnweather['Moonphase'] = '%s' % phase
 			msnweather['Moonlight'] = '%s %s' % (light, unichr(37).encode("latin-1"))
 			msnweather['PiconMoon'] = '%s' % pic
@@ -1330,48 +1374,64 @@ class MSNWeather2(Poll, Converter, object):
 			info = msnweather['Mercuryrise']
 		if self.type is self.MERCURYSET:
 			info = msnweather['Mercuryset']
+		if self.type is self.MERCURYCULMINATION:
+			info = msnweather['Mercuryculmination']
 		if self.type is self.MERCURYAZIMUTH:
 			info = msnweather['Mercuryazimuth']
 		if self.type is self.VENUSRISE:
 			info = msnweather['Venusrise']
 		if self.type is self.VENUSSET:
 			info = msnweather['Venusset']
+		if self.type is self.VENUSCULMINATION:
+			info = msnweather['Venusculmination']
 		if self.type is self.VENUSAZIMUTH:
 			info = msnweather['Venusazimuth']
 		if self.type is self.MARSRISE:
 			info = msnweather['Marsrise']
 		if self.type is self.MARSSET:
 			info = msnweather['Marsset']
+		if self.type is self.MARSCULMINATION:
+			info = msnweather['Marsculmination']
 		if self.type is self.MARSAZIMUTH:
 			info = msnweather['Marsazimuth']
 		if self.type is self.JUPITERRISE:
 			info = msnweather['Jupiterrise']
 		if self.type is self.JUPITERSET:
 			info = msnweather['Jupiterset']
+		if self.type is self.JUPITERCULMINATION:
+			info = msnweather['Jupiterculmination']
 		if self.type is self.JUPITERAZIMUTH:
 			info = msnweather['Jupiterazimuth']
 		if self.type is self.SATURNRISE:
 			info = msnweather['Saturnrise']
 		if self.type is self.SATURNSET:
 			info = msnweather['Saturnset']
+		if self.type is self.SATURNCULMINATION:
+			info = msnweather['Saturnculmination']
 		if self.type is self.SATURNAZIMUTH:
 			info = msnweather['Saturnazimuth']
 		if self.type is self.URANUSRISE:
 			info = msnweather['Uranusrise']
 		if self.type is self.URANUSSET:
 			info = msnweather['Uranusset']
+		if self.type is self.URANUSCULMINATION:
+			info = msnweather['Uranusculmination']
 		if self.type is self.URANUSAZIMUTH:
 			info = msnweather['Uranusazimuth']
 		if self.type is self.NEPTUNERISE:
 			info = msnweather['Neptunerise']
 		if self.type is self.NEPTUNESET:
 			info = msnweather['Neptuneset']
+		if self.type is self.NEPTUNECULMINATION:
+			info = msnweather['Neptuneculmination']
 		if self.type is self.NEPTUNEAZIMUTH:
 			info = msnweather['Neptuneazimuth']
 		if self.type is self.MOONRISE:
 			info = msnweather['Moonrise']
 		if self.type is self.MOONSET:
 			info = msnweather['Moonset']
+		if self.type is self.MOONCULMINATION:
+			info = msnweather['Moonculmination']
 		if self.type is self.MOONDIST:
 			info = msnweather['Moondist']
 		if self.type is self.MOONAZIMUTH:

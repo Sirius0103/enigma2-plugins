@@ -99,7 +99,6 @@ if getDesktop(0).size().width() >= 1920: #FHD
 			<widget source="observationtime" render="Label" position="20,965" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget source="observationpoint" render="Label" position="320,350" size="560,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
 			<widget source="attribution" render="Label" position="170,965" size="800,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-
 			<widget source="yulianday" render="Label" position="1070,965" size="560,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
 			<widget source="risetxt" render="Label" position="250,415" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="settxt" render="Label" position="400,415" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
@@ -119,33 +118,40 @@ if getDesktop(0).size().width() >= 1920: #FHD
 			<widget source="solstice" render="Label" position="550,450" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="mercuryrise" render="Label" position="250,480" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="mercuryset" render="Label" position="400,480" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
+			<widget source="mercuryculmination" render="Label" position="550,480" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="mercuryazimuth" render="Label" position="700,480" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="venusset" render="Label" position="400,510" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="venusrise" render="Label" position="250,510" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
+			<widget source="venusculmination" render="Label" position="550,510" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="venusazimuth" render="Label" position="700,510" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="marsrise" render="Label" position="250,540" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="marsset" render="Label" position="400,540" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
+			<widget source="marsculmination" render="Label" position="550,540" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="marsazimuth" render="Label" position="700,540" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="jupiterrise" render="Label" position="250,570" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="jupiterset" render="Label" position="400,570" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
+			<widget source="jupiterculmination" render="Label" position="550,570" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="jupiterazimuth" render="Label" position="700,570" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="saturnrise" render="Label" position="250,600" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="saturnset" render="Label" position="400,600" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
+			<widget source="saturnculmination" render="Label" position="550,600" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="saturnazimuth" render="Label" position="700,600" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="uranusrise" render="Label" position="250,630" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="uranusset" render="Label" position="400,630" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
+			<widget source="uranusculmination" render="Label" position="550,630" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="uranusazimuth" render="Label" position="700,630" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="neptunerise" render="Label" position="250,660" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="neptuneset" render="Label" position="400,660" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
+			<widget source="neptuneculmination" render="Label" position="550,660" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="neptuneazimuth" render="Label" position="700,660" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="moonrise" render="Label" position="250,690" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="moonset" render="Label" position="400,690" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
+			<widget source="moonculmination" render="Label" position="550,690" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="moondist" render="Label" position="300,750" size="250,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
 			<widget source="moonazimuth" render="Label" position="700,690" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="moonlight" render="Label" position="300,810" size="250,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
 			<widget source="moonphase" render="Label" position="20,870" size="600,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget name="picmoon" position="280,750" size="90,90" zPosition="2" alphatest="blend" />
-
 			<widget source="temperaturetxt" render="Label" position="1180,45" size="300,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget source="feelsliketxt" render="Label" position="1180,75" size="300,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget source="humiditytxt" render="Label" position="1180,105" size="300,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
@@ -156,7 +162,6 @@ if getDesktop(0).size().width() >= 1920: #FHD
 			<widget source="humidity" render="Label" position="1530,105" size="250,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
 			<widget source="wind" render="Label" position="1430,135" size="350,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="right" transparent="1" />
 			<widget name="pic" position="1000,55" size="128,128" zPosition="2" alphatest="blend" />
-
 <!--		<widget source="temperaturetxt" render="Label" position="250,525" size="200,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget source="preciptxt" render="Label" position="250,550" size="250,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget source="daytxt" render="Label" position="250,475" size="200,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
@@ -344,28 +349,36 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self.sunculmination = {'Solstice':''}
 		self.mercuryrise = {'Mercuryrise':''}
 		self.mercuryset = {'Mercuryset':''}
+		self.mercuryculmination = {'Mercuryculmination':''}
 		self.mercuryazimuth = {'Mercuryazimuth':''}
 		self.venusrise = {'Venusrise':''}
 		self.venusset = {'Venusset':''}
+		self.venusculmination = {'Venusculmination':''}
 		self.venusazimuth = {'Venusazimuth':''}
 		self.marsrise = {'Marsrise':''}
 		self.marsset = {'Marsset':''}
+		self.marsculmination = {'Marsculmination':''}
 		self.marsazimuth = {'Marsazimuth':''}
 		self.jupiterrise = {'Jupiterrise':''}
 		self.jupiterset = {'Jupiterset':''}
+		self.jupiterculmination = {'Jupiterculmination':''}
 		self.jupiterazimuth = {'Jupiterazimuth':''}
 		self.saturnrise = {'Saturnrise':''}
 		self.saturnset = {'Saturnset':''}
+		self.saturnculmination = {'Saturnculmination':''}
 		self.saturnazimuth = {'Saturnazimuth':''}
 		self.uranusrise = {'Uranusrise':''}
 		self.uranusset = {'Uranusset':''}
+		self.uranusculmination = {'Uranusculmination':''}
 		self.uranusazimuth = {'Uranusazimuth':''}
 		self.neptunerise = {'Neptunerise':''}
 		self.neptuneset = {'Neptuneset':''}
+		self.neptuneculmination = {'Neptuneculmination':''}
 		self.neptuneazimuth = {'Neptuneazimuth':''}
 		self.moonrise = {'Moonrise':''}
 		self.moonset = {'Moonset':''}
 		self.moondist = {'Moondist':''}
+		self.moonculmination = {'Moonculmination':''}
 		self.moonazimuth = {'Moonazimuth':''}
 		self.moonphase = {'Moonphase':''}
 		self.moonlight = {'Moonlight':''}
@@ -437,42 +450,49 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self["Title"] = StaticText(_("Weather MSN"))
 
 		self["yuliandaytxt"] = StaticText(_("Julian day:"))
-		self["sunrisetxt"] = StaticText(_("Sunrise:"))
-		self["sunsettxt"] = StaticText(_("Sunset:"))
+		self["sunrisetxt"] = StaticText(_("Sun rise:"))
+		self["sunsettxt"] = StaticText(_("Sun set:"))
 		self["solsticetxt"] = StaticText(_("Solstice:"))
 #		self["sunculminationtxt"] = StaticText(_("Solstice:"))
-		self["mercuryrisetxt"] = StaticText(_("Mercuryrise:"))
-		self["mercurysettxt"] = StaticText(_("Mercuryset:"))
+		self["mercuryrisetxt"] = StaticText(_("Mercury rise:"))
+		self["mercurysettxt"] = StaticText(_("Mercury set:"))
+		self["mercuryculminationtxt"] = StaticText(_("Mercury culmination:"))
 		self["mercuryazimuthtxt"] = StaticText(_("Mercury azimuth:"))
-		self["venusrisetxt"] = StaticText(_("Venusrise:"))
-		self["venussettxt"] = StaticText(_("Venusset:"))
+		self["venusrisetxt"] = StaticText(_("Venus rise:"))
+		self["venussettxt"] = StaticText(_("Venus set:"))
+		self["venusculminationtxt"] = StaticText(_("Venus culmination:"))
 		self["venusazimuthtxt"] = StaticText(_("Venus azimuth:"))
-		self["marsrisetxt"] = StaticText(_("Marsrise:"))
-		self["marssettxt"] = StaticText(_("Marsset:"))
+		self["marsrisetxt"] = StaticText(_("Mars rise:"))
+		self["marssettxt"] = StaticText(_("Mars set:"))
+		self["marsculminationtxt"] = StaticText(_("Mars culmination:"))
 		self["marsazimuthtxt"] = StaticText(_("Mars azimuth:"))
-		self["jupiterrisetxt"] = StaticText(_("Jupiterrise:"))
-		self["jupitersettxt"] = StaticText(_("Jupiterset:"))
+		self["jupiterrisetxt"] = StaticText(_("Jupiter rise:"))
+		self["jupitersettxt"] = StaticText(_("Jupiter set:"))
+		self["jupiterculminationtxt"] = StaticText(_("Jupiter culmination:"))
 		self["jupiterazimuthtxt"] = StaticText(_("Jupiter azimuth:"))
-		self["saturnrisetxt"] = StaticText(_("Saturnrise:"))
-		self["saturnsettxt"] = StaticText(_("Saturnset:"))
+		self["saturnrisetxt"] = StaticText(_("Saturn rise:"))
+		self["saturnsettxt"] = StaticText(_("Saturn set:"))
+		self["saturnculminationtxt"] = StaticText(_("Saturn culmination:"))
 		self["saturnazimuthtxt"] = StaticText(_("Saturn azimuth:"))
-		self["uranusrisetxt"] = StaticText(_("Uranusrise:"))
-		self["uranussettxt"] = StaticText(_("Uranusset:"))
+		self["uranusrisetxt"] = StaticText(_("Uranus rise:"))
+		self["uranussettxt"] = StaticText(_("Uranus set:"))
+		self["uranusculminationtxt"] = StaticText(_("Uranus culmination:"))
 		self["uranusazimuthtxt"] = StaticText(_("Uranus azimuth:"))
-		self["neptunerisetxt"] = StaticText(_("Neptunerise:"))
-		self["neptunesettxt"] = StaticText(_("Neptuneset:"))
+		self["neptunerisetxt"] = StaticText(_("Neptune rise:"))
+		self["neptunesettxt"] = StaticText(_("Neptune set:"))
+		self["neptuneculminationtxt"] = StaticText(_("Neptune culmination:"))
 		self["neptuneazimuthtxt"] = StaticText(_("Neptune azimuth:"))
 		self["moondisttxt"] = StaticText(_("Moon distance:"))
+		self["moonculminationtxt"] = StaticText(_("Moon culmination:"))
 		self["moonazimuthtxt"] = StaticText(_("Moon azimutht:"))
-		self["moonrisetxt"] = StaticText(_("Moonrise:"))
-		self["moonsettxt"] = StaticText(_("Moonset:"))
-		self["moonlighttxt"] = StaticText(_("Moonlight:"))
+		self["moonrisetxt"] = StaticText(_("Moon rise:"))
+		self["moonsettxt"] = StaticText(_("Moon set:"))
+		self["moonlighttxt"] = StaticText(_("Moon light:"))
 
 		self["risetxt"] = StaticText(_("Rise:"))
 		self["settxt"] = StaticText(_("Set:"))
 		self["culminationtxt"] = StaticText(_("Culmination:"))
 		self["azimuthtxt"] = StaticText(_("Azimuth:"))
-
 		self["suntxt"] = StaticText(_("Sun:"))
 		self["mercurytxt"] = StaticText(_("Mercury:"))
 		self["venustxt"] = StaticText(_("Venus:"))
@@ -490,26 +510,34 @@ class WeatherMSN(ConfigListScreen, Screen):
 #		self["sunculmination"] = StaticText()
 		self["mercuryrise"] = StaticText()
 		self["mercuryset"] = StaticText()
+		self["mercuryculmination"] = StaticText()
 		self["mercuryazimuth"] = StaticText()
 		self["venusrise"] = StaticText()
 		self["venusset"] = StaticText()
+		self["venusculmination"] = StaticText()
 		self["venusazimuth"] = StaticText()
 		self["marsrise"] = StaticText()
 		self["marsset"] = StaticText()
+		self["marsculmination"] = StaticText()
 		self["marsazimuth"] = StaticText()
 		self["jupiterrise"] = StaticText()
 		self["jupiterset"] = StaticText()
+		self["jupiterculmination"] = StaticText()
 		self["jupiterazimuth"] = StaticText()
 		self["saturnrise"] = StaticText()
 		self["saturnset"] = StaticText()
+		self["saturnculmination"] = StaticText()
 		self["saturnazimuth"] = StaticText()
 		self["uranusrise"] = StaticText()
 		self["uranusset"] = StaticText()
+		self["uranusculmination"] = StaticText()
 		self["uranusazimuth"] = StaticText()
 		self["neptunerise"] = StaticText()
 		self["neptuneset"] = StaticText()
+		self["neptuneculmination"] = StaticText()
 		self["neptuneazimuth"] = StaticText()
 		self["moondist"] = StaticText()
+		self["moonculmination"] = StaticText()
 		self["moonazimuth"] = StaticText()
 		self["moonrise"] = StaticText()
 		self["moonset"] = StaticText()
@@ -771,7 +799,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		else:
 			year = year
 			month = month
-		JDN = day + int(365.25 * (year + 4716)) + int(30.6001 * (month + 1)) + 2 - int(year / 100) + int(year / 400) - 1524.5 # - 1522.61
+		JDN = day + int(365.25 * (year + 4716)) + int(30.6001 * (month + 1)) + 2 - int(year / 100) + int(year / 400) - 1524.5
 		JD = JDN + UT / 24
 # Звездное время
 		T = (JDN - 0.5 - 2451545) / 36525 # юлианское столетие на полночь по Гринвичу
@@ -982,19 +1010,30 @@ class WeatherMSN(ConfigListScreen, Screen):
 			RA = RA + 2 * PI
 		BETA = math.acos((math.cos(89.54 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол луны
 
-#		SMR = RA - BETA
 		SMR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
 		if SMR < 0:
 			SMR = SMR + 24
-#		SMS = RA + BETA
 		SMS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
 		if SMS < 0:
 			SMS = SMS + 24
+		if SMR < SMS:
+			SMC = (SMR + SMS) / 2
+		else:
+			SMC = (SMR + SMS) / 2 + 12
 # Время восхода/захода
+		MCh = int(SMC)
+		MCm = int(round((SMC - MCh) * 60))
 		MRh = int(SMR)
 		MRm = int(round(((SMR) - MRh) * 60))
 		MSh = int(SMS)
 		MSm = int(round(((SMS) - MSh) * 60))
+		if MCm == 60:
+			MCm = 0
+			MCh = MCh + 1
+		if MCm < 10:
+			MCx = '0'
+		else:
+			MCx = ''
 		if MRm == 60:
 			MRm = 0
 			MRh = MRh + 1
@@ -1371,6 +1410,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self.moonazimuth['Moonazimuth'] = '%s %s' % (Mazim, unichr(176).encode("latin-1"))
 			self.moonrise['Moonrise'] = '%s%s%s%s' % (MRh, unichr(58).encode("latin-1"), MRx, MRm)
 			self.moonset['Moonset'] = '%s%s%s%s' % (MSh, unichr(58).encode("latin-1"), MSx, MSm)
+			self.moonculmination['Moonculmination'] = '%s%s%s%s' % (MCh, unichr(58).encode("latin-1"), MCx, MCm)
 			self.moonphase['Moonphase'] = '%s' % phase
 			self.moonlight['Moonlight'] = '%s %s' % (light, unichr(37).encode("latin-1"))
 			self.picmoon['PicMoon'] = '%s' % pic
@@ -1638,6 +1678,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		else:
 			self["mercuryset"].text = _('n/a')
 			self.notdata = True
+		if self.mercuryculmination['Mercuryculmination'] is not '':
+			self["mercuryculmination"].text = '%s' % self.mercuryculmination['Mercuryculmination']
+		else:
+			self["mercuryculmination"].text = _('n/a')
+			self.notdata = True
 		if self.mercuryazimuth['Mercuryazimuth'] is not '':
 			self["mercuryazimuth"].text = '%s' % self.mercuryazimuth['Mercuryazimuth']
 		else:
@@ -1652,6 +1697,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self["venusset"].text = '%s' % self.venusset['Venusset']
 		else:
 			self["venusset"].text = _('n/a')
+			self.notdata = True
+		if self.venusculmination['Venusculmination'] is not '':
+			self["venusculmination"].text = '%s' % self.venusculmination['Venusculmination']
+		else:
+			self["venusculmination"].text = _('n/a')
 			self.notdata = True
 		if self.venusazimuth['Venusazimuth'] is not '':
 			self["venusazimuth"].text = '%s' % self.venusazimuth['Venusazimuth']
@@ -1668,6 +1718,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		else:
 			self["marsset"].text = _('n/a')
 			self.notdata = True
+		if self.marsculmination['Marsculmination'] is not '':
+			self["marsculmination"].text = '%s' % self.marsculmination['Marsculmination']
+		else:
+			self["marsculmination"].text = _('n/a')
+			self.notdata = True
 		if self.marsazimuth['Marsazimuth'] is not '':
 			self["marsazimuth"].text = '%s' % self.marsazimuth['Marsazimuth']
 		else:
@@ -1682,6 +1737,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self["jupiterset"].text = '%s' % self.jupiterset['Jupiterset']
 		else:
 			self["jupiterset"].text = _('n/a')
+			self.notdata = True
+		if self.jupiterculmination['Jupiterculmination'] is not '':
+			self["jupiterculmination"].text = '%s' % self.jupiterculmination['Jupiterculmination']
+		else:
+			self["jupiterculmination"].text = _('n/a')
 			self.notdata = True
 		if self.jupiterazimuth['Jupiterazimuth'] is not '':
 			self["jupiterazimuth"].text = '%s' % self.jupiterazimuth['Jupiterazimuth']
@@ -1698,6 +1758,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		else:
 			self["saturnset"].text = _('n/a')
 			self.notdata = True
+		if self.saturnculmination['Saturnculmination'] is not '':
+			self["saturnculmination"].text = '%s' % self.saturnculmination['Saturnculmination']
+		else:
+			self["saturnculmination"].text = _('n/a')
+			self.notdata = True
 		if self.saturnazimuth['Saturnazimuth'] is not '':
 			self["saturnazimuth"].text = '%s' % self.saturnazimuth['Saturnazimuth']
 		else:
@@ -1712,6 +1777,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self["uranusset"].text = '%s' % self.uranusset['Uranusset']
 		else:
 			self["uranusset"].text = _('n/a')
+			self.notdata = True
+		if self.uranusculmination['Uranusculmination'] is not '':
+			self["uranusculmination"].text = '%s' % self.uranusculmination['Uranusculmination']
+		else:
+			self["uranusculmination"].text = _('n/a')
 			self.notdata = True
 		if self.uranusazimuth['Uranusazimuth'] is not '':
 			self["uranusazimuth"].text = '%s' % self.uranusazimuth['Uranusazimuth']
@@ -1728,6 +1798,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		else:
 			self["neptuneset"].text = _('n/a')
 			self.notdata = True
+		if self.neptuneculmination['Neptuneculmination'] is not '':
+			self["neptuneculmination"].text = '%s' % self.neptuneculmination['Neptuneculmination']
+		else:
+			self["neptuneculmination"].text = _('n/a')
+			self.notdata = True
 		if self.neptuneazimuth['Neptuneazimuth'] is not '':
 			self["neptuneazimuth"].text = '%s' % self.neptuneazimuth['Neptuneazimuth']
 		else:
@@ -1742,6 +1817,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self["moonazimuth"].text = '%s' % self.moonazimuth['Moonazimuth']
 		else:
 			self["moonazimuth"].text = _('n/a')
+			self.notdata = True
+		if self.moonculmination['Moonculmination'] is not '':
+			self["moonculmination"].text = '%s' % self.moonculmination['Moonculmination']
+		else:
+			self["moonculmination"].text = _('n/a')
 			self.notdata = True
 		if self.moonrise['Moonrise'] is not '':
 			self["moonrise"].text = '%s' % self.moonrise['Moonrise']
