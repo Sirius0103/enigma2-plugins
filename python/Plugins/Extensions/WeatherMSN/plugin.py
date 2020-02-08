@@ -1010,16 +1010,21 @@ class WeatherMSN(ConfigListScreen, Screen):
 			RA = RA + 2 * PI
 		BETA = math.acos((math.cos(89.54 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол луны
 
+#		SMR = RA - BETA
 		SMR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
 		if SMR < 0:
 			SMR = SMR + 24
+#		SMS = RA + BETA
 		SMS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
 		if SMS < 0:
 			SMS = SMS + 24
+#		SMC = (RA - BETA) + (RA + BETA)
 		if SMR < SMS:
 			SMC = (SMR + SMS) / 2
 		else:
 			SMC = (SMR + SMS) / 2 + 12
+			if SMC >= 24:
+				SMC = SMC - 24
 # Время восхода/захода
 		MCh = int(SMC)
 		MCm = int(round((SMC - MCh) * 60))
