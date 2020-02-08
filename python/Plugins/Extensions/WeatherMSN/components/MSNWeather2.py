@@ -710,12 +710,10 @@ class MSNWeather2(Poll, Converter, object):
 		DS = (1.000001018 * (1 - EO * EO)) / (EO * math.cos((MS + CS) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		SLong = LS + CS - (20.4898 / 3600 / DS) # истинная долгота солнца
 		EPS = 23.43929111 - 0.01300416667 * T - 0.00000016389 * T * T + 0.00000050361 * T * T * T # наклон эклиптики
-
 #		RA = math.atan2(math.sin(SLong * DEG2RAD) * math.cos(EPS * DEG2RAD), math.cos(SLong * DEG2RAD)) * RAD2DEG  # геоцентрическое прямое восхождение
 #		if RA < 0:
 #			RA = RA + 2 * PI
 #		QS = math.asin(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(STT - ALFA)) + 0.8332 * DEG2RAD # высота солнца над горизонтом на момент времени в радианах
-
 		DEC = math.asin(math.sin(EPS * DEG2RAD) * math.sin(SLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение солнца
 		ALFA = (7.53 * math.cos(LS * DEG2RAD) + 1.5 * math.sin(LS * DEG2RAD) - 9.87 * math.sin(2 * LS * DEG2RAD)) / 60 # уравнение времени
 		BETA = math.acos((math.cos(90.51 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG
@@ -1117,6 +1115,15 @@ class MSNWeather2(Poll, Converter, object):
 			+ 0.001165 * math.cos((2 * MS + MM) * DEG2RAD) * EM * EM\
 			+ 0.008752 * math.cos((2 * DM - MM - 2 * FM) * DEG2RAD)
 
+		IM = 180 - DM\
+			- 6.289 * math.sin(MM * DEG2RAD)\
+			+ 2.100 * math.sin(MS * DEG2RAD)\
+			- 1.274 * math.sin((2 * DM - MM) * DEG2RAD)\
+			- 0.658 * math.sin(2 * DM * DEG2RAD)\
+			- 0.214 * math.sin(2 * MM * DEG2RAD)\
+			- 0.114 * math.sin(DM * DEG2RAD)
+		pha1 = (1 + math.cos(IM * DEG2RAD)) / 2
+
 		MLat = EB # широта луны
 		MLong = math.fmod(LM + EL, 360) # долгота луны
 		if MLong < 0:
@@ -1132,15 +1139,6 @@ class MSNWeather2(Poll, Converter, object):
 		H = 90 - Z # угол места
 		AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 		Mazim = round(AZ, 1)
-
-		IM = 180 - DM\
-			- 6.289 * math.sin(MM * DEG2RAD)\
-			+ 2.100 * math.sin(MS * DEG2RAD)\
-			- 1.274 * math.sin((2 * DM - MM) * DEG2RAD)\
-			- 0.658 * math.sin(2 * DM * DEG2RAD)\
-			- 0.214 * math.sin(2 * MM * DEG2RAD)\
-			- 0.114 * math.sin(DM * DEG2RAD)
-		pha1 = (1 + math.cos(IM * DEG2RAD)) / 2
 #
 		T = (JD + 1 / 24 - 2451545) / 36525
 		DM = 297.8501921 + 445267.114034 * T - 0.0018819 * T * T + T * T * T / 545868 - T * T * T * T / 113065000 # ср удлинение луны
