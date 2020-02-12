@@ -1525,135 +1525,30 @@ class WeatherMSN(ConfigListScreen, Screen):
 		A2 = 53.09 + 479264.29 * T
 		A3 = 313.45 + 481266.484 * T
 
-		EL = 6.288774 * math.sin(MM * DEG2RAD)\
-			+ 1.274027 * math.sin((2 * DM - MM) * DEG2RAD)\
-			+ 0.658314 * math.sin(2 * DM * DEG2RAD)\
-			+ 0.213618 * math.sin(2 * MM * DEG2RAD)\
-			- 0.185116 * math.sin(MS * DEG2RAD) * EM\
-			- 0.114332 * math.sin(2 * FM * DEG2RAD)\
-			+ 0.058793 * math.sin((2 * DM - 2 * MM) * DEG2RAD)\
-			+ 0.057066 * math.sin((2 * DM - MS - MM) * DEG2RAD) * EM\
-			+ 0.053322 * math.sin((2 * DM + MM) * DEG2RAD)\
-			+ 0.045758 * math.sin((2 * DM - MS) * DEG2RAD) * EM\
-			- 0.040923 * math.sin((MM - MS) * DEG2RAD)  * EM\
-			- 0.034720 * math.sin(DM * DEG2RAD)\
-			- 0.030383 * math.sin((MS + MM) * DEG2RAD) * EM\
-			+ 0.015327 * math.sin((2 * DM - 2 * FM) * DEG2RAD)\
-			- 0.012528 * math.sin((2 * FM + MM) * DEG2RAD)\
-			+ 0.010980 * math.sin((2 * FM - MM) * DEG2RAD)\
-			+ 0.010675 * math.sin((4 * DM - MM) * DEG2RAD)\
-			+ 0.010034 * math.sin(3 * MM * DEG2RAD)\
-			+ 0.008548 * math.sin((4 * DM - 2 * MM) * DEG2RAD)\
-			- 0.007888 * math.sin((2 * DM + MS - MM) * DEG2RAD) * EM\
-			- 0.006766 * math.sin((2 * DM + MS) * DEG2RAD) * EM\
-			- 0.005163 * math.sin((MM - DM) * DEG2RAD)\
-			+ 0.004987 * math.sin((MS + DM) * DEG2RAD) * EM\
-			+ 0.004036 * math.sin((2 * DM + MM - MS) * DEG2RAD) * EM\
-			+ 0.003994 * math.sin((2 * MM + 2 * DM) * DEG2RAD)\
-			+ 0.003861 * math.sin(4 * DM * DEG2RAD)\
-			+ 0.003665 * math.sin((2 * DM - 3 * MM) * DEG2RAD)\
-			- 0.002689 * math.sin((2 * MM - MS) * DEG2RAD) * EM\
-			- 0.002602 * math.sin((2 * DM + 2 * FM - MM) * DEG2RAD)\
-			+ 0.002390 * math.sin((2 * DM - 2 * MM - MS) * DEG2RAD) * EM\
-			- 0.002348 * math.sin((MM + DM) * DEG2RAD)\
-			+ 0.002236 * math.sin((2 * DM - 2 * MS) * DEG2RAD) * EM * EM\
-			- 0.002120 * math.sin((2 * MM + MS) * DEG2RAD) * EM\
-			- 0.002069 * math.sin(2 * MS * DEG2RAD) * EM * EM\
-			+ 0.002048 * math.sin((2 * DM - 2 * MS - MM) * DEG2RAD) * EM * EM\
-			- 0.001773 * math.sin((2 * DM - 2 * FM + MM) * DEG2RAD)\
-			- 0.001595 * math.sin((2 * DM + 2 * FM) * DEG2RAD)\
-			+ 0.001215 * math.sin((4 * DM - MS - MM) * DEG2RAD) * EM\
-			- 0.001110 * math.sin((2 * MM + 2 * FM) * DEG2RAD)\
-			- 0.000892 * math.sin((3 * DM - MM) * DEG2RAD)\
-			- 0.000810 * math.sin((2 * DM + MS + MM) * DEG2RAD) * EM\
-			+ 0.000759 * math.sin((4 * DM - 2 * MM - MS) * DEG2RAD) * EM\
-			- 0.000713 * math.sin((2 * MS - MM) * DEG2RAD) * EM * EM\
-			- 0.000700 * math.sin((2 * DM + 2 * MS - MM) * DEG2RAD) * EM * EM\
-			+ 0.000691 * math.sin((2 * DM - 2 * MM + MS) * DEG2RAD) * EM\
-			+ 0.000596 * math.sin((2 * DM - 2 * FM - MS) * DEG2RAD) * EM\
-			+ 0.000549 * math.sin((4 * DM + MM) * DEG2RAD)\
-			+ 0.000537 * math.sin(4 * MM * DEG2RAD)\
-			+ 0.000520 * math.sin((4 * DM - MS) * DEG2RAD) * EM\
-			- 0.000487 * math.sin((2 * MM - DM) * DEG2RAD)\
-			- 0.000399 * math.sin((2 * DM - 2 * FM + MS) * DEG2RAD) * EM\
-			- 0.000381 * math.sin((2 * MM - 2 * FM) * DEG2RAD)\
-			+ 0.000351 * math.sin((DM + MS + MM) * DEG2RAD) * EM\
-			- 0.000340 * math.sin((3 * DM - 2 * MM) * DEG2RAD)\
-			+ 0.000330 * math.sin((4 * DM - 3 * MM) * DEG2RAD)\
-			+ 0.000327 * math.sin((2 * DM + 2 * MM - MS) * DEG2RAD) * EM\
-			- 0.000323 * math.sin((2 * MS + MM) * DEG2RAD) * EM * EM\
-			+ 0.000299 * math.sin((DM + MS - MM) * DEG2RAD) * EM\
-			+ 0.000294 * math.sin((2 * DM + 3 * MM) * DEG2RAD)\
-			+ 0.003958 * math.sin(A1 * DEG2RAD)\
-			+ 0.001962 * math.sin((LM - FM) * DEG2RAD)\
-			+ 0.000318 * math.sin(A2 * DEG2RAD)
+		EL = 6.289 * math.sin(MM * DEG2RAD)\
+			+ 1.274 * math.sin((2 * DM - MM) * DEG2RAD)\
+			+ 0.658 * math.sin(2 * DM * DEG2RAD)\
+			+ 0.214 * math.sin(2 * MM * DEG2RAD)\
+			- 0.186 * math.sin(MS * DEG2RAD)\
+			- 0.114 * math.sin(2 * FM * DEG2RAD)\
+			+ 0.059 * math.sin((2 * DM - 2 * MM) * DEG2RAD)\
+			+ 0.057 * math.sin((2 * DM - MS - MM) * DEG2RAD)\
+			+ 0.053 * math.sin((2 * DM + MM) * DEG2RAD)\
+			+ 0.046 * math.sin((2 * DM - MS) * DEG2RAD)\
+			- 0.041 * math.sin((MS - MM) * DEG2RAD)\
+			- 0.035 * math.sin(DM * DEG2RAD)\
+			- 0.030 * math.sin((MS + MM) * DEG2RAD)
 
-		EB = 5.128122 * math.sin(FM * DEG2RAD)\
-			+ 0.280602 * math.sin((MM + FM) * DEG2RAD)\
-			+ 0.277693 * math.sin((MM - FM) * DEG2RAD)\
-			+ 0.173237 * math.sin((2 * DM - FM) * DEG2RAD)\
-			+ 0.055413 * math.sin((2 * DM + FM - MM) * DEG2RAD)\
-			+ 0.046271 * math.sin((2 * DM - FM - MM) * DEG2RAD)\
-			+ 0.032573 * math.sin((2 * DM + FM) * DEG2RAD)\
-			+ 0.017198 * math.sin((2 * MM + FM) * DEG2RAD)\
-			+ 0.009266 * math.sin((2 * DM + MM - FM) * DEG2RAD)\
-			+ 0.008822 * math.sin((2 * MM - FM) * DEG2RAD)\
-			+ 0.008216 * math.sin((2 * DM - MS - FM) * DEG2RAD) * EM\
-			+ 0.004324 * math.sin((2 * DM - 2 * MM - FM) * DEG2RAD)\
-			+ 0.004200 * math.sin((2 * DM + FM + MM) * DEG2RAD)\
-			- 0.003359 * math.sin((2 * DM + MS -FM) * DEG2RAD) * EM\
-			+ 0.002463 * math.sin((2 * DM + FM - MS - MM) * DEG2RAD) * EM\
-			+ 0.002211 * math.sin((2 * DM + FM - MS) * DEG2RAD) * EM\
-			+ 0.002065 * math.sin((2 * DM - FM - MS - MM) * DEG2RAD) * EM\
-			- 0.001870 * math.sin((FM - MS + MM) * DEG2RAD) * EM\
-			+ 0.001828 * math.sin((4 * DM - FM - MM) * DEG2RAD)\
-			- 0.001794 * math.sin((FM + MS) * DEG2RAD) * EM\
-			- 0.001749 * math.sin(3 * FM * DEG2RAD)\
-			- 0.001565 * math.sin((FM + MS - MM) * DEG2RAD) * EM\
-			- 0.001491 * math.sin((FM + DM) * DEG2RAD)\
-			- 0.001475 * math.sin((FM + MS + MM) * DEG2RAD) * EM\
-			- 0.001410 * math.sin((MM + MS - FM) * DEG2RAD) * EM\
-			- 0.001344 * math.sin((FM - MS) * DEG2RAD) * EM\
-			- 0.001335 * math.sin((FM - DM) * DEG2RAD)\
-			+ 0.001107 * math.sin((3 * MM + FM) * DEG2RAD)\
-			+ 0.001021 * math.sin((4 * DM - FM) * DEG2RAD)\
-			+ 0.000833 * math.sin((4 * DM + FM - MM) * DEG2RAD)\
-			+ 0.000777 * math.sin((3 * FM - MM) * DEG2RAD)\
-			+ 0.000671 * math.sin((4 * DM - 2 * MM + FM) * DEG2RAD)\
-			+ 0.000607 * math.sin((2 * DM - 3 * FM) * DEG2RAD)\
-			+ 0.000596 * math.sin((2 * DM + 2 * MM - FM) * DEG2RAD)\
-			+ 0.000491 * math.sin((2 * DM + MM - MS - FM) * DEG2RAD) * EM\
-			- 0.000451 * math.sin((2 * MM - 2 * DM + FM) * DEG2RAD)\
-			+ 0.000439 * math.sin((3 * MM - FM) * DEG2RAD)\
-			+ 0.000422 * math.sin((2 * DM + 2 * MM + FM) * DEG2RAD)\
-			+ 0.000421 * math.sin((2 * DM - 3 * MM - FM) * DEG2RAD)\
-			- 0.000366 * math.sin((2 * DM + MS + FM - MM) * DEG2RAD) * EM\
-			- 0.000351 * math.sin((2 * DM + MS + FM) * DEG2RAD) * EM\
-			+ 0.000331 * math.sin((4 * DM + FM) * DEG2RAD)\
-			+ 0.000315 * math.sin((2 * DM + FM - MS + MM) * DEG2RAD) * EM\
-			+ 0.000302 * math.sin((2 * DM - 2 * MS - FM) * DEG2RAD) * EM * EM\
-			- 0.000283 * math.sin((3 * FM + MM) * DEG2RAD)\
-			- 0.000229 * math.sin((2 * DM + MS + MM - FM) * DEG2RAD) * EM\
-			+ 0.000223 * math.sin((DM + MS - FM) * DEG2RAD) * EM\
-			+ 0.000223 * math.sin((DM + MS + FM) * DEG2RAD) * EM\
-			- 0.000220 * math.sin((MS - 2 * MM - FM) * DEG2RAD) * EM\
-			- 0.000220 * math.sin((2 * DM + MS - MM - FM) * DEG2RAD) * EM\
-			- 0.000185 * math.sin((DM + MM + FM) * DEG2RAD)\
-			+ 0.000181 * math.sin((2 * DM - MS - 2 * MM - FM) * DEG2RAD) * EM\
-			- 0.000177 * math.sin((2 * MM + MS + FM) * DEG2RAD) * EM\
-			+ 0.000176 * math.sin((4 * DM - 2 * MM - FM) * DEG2RAD)\
-			+ 0.000166 * math.sin((4 * DM - MS - MM - FM) * DEG2RAD) * EM\
-			- 0.000164 * math.sin((DM + MM - FM) * DEG2RAD)\
-			+ 0.000132 * math.sin((4 * DM + MM - FM) * DEG2RAD)\
-			- 0.000119 * math.sin((DM - MM - FM) * DEG2RAD)\
-			+ 0.000115 * math.sin((4 * DM - MS - FM) * DEG2RAD) * EM\
-			+ 0.000107 * math.sin((2 * DM - 2 * MS + FM) * DEG2RAD) * EM * EM\
-			- 0.002235 * math.sin(LM * DEG2RAD)\
-			+ 0.000382 * math.sin(A3 * DEG2RAD)\
-			+ 0.000175 * math.sin((A1 - FM) * DEG2RAD)\
-			+ 0.000175 * math.sin((A1 + FM) * DEG2RAD)\
-			+ 0.000127 * math.sin((LM - MM) * DEG2RAD)\
-			- 0.000115 * math.sin((LM + MM) * DEG2RAD)
+		EB = 5.128 * math.sin(FM * DEG2RAD)\
+			+ 0.281 * math.sin((MM + FM) * DEG2RAD)\
+			+ 0.278 * math.sin((MM - FM) * DEG2RAD)\
+			+ 0.173 * math.sin((2 * DM - FM) * DEG2RAD)\
+			+ 0.055 * math.sin((2 * DM - MM + FM) * DEG2RAD)\
+			+ 0.046 * math.sin((2 * DM - MM - FM) * DEG2RAD)\
+			+ 0.033 * math.sin((2 * DM + FM) * DEG2RAD)\
+			+ 0.017 * math.sin((2 * MM + FM) * DEG2RAD)\
+			+ 0.009 * math.sin((2 * DM + MM - FM) * DEG2RAD)\
+			+ 0.009 * math.sin((2 * MM - FM) * DEG2RAD)
 
 		MLat = math.fmod(EB, 360) # широта
 		MLong = math.fmod(LM + EL, 360) # долгота
@@ -2094,135 +1989,30 @@ class WeatherMSN(ConfigListScreen, Screen):
 		A2 = 53.09 + 479264.29 * T
 		A3 = 313.45 + 481266.484 * T
 
-		EL = 6.288774 * math.sin(MM * DEG2RAD)\
-			+ 1.274027 * math.sin((2 * DM - MM) * DEG2RAD)\
-			+ 0.658314 * math.sin(2 * DM * DEG2RAD)\
-			+ 0.213618 * math.sin(2 * MM * DEG2RAD)\
-			- 0.185116 * math.sin(MS * DEG2RAD) * EM\
-			- 0.114332 * math.sin(2 * FM * DEG2RAD)\
-			+ 0.058793 * math.sin((2 * DM - 2 * MM) * DEG2RAD)\
-			+ 0.057066 * math.sin((2 * DM - MS - MM) * DEG2RAD) * EM\
-			+ 0.053322 * math.sin((2 * DM + MM) * DEG2RAD)\
-			+ 0.045758 * math.sin((2 * DM - MS) * DEG2RAD) * EM\
-			- 0.040923 * math.sin((MM - MS) * DEG2RAD)  * EM\
-			- 0.034720 * math.sin(DM * DEG2RAD)\
-			- 0.030383 * math.sin((MS + MM) * DEG2RAD) * EM\
-			+ 0.015327 * math.sin((2 * DM - 2 * FM) * DEG2RAD)\
-			- 0.012528 * math.sin((2 * FM + MM) * DEG2RAD)\
-			+ 0.010980 * math.sin((2 * FM - MM) * DEG2RAD)\
-			+ 0.010675 * math.sin((4 * DM - MM) * DEG2RAD)\
-			+ 0.010034 * math.sin(3 * MM * DEG2RAD)\
-			+ 0.008548 * math.sin((4 * DM - 2 * MM) * DEG2RAD)\
-			- 0.007888 * math.sin((2 * DM + MS - MM) * DEG2RAD) * EM\
-			- 0.006766 * math.sin((2 * DM + MS) * DEG2RAD) * EM\
-			- 0.005163 * math.sin((MM - DM) * DEG2RAD)\
-			+ 0.004987 * math.sin((MS + DM) * DEG2RAD) * EM\
-			+ 0.004036 * math.sin((2 * DM + MM - MS) * DEG2RAD) * EM\
-			+ 0.003994 * math.sin((2 * MM + 2 * DM) * DEG2RAD)\
-			+ 0.003861 * math.sin(4 * DM * DEG2RAD)\
-			+ 0.003665 * math.sin((2 * DM - 3 * MM) * DEG2RAD)\
-			- 0.002689 * math.sin((2 * MM - MS) * DEG2RAD) * EM\
-			- 0.002602 * math.sin((2 * DM + 2 * FM - MM) * DEG2RAD)\
-			+ 0.002390 * math.sin((2 * DM - 2 * MM - MS) * DEG2RAD) * EM\
-			- 0.002348 * math.sin((MM + DM) * DEG2RAD)\
-			+ 0.002236 * math.sin((2 * DM - 2 * MS) * DEG2RAD) * EM * EM\
-			- 0.002120 * math.sin((2 * MM + MS) * DEG2RAD) * EM\
-			- 0.002069 * math.sin(2 * MS * DEG2RAD) * EM * EM\
-			+ 0.002048 * math.sin((2 * DM - 2 * MS - MM) * DEG2RAD) * EM * EM\
-			- 0.001773 * math.sin((2 * DM - 2 * FM + MM) * DEG2RAD)\
-			- 0.001595 * math.sin((2 * DM + 2 * FM) * DEG2RAD)\
-			+ 0.001215 * math.sin((4 * DM - MS - MM) * DEG2RAD) * EM\
-			- 0.001110 * math.sin((2 * MM + 2 * FM) * DEG2RAD)\
-			- 0.000892 * math.sin((3 * DM - MM) * DEG2RAD)\
-			- 0.000810 * math.sin((2 * DM + MS + MM) * DEG2RAD) * EM\
-			+ 0.000759 * math.sin((4 * DM - 2 * MM - MS) * DEG2RAD) * EM\
-			- 0.000713 * math.sin((2 * MS - MM) * DEG2RAD) * EM * EM\
-			- 0.000700 * math.sin((2 * DM + 2 * MS - MM) * DEG2RAD) * EM * EM\
-			+ 0.000691 * math.sin((2 * DM - 2 * MM + MS) * DEG2RAD) * EM\
-			+ 0.000596 * math.sin((2 * DM - 2 * FM - MS) * DEG2RAD) * EM\
-			+ 0.000549 * math.sin((4 * DM + MM) * DEG2RAD)\
-			+ 0.000537 * math.sin(4 * MM * DEG2RAD)\
-			+ 0.000520 * math.sin((4 * DM - MS) * DEG2RAD) * EM\
-			- 0.000487 * math.sin((2 * MM - DM) * DEG2RAD)\
-			- 0.000399 * math.sin((2 * DM - 2 * FM + MS) * DEG2RAD) * EM\
-			- 0.000381 * math.sin((2 * MM - 2 * FM) * DEG2RAD)\
-			+ 0.000351 * math.sin((DM + MS + MM) * DEG2RAD) * EM\
-			- 0.000340 * math.sin((3 * DM - 2 * MM) * DEG2RAD)\
-			+ 0.000330 * math.sin((4 * DM - 3 * MM) * DEG2RAD)\
-			+ 0.000327 * math.sin((2 * DM + 2 * MM - MS) * DEG2RAD) * EM\
-			- 0.000323 * math.sin((2 * MS + MM) * DEG2RAD) * EM * EM\
-			+ 0.000299 * math.sin((DM + MS - MM) * DEG2RAD) * EM\
-			+ 0.000294 * math.sin((2 * DM + 3 * MM) * DEG2RAD)\
-			+ 0.003958 * math.sin(A1 * DEG2RAD)\
-			+ 0.001962 * math.sin((LM - FM) * DEG2RAD)\
-			+ 0.000318 * math.sin(A2 * DEG2RAD)
+		EL = 6.289 * math.sin(MM * DEG2RAD)\
+			+ 1.274 * math.sin((2 * DM - MM) * DEG2RAD)\
+			+ 0.658 * math.sin(2 * DM * DEG2RAD)\
+			+ 0.214 * math.sin(2 * MM * DEG2RAD)\
+			- 0.186 * math.sin(MS * DEG2RAD)\
+			- 0.114 * math.sin(2 * FM * DEG2RAD)\
+			+ 0.059 * math.sin((2 * DM - 2 * MM) * DEG2RAD)\
+			+ 0.057 * math.sin((2 * DM - MS - MM) * DEG2RAD)\
+			+ 0.053 * math.sin((2 * DM + MM) * DEG2RAD)\
+			+ 0.046 * math.sin((2 * DM - MS) * DEG2RAD)\
+			- 0.041 * math.sin((MS - MM) * DEG2RAD)\
+			- 0.035 * math.sin(DM * DEG2RAD)\
+			- 0.030 * math.sin((MS + MM) * DEG2RAD)
 
-		EB = 5.128122 * math.sin(FM * DEG2RAD)\
-			+ 0.280602 * math.sin((MM + FM) * DEG2RAD)\
-			+ 0.277693 * math.sin((MM - FM) * DEG2RAD)\
-			+ 0.173237 * math.sin((2 * DM - FM) * DEG2RAD)\
-			+ 0.055413 * math.sin((2 * DM + FM - MM) * DEG2RAD)\
-			+ 0.046271 * math.sin((2 * DM - FM - MM) * DEG2RAD)\
-			+ 0.032573 * math.sin((2 * DM + FM) * DEG2RAD)\
-			+ 0.017198 * math.sin((2 * MM + FM) * DEG2RAD)\
-			+ 0.009266 * math.sin((2 * DM + MM - FM) * DEG2RAD)\
-			+ 0.008822 * math.sin((2 * MM - FM) * DEG2RAD)\
-			+ 0.008216 * math.sin((2 * DM - MS - FM) * DEG2RAD) * EM\
-			+ 0.004324 * math.sin((2 * DM - 2 * MM - FM) * DEG2RAD)\
-			+ 0.004200 * math.sin((2 * DM + FM + MM) * DEG2RAD)\
-			- 0.003359 * math.sin((2 * DM + MS -FM) * DEG2RAD) * EM\
-			+ 0.002463 * math.sin((2 * DM + FM - MS - MM) * DEG2RAD) * EM\
-			+ 0.002211 * math.sin((2 * DM + FM - MS) * DEG2RAD) * EM\
-			+ 0.002065 * math.sin((2 * DM - FM - MS - MM) * DEG2RAD) * EM\
-			- 0.001870 * math.sin((FM - MS + MM) * DEG2RAD) * EM\
-			+ 0.001828 * math.sin((4 * DM - FM - MM) * DEG2RAD)\
-			- 0.001794 * math.sin((FM + MS) * DEG2RAD) * EM\
-			- 0.001749 * math.sin(3 * FM * DEG2RAD)\
-			- 0.001565 * math.sin((FM + MS - MM) * DEG2RAD) * EM\
-			- 0.001491 * math.sin((FM + DM) * DEG2RAD)\
-			- 0.001475 * math.sin((FM + MS + MM) * DEG2RAD) * EM\
-			- 0.001410 * math.sin((MM + MS - FM) * DEG2RAD) * EM\
-			- 0.001344 * math.sin((FM - MS) * DEG2RAD) * EM\
-			- 0.001335 * math.sin((FM - DM) * DEG2RAD)\
-			+ 0.001107 * math.sin((3 * MM + FM) * DEG2RAD)\
-			+ 0.001021 * math.sin((4 * DM - FM) * DEG2RAD)\
-			+ 0.000833 * math.sin((4 * DM + FM - MM) * DEG2RAD)\
-			+ 0.000777 * math.sin((3 * FM - MM) * DEG2RAD)\
-			+ 0.000671 * math.sin((4 * DM - 2 * MM + FM) * DEG2RAD)\
-			+ 0.000607 * math.sin((2 * DM - 3 * FM) * DEG2RAD)\
-			+ 0.000596 * math.sin((2 * DM + 2 * MM - FM) * DEG2RAD)\
-			+ 0.000491 * math.sin((2 * DM + MM - MS - FM) * DEG2RAD) * EM\
-			- 0.000451 * math.sin((2 * MM - 2 * DM + FM) * DEG2RAD)\
-			+ 0.000439 * math.sin((3 * MM - FM) * DEG2RAD)\
-			+ 0.000422 * math.sin((2 * DM + 2 * MM + FM) * DEG2RAD)\
-			+ 0.000421 * math.sin((2 * DM - 3 * MM - FM) * DEG2RAD)\
-			- 0.000366 * math.sin((2 * DM + MS + FM - MM) * DEG2RAD) * EM\
-			- 0.000351 * math.sin((2 * DM + MS + FM) * DEG2RAD) * EM\
-			+ 0.000331 * math.sin((4 * DM + FM) * DEG2RAD)\
-			+ 0.000315 * math.sin((2 * DM + FM - MS + MM) * DEG2RAD) * EM\
-			+ 0.000302 * math.sin((2 * DM - 2 * MS - FM) * DEG2RAD) * EM * EM\
-			- 0.000283 * math.sin((3 * FM + MM) * DEG2RAD)\
-			- 0.000229 * math.sin((2 * DM + MS + MM - FM) * DEG2RAD) * EM\
-			+ 0.000223 * math.sin((DM + MS - FM) * DEG2RAD) * EM\
-			+ 0.000223 * math.sin((DM + MS + FM) * DEG2RAD) * EM\
-			- 0.000220 * math.sin((MS - 2 * MM - FM) * DEG2RAD) * EM\
-			- 0.000220 * math.sin((2 * DM + MS - MM - FM) * DEG2RAD) * EM\
-			- 0.000185 * math.sin((DM + MM + FM) * DEG2RAD)\
-			+ 0.000181 * math.sin((2 * DM - MS - 2 * MM - FM) * DEG2RAD) * EM\
-			- 0.000177 * math.sin((2 * MM + MS + FM) * DEG2RAD) * EM\
-			+ 0.000176 * math.sin((4 * DM - 2 * MM - FM) * DEG2RAD)\
-			+ 0.000166 * math.sin((4 * DM - MS - MM - FM) * DEG2RAD) * EM\
-			- 0.000164 * math.sin((DM + MM - FM) * DEG2RAD)\
-			+ 0.000132 * math.sin((4 * DM + MM - FM) * DEG2RAD)\
-			- 0.000119 * math.sin((DM - MM - FM) * DEG2RAD)\
-			+ 0.000115 * math.sin((4 * DM - MS - FM) * DEG2RAD) * EM\
-			+ 0.000107 * math.sin((2 * DM - 2 * MS + FM) * DEG2RAD) * EM * EM\
-			- 0.002235 * math.sin(LM * DEG2RAD)\
-			+ 0.000382 * math.sin(A3 * DEG2RAD)\
-			+ 0.000175 * math.sin((A1 - FM) * DEG2RAD)\
-			+ 0.000175 * math.sin((A1 + FM) * DEG2RAD)\
-			+ 0.000127 * math.sin((LM - MM) * DEG2RAD)\
-			- 0.000115 * math.sin((LM + MM) * DEG2RAD)
+		EB = 5.128 * math.sin(FM * DEG2RAD)\
+			+ 0.281 * math.sin((MM + FM) * DEG2RAD)\
+			+ 0.278 * math.sin((MM - FM) * DEG2RAD)\
+			+ 0.173 * math.sin((2 * DM - FM) * DEG2RAD)\
+			+ 0.055 * math.sin((2 * DM - MM + FM) * DEG2RAD)\
+			+ 0.046 * math.sin((2 * DM - MM - FM) * DEG2RAD)\
+			+ 0.033 * math.sin((2 * DM + FM) * DEG2RAD)\
+			+ 0.017 * math.sin((2 * MM + FM) * DEG2RAD)\
+			+ 0.009 * math.sin((2 * DM + MM - FM) * DEG2RAD)\
+			+ 0.009 * math.sin((2 * MM - FM) * DEG2RAD)
 
 		ER = - 20.905355 * math.cos(MM * DEG2RAD)\
 			- 3.699111 * math.cos((2 * DM - MM) * DEG2RAD)\
@@ -2247,29 +2037,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			- 0.008379 * math.cos((DM - MM) * DEG2RAD)\
 			- 0.016675 * math.cos((DM + MS) * DEG2RAD) * EM\
 			- 0.012831 * math.cos((2 * DM - MS + MM) * DEG2RAD) * EM\
-			- 0.010445 * math.cos((2 * DM + 2 * MM) * DEG2RAD)\
-			- 0.011650 * math.cos(4 * DM * DEG2RAD)\
-			+ 0.014403 * math.cos((2 * DM - 3 * MM) * DEG2RAD)\
-			- 0.007003 * math.cos((MS - 2 * MM) * DEG2RAD) * EM\
-			+ 0.010056 * math.cos((2 * DM - MS - 2 * MM) * DEG2RAD) * EM\
-			+ 0.006322 * math.cos((DM + MM) * DEG2RAD)\
-			- 0.009884 * math.cos((2 * DM - 2 * MS) * DEG2RAD) * EM * EM\
-			+ 0.005751 * math.cos((MS + 2 * MM) * DEG2RAD) * EM\
-			- 0.004950 * math.cos((2 * DM - 2 * MS - MM) * DEG2RAD) * EM * EM\
-			+ 0.004130 * math.cos((2 * DM + MM - 2 * FM) * DEG2RAD)\
-			- 0.003958 * math.cos((4 * DM - MS - MM) * DEG2RAD) * EM\
-			+ 0.003258 * math.cos((3 * DM - MM) * DEG2RAD)\
-			+ 0.002616 * math.cos((2 * DM + MS + MM) * DEG2RAD) * EM\
-			- 0.001897 * math.cos((4 * DM - MS - 2 * MM) * DEG2RAD) * EM\
-			- 0.002117 * math.cos((2 * MS - MM) * DEG2RAD) * EM * EM\
-			+ 0.002354 * math.cos((2 * DM + 2 * MS - MM) * DEG2RAD) * EM * EM\
-			- 0.001423 * math.cos((4 * DM + MM) * DEG2RAD)\
-			- 0.001117 * math.cos(4 * MM * DEG2RAD)\
-			- 0.001571 * math.cos((4 * DM - MS) * DEG2RAD) * EM\
-			- 0.001739 * math.cos((DM - 2 * MM) * DEG2RAD)\
-			- 0.004421 * math.cos((2 * MM - 2 * FM) * DEG2RAD)\
-			+ 0.001165 * math.cos((2 * MS + MM) * DEG2RAD) * EM * EM\
-			+ 0.008752 * math.cos((2 * DM - MM - 2 * FM) * DEG2RAD)
+			- 0.010445 * math.cos((2 * DM + 2 * MM) * DEG2RAD)
 
 		IM = 180 - DM\
 			- 6.289 * math.sin(MM * DEG2RAD)\
