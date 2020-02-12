@@ -909,11 +909,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
-		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
+		SPR = math.fmod((RA - BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24)
 		if SPR < 0:
 			SPR = SPR + 24
 #		SPS = RA + BETA
-		SPS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
+		SPS = math.fmod((RA + BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 #		SPC = (RA - BETA) + (RA + BETA)
@@ -990,11 +990,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # гсклонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
-		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
+		SPR = math.fmod((RA - BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24)
 		if SPR < 0:
 			SPR = SPR + 24
 #		SPS = RA + BETA
-		SPS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
+		SPS = math.fmod((RA + BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 #		SPC = (RA - BETA) + (RA + BETA)
@@ -1076,11 +1076,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
-		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
+		SPR = math.fmod((RA - BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24)
 		if SPR < 0:
 			SPR = SPR + 24
 #		SPS = RA + BETA
-		SPS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
+		SPS = math.fmod((RA + BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 #		SPC = (RA - BETA) + (RA + BETA)
@@ -1183,11 +1183,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
-		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
+		SPR = math.fmod((RA - BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24)
 		if SPR < 0:
 			SPR = SPR + 24
 #		SPS = RA + BETA
-		SPS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
+		SPS = math.fmod((RA + BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 #		SPC = (RA - BETA) + (RA + BETA)
@@ -1255,10 +1255,10 @@ class WeatherMSN(ConfigListScreen, Screen):
 		EL = EL + (0.008931 + 0.002728 * NS) * math.sin(ZS * DEG2RAD) * math.sin(QS * DEG2RAD)\
 			- 0.016500 * math.sin(2 * ZS * DEG2RAD) * math.sin(QS * DEG2RAD)\
 			- 0.005775 * math.sin(3 * ZS * DEG2RAD) * math.sin(QS * DEG2RAD)\
-			 + (0.081344 + 0.003206 * NS) * math.cos(ZS * DEG2RAD) * math.sin(QS * DEG2RAD)\
-			 + 0.015019 * math.cos(2 * ZS * DEG2RAD) * math.sin(QS * DEG2RAD)\
-			 + (0.085581 + 0.002494 * NS) * math.sin(ZS * DEG2RAD) * math.cos(QS * DEG2RAD)\
-			 + (0.025328 - 0.003117 * NS) * math.cos(ZS * DEG2RAD) * math.cos(QS * DEG2RAD)
+			+ (0.081344 + 0.003206 * NS) * math.cos(ZS * DEG2RAD) * math.sin(QS * DEG2RAD)\
+			+ 0.015019 * math.cos(2 * ZS * DEG2RAD) * math.sin(QS * DEG2RAD)\
+			+ (0.085581 + 0.002494 * NS) * math.sin(ZS * DEG2RAD) * math.cos(QS * DEG2RAD)\
+			+ (0.025328 - 0.003117 * NS) * math.cos(ZS * DEG2RAD) * math.cos(QS * DEG2RAD)
 
 		EL = EL + 0.014394 * math.cos(2 * ZS * DEG2RAD) * math.cos(QS * DEG2RAD)\
 			+ 0.006319 * math.cos(3 * ZS * DEG2RAD) * math.cos(QS * DEG2RAD)\
@@ -1292,11 +1292,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
-		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
+		SPR = math.fmod((RA - BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24)
 		if SPR < 0:
 			SPR = SPR + 24
 #		SPS = RA + BETA
-		SPS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
+		SPS = math.fmod((RA + BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 #		SPC = (RA - BETA) + (RA + BETA)
@@ -1382,11 +1382,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
-		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
+		SPR = math.fmod((RA - BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24)
 		if SPR < 0:
 			SPR = SPR + 24
 #		SPS = RA + BETA
-		SPS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
+		SPS = math.fmod((RA + BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 #		SPC = (RA - BETA) + (RA + BETA)
@@ -1470,11 +1470,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
-		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
+		SPR = math.fmod((RA - BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24)
 		if SPR < 0:
 			SPR = SPR + 24
 #		SPS = RA + BETA
-		SPS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
+		SPS = math.fmod((RA + BETA) / 15 - (long / 15 - zone) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 #		SPC = (RA - BETA) + (RA + BETA)
@@ -1663,11 +1663,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			RA = RA + 2 * PI
 		BETA = math.acos((math.cos(89.54 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SMR = RA - BETA
-		SMR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
+		SMR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24)
 		if SMR < 0:
 			SMR = SMR + 24
 #		SMS = RA + BETA
-		SMS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24) # дискретное время zone - long / 15
+		SMS = math.fmod((RA + BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530, 24)
 		if SMS < 0:
 			SMS = SMS + 24
 #		SMC = (RA - BETA) + (RA + BETA)
@@ -2537,7 +2537,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self.session.open(ConfigWeatherMSN)
 
 	def about(self):
-		self.session.open(MessageBox, _("Weather MSN\nDeveloper: Sirius0103 \nHomepage: www.gisclub.tv \nGithub: www.github.com/Sirius0103 \n\nDonate:\nVISA 4276 4000 5465 0552"), MessageBox.TYPE_INFO)
+		self.session.open(MessageBox, _("Weather MSN \nDeveloper: Sirius0103 \nHomepage: www.gisclub.tv \nGithub: www.github.com/Sirius0103 \n\nDonate: \nR460680746216 \nZ395874509364 \nE284580190260"), MessageBox.TYPE_INFO)
 
 	def exit(self):
 		self.close()
@@ -2752,7 +2752,7 @@ def Plugins(**kwargs):
 		where=PluginDescriptor.WHERE_MENU,
 		fnc=WeatherMenu),
 		PluginDescriptor(name=_("Weather MSN"),
-		description=_("Weather forecast for 5 days"),
+		description=_("Weather forecast, astronomical calculations"),
 		where = [PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU],
 		icon="plugin.png",
 		fnc=main)
@@ -2761,7 +2761,7 @@ def Plugins(**kwargs):
 	else:
 		result = [
 		PluginDescriptor(name=_("Weather MSN"),
-		description=_("Weather forecast for 5 days"),
+		description=_("Weather forecast, astronomical calculations"),
 		where = [PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU],
 		icon="plugin.png",
 		fnc=main)
