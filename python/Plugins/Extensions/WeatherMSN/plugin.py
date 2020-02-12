@@ -827,11 +827,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		XE = DS * math.cos(WP3 * DEG2RAD) * math.cos((wP3 + MS) * DEG2RAD)
 		YE = DS * math.sin(WP3 * DEG2RAD) * math.cos((wP3 + MS) * DEG2RAD)
 
-#		RA = math.atan2(math.sin(SLong * DEG2RAD) * math.cos(EPS * DEG2RAD), math.cos(SLong * DEG2RAD)) * RAD2DEG  # геоцентрическое прямое восхождение
+#		RA = math.atan2(math.sin(SLong * DEG2RAD) * math.cos(EPS * DEG2RAD), math.cos(SLong * DEG2RAD)) * RAD2DEG  # прямое восхождение
 #		if RA < 0:
 #			RA = RA + 2 * PI
 #		QS = math.asin(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(STT - ALFA)) + 0.8332 * DEG2RAD # высота солнца над горизонтом на момент времени в радианах
-		DEC = math.asin(math.sin(EPS * DEG2RAD) * math.sin(SLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение
+		DEC = math.asin(math.sin(EPS * DEG2RAD) * math.sin(SLong * DEG2RAD)) * RAD2DEG # склонение
 		ALFA = (7.53 * math.cos(LS * DEG2RAD) + 1.5 * math.sin(LS * DEG2RAD) - 9.87 * math.sin(2 * LS * DEG2RAD)) / 60 # уравнение времени
 		BETA = math.acos((math.cos(90.51 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG
 		SSS = ALFA + (180 + 15 - long) / 15 + zone # дискретное время zone - long / 15
@@ -903,10 +903,10 @@ class WeatherMSN(ConfigListScreen, Screen):
 		PLong =  math.atan2(YP, XP) * RAD2DEG
 		PLat = math.asin(ZP / math.sqrt(XP * XP + YP * YP + ZP * ZP)) * RAD2DEG
 
-		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое прямое восхождение
+		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # прямое восхождение
 		if RA < 0:
 			RA = RA + 2 * PI
-		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение
+		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
 		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
@@ -984,10 +984,10 @@ class WeatherMSN(ConfigListScreen, Screen):
 		PLong =  math.atan2(YP, XP) * RAD2DEG
 		PLat = math.asin(ZP / math.sqrt(XP * XP + YP * YP + ZP * ZP)) * RAD2DEG
 
-		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое прямое восхождение
+		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # прямое восхождение
 		if RA < 0:
 			RA = RA + 2 * PI
-		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение
+		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # гсклонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
 		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
@@ -1070,10 +1070,10 @@ class WeatherMSN(ConfigListScreen, Screen):
 		PLong =  math.atan2(YP, XP) * RAD2DEG
 		PLat = math.asin(ZP / math.sqrt(XP * XP + YP * YP + ZP * ZP)) * RAD2DEG
 
-		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое прямое восхождение
+		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # прямое восхождение
 		if RA < 0:
 			RA = RA + 2 * PI
-		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение
+		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
 		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
@@ -1133,7 +1133,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		VJ = 5.0 * QJ - 2.0 * PJ
 		WJ = 2.0 * PJ - 6.0 * QJ + 3.0 * SJ
 		ZJ = QJ - PJ
-		PSI = SJ - QJ
+#		PSI = SJ - QJ
 
 		EL = (0.331364 - 0.010281 * NJ - 0.004692 * NJ * NJ) * math.sin(VJ * DEG2RAD)\
 			+ (0.003228 - 0.064436 * NJ + 0.002075 * NJ * NJ) * math.cos(VJ * DEG2RAD)\
@@ -1177,10 +1177,10 @@ class WeatherMSN(ConfigListScreen, Screen):
 		PLong =  math.atan2(YP, XP) * RAD2DEG
 		PLat = math.asin(ZP / math.sqrt(XP * XP + YP * YP + ZP * ZP)) * RAD2DEG
 
-		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое прямое восхождение
+		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # прямое восхождение
 		if RA < 0:
 			RA = RA + 2 * PI
-		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение
+		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
 		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
@@ -1286,10 +1286,10 @@ class WeatherMSN(ConfigListScreen, Screen):
 		PLong =  math.atan2(YP, XP) * RAD2DEG
 		PLat = math.asin(ZP / math.sqrt(XP * XP + YP * YP + ZP * ZP)) * RAD2DEG
 
-		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое прямое восхождение
+		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # прямое восхождение
 		if RA < 0:
 			RA = RA + 2 * PI
-		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение
+		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
 		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
@@ -1376,10 +1376,10 @@ class WeatherMSN(ConfigListScreen, Screen):
 		PLong =  math.atan2(YP, XP) * RAD2DEG
 		PLat = math.asin(ZP / math.sqrt(XP * XP + YP * YP + ZP * ZP)) * RAD2DEG
 
-		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое прямое восхождение
+		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # прямое восхождение
 		if RA < 0:
 			RA = RA + 2 * PI
-		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение
+		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
 		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
@@ -1464,10 +1464,10 @@ class WeatherMSN(ConfigListScreen, Screen):
 		PLong =  math.atan2(YP, XP) * RAD2DEG
 		PLat = math.asin(ZP / math.sqrt(XP * XP + YP * YP + ZP * ZP)) * RAD2DEG
 
-		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое прямое восхождение
+		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # прямое восхождение
 		if RA < 0:
 			RA = RA + 2 * PI
-		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение
+		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 #		SPR = RA - BETA
 		SPR = math.fmod((RA - BETA) / 15 - (zone - long / 15) - (STT - long / 15 / 24 * 0.065709833) * 0.997269566423530 , 24) #дискретное время zone - long / 15
@@ -1654,12 +1654,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			+ 0.000127 * math.sin((LM - MM) * DEG2RAD)\
 			- 0.000115 * math.sin((LM + MM) * DEG2RAD)
 
-		MLat = EB # широта
+		MLat = math.fmod(EB, 360) # широта
 		MLong = math.fmod(LM + EL, 360) # долгота
-		if MLong < 0:
-			MLong = MLong + 360
-		RA = math.atan2((math.sin(MLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(MLong * DEG2RAD)) * RAD2DEG # геоцентрическое прямое восхождение
-		DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение
+
+		RA = math.atan2((math.sin(MLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(MLong * DEG2RAD)) * RAD2DEG # прямое восхождение
+		DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # склонение
 		if RA < 0:
 			RA = RA + 2 * PI
 		BETA = math.acos((math.cos(89.54 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
@@ -1904,13 +1903,12 @@ class WeatherMSN(ConfigListScreen, Screen):
 			- 0.114 * math.sin(DM * DEG2RAD)
 		pha1 = (1 + math.cos(IM * DEG2RAD)) / 2
 
-		MLat = EB # широта
+		MLat = math.fmod(EB, 360) # широта
 		MLong = math.fmod(LM + EL, 360) # долгота
-		if MLong < 0:
-			MLong = MLong + 360
+
 		Mdist = int(385000.56 + ER * 1000) # расстояние до луны км
-		RA = math.atan2((math.sin(MLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(MLong * DEG2RAD)) * RAD2DEG # геоцентрическое прямое восхождение
-		DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # геоцентрическое склонение
+		RA = math.atan2((math.sin(MLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(MLong * DEG2RAD)) * RAD2DEG # прямое восхождение
+		DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # склонение
 		if RA < 0:
 			RA = RA + 2 * PI
 		TH = ST - RA
@@ -1919,7 +1917,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 		Mazim = round(AZ, 1)
 #
-		T = (JD + 1 / 24 - 2451545) / 36525
+		T = (JD + 0.5 / 24 - 2451545) / 36525
 		DM = 297.8501921 + 445267.114034 * T - 0.0018819 * T * T + T * T * T / 545868 - T * T * T * T / 113065000 # ср элонгация луны
 		MS = 357.5291092 + 35999.0502909 * T - 0.0001536 * T * T + T * T * T / 24490000 # ср солнечная аномалия
 		MM = 134.9633964 + 477198.8675055 * T + 0.0087414 * T * T + T * T * T / 69699 - T * T * T * T / 14712000 # ср лунная аномалия
