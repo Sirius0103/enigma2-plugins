@@ -827,22 +827,18 @@ class WeatherMSN(ConfigListScreen, Screen):
 		WP3 = 174.873
 		XE = DS * math.cos(WP3 * DEG2RAD) * math.cos((wP3 + MS) * DEG2RAD)
 		YE = DS * math.sin(WP3 * DEG2RAD) * math.cos((wP3 + MS) * DEG2RAD)
-
-#		RA = math.atan2(math.sin(SLong * DEG2RAD) * math.cos(EPS * DEG2RAD), math.cos(SLong * DEG2RAD)) * RAD2DEG  # прямое восхождение
-#		if RA < 0:
-#			RA = RA + 2 * PI
-#		QS = math.asin(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(STT - ALFA)) + 0.8332 * DEG2RAD # высота солнца над горизонтом на момент времени в радианах
+		# эклиптические координаты
 		DEC = math.asin(math.sin(EPS * DEG2RAD) * math.sin(SLong * DEG2RAD)) * RAD2DEG # склонение
 		ALFA = (7.53 * math.cos(LS * DEG2RAD) + 1.5 * math.sin(LS * DEG2RAD) - 9.87 * math.sin(2 * LS * DEG2RAD)) / 60 # уравнение времени
-		BETA = math.acos((math.cos(90.51 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG
+		BETA = math.acos((math.cos(90.85 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG
 		SSS = ALFA + (180 + 15 - long) / 15 + zone
 # Время восхода/захода
 		SCh = int(SSS)
 		SCm = int(round((SSS - SCh) * 60))
 		SRh = int(SSS - BETA / 15)
-		SRm = int(round(((SSS - BETA / 15) - SRh - 0.065709833) * 60))
+		SRm = int(round(((SSS - BETA / 15) - SRh) * 60))
 		SSh = int(SSS + BETA / 15)
-		SSm = int(round(((SSS + BETA / 15) - SSh + 0.065709833) * 60))
+		SSm = int(round(((SSS + BETA / 15) - SSh) * 60))
 		if SCm == 60:
 			SCm = 0
 			SCh = SCh + 1
@@ -875,7 +871,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		MP7 = 72.64878 + 428.37911 * T + 0.000079 * T * T
 		MP8 = 37.73063 + 218.46134 * T - 0.000070 * T * T
 # Орбита меркурия
-#		AP1 = 0.3870986 # большая полуось орбиты a
 		LP1 = 178.179078 + 149474.07078 * T + 0.0003011 * T * T # ср долгота L
 		wP1 = 28.753753 + 0.3702806 * T + 0.0001208 * T * T # аргумент перигелия w
 		WP1 = 47.145944 + 1.1852083 * T + 0.0001739 * T * T # долгота восходящего узла W
@@ -888,7 +883,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 			 + 0.00078 * math.cos((5 * MP2 - 3 * MP1 + 10.137) * DEG2RAD)
 
 		LP = LP1 + EL
-#		MP = LP - wP2 - WP2 # ср аномалия
 		M0 = math.fmod(174.795 + 4.092317 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP1 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (0.3870986 * (1 - EP1 * EP1)) / (EP1 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -909,15 +903,13 @@ class WeatherMSN(ConfigListScreen, Screen):
 			RA = RA + 2 * PI
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-#		SPR = RA - BETA
+
 		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-#		SPS = RA + BETA
 		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPS < 0:
 			SPS = SPS + 24
-#		SPC = (RA - BETA) + (RA + BETA)
 		if SPR < SPS:
 			SPC = (SPR + SPS) / 2
 		else:
@@ -953,7 +945,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		else:
 			P1Sx = ''
 # Орбита венеры
-#		AP2 = 0.7233316 # большая полуось орбиты a
 		LP2 = 342.767053 + 58519.21191 * T + 0.0003097 * T * T # ср долгота L
 		wP2 = 54.384186 + 0.5081861 * T - 0.0013864 * T * T # аргумент перигелия w
 		WP2 = 75.779647 + 0.8998500 * T + 0.0004100 * T * T # долгота восходящего узла W
@@ -969,7 +960,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		CP = 0.00077 * math.sin((237.24 + 150.27 * T) * DEG2RAD)
 
 		LP = LP2 + EL + CP
-#		MP = LP - wP2 - WP2 # ср аномалия
 		M0 = math.fmod(50.416 + 1.602136 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP2 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (0.7233316 * (1 - EP2 * EP2)) / (EP2 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -988,17 +978,14 @@ class WeatherMSN(ConfigListScreen, Screen):
 		RA = math.atan2((math.sin(PLong * DEG2RAD) * math.cos(EPS * DEG2RAD) - math.tan(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD)) , math.cos(PLong * DEG2RAD)) * RAD2DEG # прямое восхождение
 		if RA < 0:
 			RA = RA + 2 * PI
-		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # гсклонение
+		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-#		SPR = RA - BETA
 		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-#		SPS = RA + BETA
 		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPS < 0:
 			SPS = SPS + 24
-#		SPC = (RA - BETA) + (RA + BETA)
 		if SPR < SPS:
 			SPC = (SPR + SPS) / 2
 		else:
@@ -1034,7 +1021,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		else:
 			P2Sx = ''
 # Орбита марса
-#		AP4 = 1.5236883 # большая полуось орбиты a
 		LP4 = 293.737334 + 19141.69551 * T + 0.0003107 * T * T # ср долгота L
 		wP4 = 285.431761 + 1.0697667 * T + 0.0001313 * T * T + 0.00000414 * T * T * T # аргумент перигелия w
 		WP4 = 48.786442 + 0.7709917 * T - 0.0000014 * T * T - 0.00000533 * T * T * T # долгота восходящего узла W
@@ -1055,7 +1041,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 			- 0.00933 * math.cos((3 * MP5 - 8 * MP4 + 4 * MP3) * DEG2RAD)) # уравнение центра
 
 		LP = LP4 + EL + CP
-#		MP = LP - wP4 - WP4 # ср аномалия
 		M0 = math.fmod(19.373 + 0.524039 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP4 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (1.5236883 * (1 - EP4 * EP4)) / (EP4 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -1076,15 +1061,12 @@ class WeatherMSN(ConfigListScreen, Screen):
 			RA = RA + 2 * PI
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-#		SPR = RA - BETA
 		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-#		SPS = RA + BETA
 		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPS < 0:
 			SPS = SPS + 24
-#		SPC = (RA - BETA) + (RA + BETA)
 		if SPR < SPS:
 			SPC = (SPR + SPS) / 2
 		else:
@@ -1120,7 +1102,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		else:
 			P4Sx = ''
 # Орбита юпитера
-#		AP5 = 5.202561 # большая полуось орбиты a
 		LP5 = 238.049257 + 3036.301986 * T + 0.0003347 * T * T - 0.00000165 * T * T * T # ср долгота L
 		wP5 = 273.277558 + 0.5994317 * T + 0.00070405 * T * T + 0.00000508 * T * T * T # аргумент перигелия w
 		WP5 = 99.443414 + 1.0105300 * T + 0.00035222 * T * T - 0.00000851 * T * T * T # долгота восходящего узла W
@@ -1134,7 +1115,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		VJ = 5.0 * QJ - 2.0 * PJ
 		WJ = 2.0 * PJ - 6.0 * QJ + 3.0 * SJ
 		ZJ = QJ - PJ
-#		PSI = SJ - QJ
 
 		EL = (0.331364 - 0.010281 * NJ - 0.004692 * NJ * NJ) * math.sin(VJ * DEG2RAD)\
 			+ (0.003228 - 0.064436 * NJ + 0.002075 * NJ * NJ) * math.cos(VJ * DEG2RAD)\
@@ -1162,7 +1142,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 			+ 0.003342 * math.cos(2 * ZJ * DEG2RAD) * math.cos(2 * QJ * DEG2RAD)
 
 		LP = LP5 + EL
-#		MP = LP - wP5 - WP5 # ср аномалия
 		M0 = math.fmod(20.020 + 0.083056 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP5 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (5.202561 * (1 - EP5 * EP5)) / (EP5 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -1183,15 +1162,12 @@ class WeatherMSN(ConfigListScreen, Screen):
 			RA = RA + 2 * PI
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-#		SPR = RA - BETA
 		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-#		SPS = RA + BETA
 		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPS < 0:
 			SPS = SPS + 24
-#		SPC = (RA - BETA) + (RA + BETA)
 		if SPR < SPS:
 			SPC = (SPR + SPS) / 2
 		else:
@@ -1227,7 +1203,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		else:
 			P5Sx = ''
 # Орбита сатурна
-#		AP6 = 9.554747 # большая полуось орбиты a
 		LP6 = 266.564377 + 1223.509884 * T + 0.0003245 * T * T - 0.0000058 * T * T * T # ср долгота L
 		wP6 = 338.307800 + 1.0852207 * T + 0.00097854 * T * T + 0.00000992 * T * T * T # аргумент перигелия w
 		WP6 = 112.790414 + 0.8731951 * T - 0.00015218 * T * T - 0.00000531 * T * T * T # долгота восходящего узла W
@@ -1271,7 +1246,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 			- 0.007528 * math.cos(3 * PSI * DEG2RAD) * math.cos(2 * QS * DEG2RAD)
 
 		LP = LP6 + EL
-#		MP = LP - wP6 - WP6 # ср аномалия
 		M0 = math.fmod(317.021 + 0.033371 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP6 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (9.554747 * (1 - EP6 * EP6)) / (EP6 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -1292,15 +1266,12 @@ class WeatherMSN(ConfigListScreen, Screen):
 			RA = RA + 2 * PI
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-#		SPR = RA - BETA
 		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-#		SPS = RA + BETA
 		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPS < 0:
 			SPS = SPS + 24
-#		SPC = (RA - BETA) + (RA + BETA)
 		if SPR < SPS:
 			SPC = (SPR + SPS) / 2
 		else:
@@ -1336,7 +1307,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		else:
 			P6Sx = ''
 # Орбита урана
-#		AP7 = 19.21814 # большая полуось орбиты a
 		LP7 = 244.197470 + 429.863546 * T + 0.0003160 * T * T - 0.00000060 * T * T * T # ср долгота L
 		wP7 = 98.071581 + 0.9857650 * T - 0.0010745 * T * T - 0.00000061 * T * T * T # аргумент перигелия w
 		WP7 = 73.477111 + 0.4986678 * T + 0.0013117 * T * T # долгота восходящего узла W
@@ -1348,11 +1318,8 @@ class WeatherMSN(ConfigListScreen, Screen):
 		QU = 265.91650 + 1222.1139 * T
 		SU = 243.51721 + 428.4677 * T
 		GU = 83.76922 + 218.4901 * T
-#		VU = 5.0 * QU - 2.0 * PU
 		WU = 2.0 * PU - 6.0 * QU + 3.0 * SU
 		HU = 2.0 * GU - SU
-#		ZU = SU - PU
-#		PSI = SU - QU
 
 		EL = (0.864319 - 0.001583 * NU) * math.sin(HU * DEG2RAD)\
 			+ (0.082222 - 0.006833 * NU) * math.cos(HU * DEG2RAD)\
@@ -1361,7 +1328,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 			+ 0.008122 * math.sin(WU)
 
 		LP = LP7 + EL
-#		MP = LP - wP7 - WP7 # ср аномалия
 		M0 = math.fmod(141.050 + 0.011698 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP7 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (19.21814 * (1 - EP7 * EP7)) / (EP7 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -1382,15 +1348,12 @@ class WeatherMSN(ConfigListScreen, Screen):
 			RA = RA + 2 * PI
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-#		SPR = RA - BETA
 		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-#		SPS = RA + BETA
 		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPS < 0:
 			SPS = SPS + 24
-#		SPC = (RA - BETA) + (RA + BETA)
 		if SPR < SPS:
 			SPC = (SPR + SPS) / 2
 		else:
@@ -1426,7 +1389,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		else:
 			P7Sx = ''
 # Орбита нептуна
-#		AP8 = 30.10957 # большая полуось орбиты a
 		LP8 = 84.457994 + 219.885914 * T + 0.0003205 * T * T - 0.00000060 * T * T * T # ср долгота L
 		wP8 = 276.045975 + 0.3256394 * T + 0.00014095 * T * T + 0.000004113 * T * T * T # аргумент перигелия w
 		WP8 = 130.681389 + 1.0989350 * T + 0.00024987 * T * T - 0.000004718 * T * T * T # долгота восходящего узла W
@@ -1434,22 +1396,15 @@ class WeatherMSN(ConfigListScreen, Screen):
 		EP8 = 0.00899704 + 0.000006330 * T - 0.000000002 * T * T # эксцентриситет орбиты e
 
 		NN = T / 5.0 + 0.1
-#		PN = 237.47555 + 3034.9061 * T
-#		QN = 265.91650 + 1222.1139 * T
 		SN = 243.51721 + 428.4677 * T
 		GN = 83.76922 + 218.4901 * T
-#		VN = 5.0 * QN - 2.0 * PN
-#		WN = 2.0 * PN - 6.0 * QN + 3.0 * SN
 		HN = 2.0 * GN - SN
-#		ZN = SN - PN
-#		PSI = SN - QN
 
 		EL = (-0.589833 + 0.001089 * NN) * math.sin(HN * DEG2RAD)\
 			+ (-0.056094 + 0.004658 * NN) * math.cos(HN * DEG2RAD)\
 			- 0.024286 * math.sin(2 * HN * DEG2RAD)
 
 		LP = LP8 + EL
-#		MP = LP - wP8 - WP8 # ср аномалия
 		M0 = math.fmod(256.225 + 0.005965 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP8 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (30.10957 * (1 - EP8 * EP8)) / (EP8 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -1470,15 +1425,12 @@ class WeatherMSN(ConfigListScreen, Screen):
 			RA = RA + 2 * PI
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-#		SPR = RA - BETA
 		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-#		SPS = RA + BETA
 		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530 + zone - long / 15, 24)
 		if SPS < 0:
 			SPS = SPS + 24
-#		SPC = (RA - BETA) + (RA + BETA)
 		if SPR < SPS:
 			SPC = (SPR + SPS) / 2
 		else:
@@ -1521,9 +1473,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		MS = 357.5291092 + 35999.0502909 * T - 0.0001536 * T * T + T * T * T / 24490000 # ср солнечная аномалия
 		MM = 134.9633964 + 477198.8675055 * T + 0.0087414 * T * T + T * T * T / 69699 - T * T * T * T / 14712000 # ср лунная аномалия
 		EM = 1 - 0.002516 * T - 0.0000074 * T * T # поправка на изменяющийся эксцентриситет
-		A1 = 119.75 + 131.849 * T
-		A2 = 53.09 + 479264.29 * T
-		A3 = 313.45 + 481266.484 * T
 
 		EL = 6.289 * math.sin(MM * DEG2RAD)\
 			+ 1.274 * math.sin((2 * DM - MM) * DEG2RAD)\
@@ -1557,16 +1506,13 @@ class WeatherMSN(ConfigListScreen, Screen):
 		DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # склонение
 		if RA < 0:
 			RA = RA + 2 * PI
-		BETA = math.acos((math.cos(89.54 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-#		SMR = RA - BETA
+		BETA = math.acos((math.cos(89.55 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
 		SMR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530 - zone + long / 15, 24)
 		if SMR < 0:
 			SMR = SMR + 24
-#		SMS = RA + BETA
 		SMS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530 - zone + long / 15, 24)
 		if SMS < 0:
 			SMS = SMS + 24
-#		SMC = (RA - BETA) + (RA + BETA)
 		if SMR < SMS:
 			SMC = (SMR + SMS) / 2
 		else:
@@ -1613,7 +1559,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		MP7 = 72.64878 + 428.37911 * T + 0.000079 * T * T
 		MP8 = 37.73063 + 218.46134 * T - 0.000070 * T * T
 # Орбита меркурия
-#		AP1 = 0.3870986 # большая полуось орбиты a
 		LP1 = 178.179078 + 149474.07078 * T + 0.0003011 * T * T # ср долгота L
 		wP1 = 28.753753 + 0.3702806 * T + 0.0001208 * T * T # аргумент перигелия w
 		WP1 = 47.145944 + 1.1852083 * T + 0.0001739 * T * T # долгота восходящего узла W
@@ -1626,7 +1571,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 			 + 0.00078 * math.cos((5 * MP2 - 3 * MP1 + 10.137) * DEG2RAD)
 
 		LP = LP1 + EL
-#		MP = LP - wP2 - WP2 # ср аномалия
 		M0 = math.fmod(174.795 + 4.092317 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP1 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (0.3870986 * (1 - EP1 * EP1)) / (EP1 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -1652,7 +1596,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 		P1A = round(AZ, 1)
 # Орбита венеры
-#		AP2 = 0.7233316 # большая полуось орбиты a
 		LP2 = 342.767053 + 58519.21191 * T + 0.0003097 * T * T # ср долгота L
 		wP2 = 54.384186 + 0.5081861 * T - 0.0013864 * T * T # аргумент перигелия w
 		WP2 = 75.779647 + 0.8998500 * T + 0.0004100 * T * T # долгота восходящего узла W
@@ -1668,7 +1611,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		CP = 0.00077 * math.sin((237.24 + 150.27 * T) * DEG2RAD)
 
 		LP = LP2 + EL + CP
-#		MP = LP - wP2 - WP2 # ср аномалия
 		M0 = math.fmod(50.416 + 1.602136 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP2 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (0.7233316 * (1 - EP2 * EP2)) / (EP2 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -1694,7 +1636,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 		P2A = round(AZ, 1)
 # Орбита марса
-#		AP4 = 1.5236883 # большая полуось орбиты a
 		LP4 = 293.737334 + 19141.69551 * T + 0.0003107 * T * T # ср долгота L
 		wP4 = 285.431761 + 1.0697667 * T + 0.0001313 * T * T + 0.00000414 * T * T * T # аргумент перигелия w
 		WP4 = 48.786442 + 0.7709917 * T - 0.0000014 * T * T - 0.00000533 * T * T * T # долгота восходящего узла W
@@ -1715,7 +1656,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 			- 0.00933 * math.cos((3 * MP5 - 8 * MP4 + 4 * MP3) * DEG2RAD)) # уравнение центра
 
 		LP = LP4 + EL + CP
-#		MP = LP - wP4 - WP4 # ср аномалия
 		M0 = math.fmod(19.373 + 0.524039 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP4 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (1.5236883 * (1 - EP4 * EP4)) / (EP4 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -1741,7 +1681,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 		P4A = round(AZ, 1)
 # Орбита юпитера
-#		AP5 = 5.202561 # большая полуось орбиты a
 		LP5 = 238.049257 + 3036.301986 * T + 0.0003347 * T * T - 0.00000165 * T * T * T # ср долгота L
 		wP5 = 273.277558 + 0.5994317 * T + 0.00070405 * T * T + 0.00000508 * T * T * T # аргумент перигелия w
 		WP5 = 99.443414 + 1.0105300 * T + 0.00035222 * T * T - 0.00000851 * T * T * T # долгота восходящего узла W
@@ -1755,7 +1694,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		VJ = 5.0 * QJ - 2.0 * PJ
 		WJ = 2.0 * PJ - 6.0 * QJ + 3.0 * SJ
 		ZJ = QJ - PJ
-#		PSI = SJ - QJ
 
 		EL = (0.331364 - 0.010281 * NJ - 0.004692 * NJ * NJ) * math.sin(VJ * DEG2RAD)\
 			+ (0.003228 - 0.064436 * NJ + 0.002075 * NJ * NJ) * math.cos(VJ * DEG2RAD)\
@@ -1783,7 +1721,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 			+ 0.003342 * math.cos(2 * ZJ * DEG2RAD) * math.cos(2 * QJ * DEG2RAD)
 
 		LP = LP5 + EL
-#		MP = LP - wP5 - WP5 # ср аномалия
 		M0 = math.fmod(20.020 + 0.083056 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP5 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (5.202561 * (1 - EP5 * EP5)) / (EP5 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -1809,7 +1746,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 		P5A = round(AZ, 1)
 # Орбита сатурна
-#		AP6 = 9.554747 # большая полуось орбиты a
 		LP6 = 266.564377 + 1223.509884 * T + 0.0003245 * T * T - 0.0000058 * T * T * T # ср долгота L
 		wP6 = 338.307800 + 1.0852207 * T + 0.00097854 * T * T + 0.00000992 * T * T * T # аргумент перигелия w
 		WP6 = 112.790414 + 0.8731951 * T - 0.00015218 * T * T - 0.00000531 * T * T * T # долгота восходящего узла W
@@ -1853,7 +1789,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 			- 0.007528 * math.cos(3 * PSI * DEG2RAD) * math.cos(2 * QS * DEG2RAD)
 
 		LP = LP6 + EL
-#		MP = LP - wP6 - WP6 # ср аномалия
 		M0 = math.fmod(317.021 + 0.033371 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP6 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (9.554747 * (1 - EP6 * EP6)) / (EP6 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -1879,7 +1814,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 		P6A = round(AZ, 1)
 # Орбита урана
-#		AP7 = 19.21814 # большая полуось орбиты a
 		LP7 = 244.197470 + 429.863546 * T + 0.0003160 * T * T - 0.00000060 * T * T * T # ср долгота L
 		wP7 = 98.071581 + 0.9857650 * T - 0.0010745 * T * T - 0.00000061 * T * T * T # аргумент перигелия w
 		WP7 = 73.477111 + 0.4986678 * T + 0.0013117 * T * T # долгота восходящего узла W
@@ -1891,11 +1825,8 @@ class WeatherMSN(ConfigListScreen, Screen):
 		QU = 265.91650 + 1222.1139 * T
 		SU = 243.51721 + 428.4677 * T
 		GU = 83.76922 + 218.4901 * T
-#		VU = 5.0 * QU - 2.0 * PU
 		WU = 2.0 * PU - 6.0 * QU + 3.0 * SU
 		HU = 2.0 * GU - SU
-#		ZU = SU - PU
-#		PSI = SU - QU
 
 		EL = (0.864319 - 0.001583 * NU) * math.sin(HU * DEG2RAD)\
 			+ (0.082222 - 0.006833 * NU) * math.cos(HU * DEG2RAD)\
@@ -1904,7 +1835,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 			+ 0.008122 * math.sin(WU)
 
 		LP = LP7 + EL
-#		MP = LP - wP7 - WP7 # ср аномалия
 		M0 = math.fmod(141.050 + 0.011698 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP7 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (19.21814 * (1 - EP7 * EP7)) / (EP7 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -1938,22 +1868,15 @@ class WeatherMSN(ConfigListScreen, Screen):
 		EP8 = 0.00899704 + 0.000006330 * T - 0.000000002 * T * T # эксцентриситет орбиты e
 
 		NN = T / 5.0 + 0.1
-#		PN = 237.47555 + 3034.9061 * T
-#		QN = 265.91650 + 1222.1139 * T
 		SN = 243.51721 + 428.4677 * T
 		GN = 83.76922 + 218.4901 * T
-#		VN = 5.0 * QN - 2.0 * PN
-#		WN = 2.0 * PN - 6.0 * QN + 3.0 * SN
 		HN = 2.0 * GN - SN
-#		ZN = SN - PN
-#		PSI = SN - QN
 
 		EL = (-0.589833 + 0.001089 * NN) * math.sin(HN * DEG2RAD)\
 			+ (-0.056094 + 0.004658 * NN) * math.cos(HN * DEG2RAD)\
 			- 0.024286 * math.sin(2 * HN * DEG2RAD)
 
 		LP = LP8 + EL
-#		MP = LP - wP8 - WP8 # ср аномалия
 		M0 = math.fmod(256.225 + 0.005965 * (JDN - 2451545), 360) # ср аномалия
 		MP = M0 - EP8 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
 		DP = (30.10957 * (1 - EP8 * EP8)) / (EP8 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
@@ -1985,9 +1908,6 @@ class WeatherMSN(ConfigListScreen, Screen):
 		MS = 357.5291092 + 35999.0502909 * T - 0.0001536 * T * T + T * T * T / 24490000 # ср солнечная аномалия
 		MM = 134.9633964 + 477198.8675055 * T + 0.0087414 * T * T + T * T * T / 69699 - T * T * T * T / 14712000 # ср лунная аномалия
 		EM = 1 - 0.002516 * T - 0.0000074 * T * T # поправка на изменяющийся эксцентриситет
-		A1 = 119.75 + 131.849 * T
-		A2 = 53.09 + 479264.29 * T
-		A3 = 313.45 + 481266.484 * T
 
 		EL = 6.289 * math.sin(MM * DEG2RAD)\
 			+ 1.274 * math.sin((2 * DM - MM) * DEG2RAD)\
