@@ -1,0 +1,199 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WeatherMSN\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-07-29 01:13+0100\n"
+"PO-Revision-Date: 2019-01-18 18:16+0100\n"
+"Last-Translator: Sirius <sirius.altech@gmail.com>\n"
+"Language-Team: sirius.al@rambler.ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Language: de\n"
+"X-Generator: Poedit 2.2\n"
+
+msgid "%.01f ft/s"
+msgstr "%.01f ft/s"
+
+msgid "%.01f knots"
+msgstr "%.01f Knoten"
+
+msgid "%.01f m/s"
+msgstr "%.01f m/s"
+
+msgid "%.01f mp/h"
+msgstr "%.01f mp/h"
+
+msgid "%s h"
+msgstr "%s h"
+
+msgid "%s km/h"
+msgstr "%s km/h"
+
+msgid "%s m/s"
+msgstr "%s m/s"
+
+msgid "%s mp/h"
+msgstr "%s mp/h"
+
+msgid "Celsius"
+msgstr "Celsjusz"
+
+msgid "Chance precip:"
+msgstr "Ilość opadów:"
+
+msgid "Config Weather MSN"
+msgstr "Weather MSN Konfiguracja"
+
+msgid "Configuration is saved"
+msgstr "Konfiguracja została zapisana"
+
+msgid "Date:"
+msgstr "Data:"
+
+msgid "Day week:"
+msgstr "Dzień tygodnia:"
+
+msgid "Fahrenheit"
+msgstr "Fahrenheit"
+
+msgid "Feels like:"
+msgstr "Temp Odczuwalna:"
+
+msgid "First quarter"
+msgstr "Pierwsza kwadra"
+
+msgid "Full moon"
+msgstr "Pełny Księżyc"
+
+msgid "Humidity:"
+msgstr "Wilgotność:"
+
+msgid "Julian day:"
+msgstr "Juliani Dzień:"
+
+msgid "Last quarter"
+msgstr "Ostatnia kwadra"
+
+msgid "Latitude:"
+msgstr "Szerokość Geo:"
+
+msgid "Location:"
+msgstr "Lokalizacja:"
+
+msgid "Longitude:"
+msgstr "Długość Geo:"
+
+msgid "Moonlight:"
+msgstr "Światło Księżyca:"
+
+msgid "New moon"
+msgstr "Nów"
+
+msgid "Observation point:"
+msgstr "Punkt obserwacyjny:"
+
+msgid "Scale of temperature:"
+msgstr "Skala Temperatury:"
+
+msgid "Scale of wind speed:"
+msgstr "Prędkość wiatru:"
+
+msgid "Search Location"
+msgstr "Wyszukaj lokalizację"
+
+msgid "Search Location Weather MSN"
+msgstr "Szukaj Lokalizację Weather MSN"
+
+msgid "Show Weather MSN in menu information:"
+msgstr "Pokaż Weather MSN w informacjach menu:"
+
+msgid "Solstice:"
+msgstr "Przesilenie:"
+
+msgid "Sunrise:"
+msgstr "Wschód Słońca:"
+
+msgid "Sunset:"
+msgstr "Zachód Słońca:"
+
+msgid "Temperature:"
+msgstr "Temperatura:"
+
+msgid "Timezone:"
+msgstr "Strefa czasowa:"
+
+msgid "Waning crescent"
+msgstr "Przybywanie Księżyca"
+
+msgid "Create converter in system"
+msgstr "Dodaj konwerter do systemu"
+
+msgid "Sun:"
+msgstr "Słońce:"
+
+msgid "Moon:"
+msgstr "Księżyc:"
+
+msgid "Rise:"
+msgstr "Wschód:"
+
+msgid "Set:"
+msgstr "Zachód:"
+
+msgid "Culmination:"
+msgstr "Kulminacja:"
+
+msgid "Azimuth:"
+msgstr "Azymut:"
+
+msgid "Waning gibbous"
+msgstr "Ubywanie Księżyca"
+
+msgid "Waxing cresent"
+msgstr "Pół Księżyc"
+
+msgid "Waxing gibbous"
+msgstr "Sierp"
+
+msgid "Weather MSN"
+msgstr "Weather MSN"
+
+msgid ""
+"Weather MSN\n"
+"Developer: Sirius0103 \n"
+"Homepage: www.gisclub.tv \n"
+"Github: www.github.com/Sirius0103 \n"
+"\n"
+"Donate:\n"
+"VISA 4276 4000 5465 0552"
+msgstr ""
+"Weather MSN\n"
+"Developer: Sirius0103 \n"
+"Homepage: www.gisclub.tv \n"
+"Github: www.github.com/Sirius0103 \n"
+"\n"
+"Donate:\n"
+"VISA 4276 4000 5465 0552"
+
+msgid "Weather forecast for 5 days"
+msgstr "Pogoda forecast na 5 dni"
+
+msgid "Wind:"
+msgstr "Kierunek wiatru:"
+
+msgid "ft/s"
+msgstr "ft/s"
+
+msgid "km/h"
+msgstr "km/h"
+
+msgid "knots"
+msgstr "Błędy"
+
+msgid "m/s"
+msgstr "m/s"
+
+msgid "mp/h"
+msgstr "mp/h"
