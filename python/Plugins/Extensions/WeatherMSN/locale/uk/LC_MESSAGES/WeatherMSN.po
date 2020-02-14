@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WeatherMSN\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-07-29 01:13+0100\n"
-"PO-Revision-Date: 2020-02-14 12:43+0300\n"
+"PO-Revision-Date: 2020-02-14 15:24+0300\n"
 "Last-Translator: Sirius <sirius.altech@gmail.com>\n"
 "Language-Team: sirius.altech@gmail.com\n"
 "MIME-Version: 1.0\n"
@@ -306,6 +306,9 @@ msgstr "%s миль/год"
 
 msgid "%s km"
 msgstr "%s км"
+
+msgid "Enter text to search city"
+msgstr "Вкажіть назву для пошуку"
 
 msgid ""
 "Weather MSN \n"
