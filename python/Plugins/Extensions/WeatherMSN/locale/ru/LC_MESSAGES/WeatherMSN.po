@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WeatherMSN\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-07-29 01:13+0100\n"
-"PO-Revision-Date: 2019-02-21 13:48+0300\n"
+"PO-Revision-Date: 2020-02-13 20:27+0300\n"
 "Last-Translator: Sirius <sirius.altech@gmail.com>\n"
 "Language-Team: sirius.altech@gmail.com\n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,8 @@ msgstr ""
 msgid "Weather MSN"
 msgstr "Погода MSN"
 
-msgid "Weather forecast for 5 days"
-msgstr "Прогноз погоды на 5 дней"
+msgid "Weather forecast, astronomical calculations"
+msgstr "Прогноз погоды, астрономические расчеты"
 
 msgid "Config Weather MSN"
 msgstr "Конфигурация Погода MSN"
@@ -28,26 +28,155 @@ msgstr "Показать Погода MSN в меню информация:"
 msgid "Julian day:"
 msgstr "Юлианская дата:"
 
-msgid "Sunrise:"
+msgid "Sun rise:"
 msgstr "Восход солнца:"
 
-msgid "Sunset:"
+msgid "Sun set:"
 msgstr "Закат солнца:"
 
 msgid "Solstice:"
 msgstr "Истинный полдень:"
 
-msgid "Moonrise:"
+msgid "Mercury rise:"
+msgstr "Восход Меркурия:"
+
+msgid "Mercury set:"
+msgstr "Закат Меркурия:"
+
+msgid "Mercury culmination:"
+msgstr "Кульминация Меркурия:"
+
+msgid "Mercury azimuth:"
+msgstr "Азимут Меркурия:"
+
+msgid "Venus rise:"
+msgstr "Восход Венеры:"
+
+msgid "Venus set:"
+msgstr "Закат Венеры:"
+
+msgid "Venus culmination:"
+msgstr "Кульминация Венеры:"
+
+msgid "Venus azimuth:"
+msgstr "Азимут Венеры:"
+
+msgid "Mars rise:"
+msgstr "Восход Марса:"
+
+msgid "Mars set:"
+msgstr "Закат Марса:"
+
+msgid "Mars culmination:"
+msgstr "Кульминация Марса:"
+
+msgid "Mars azimuth:"
+msgstr "Азимут Марса:"
+
+msgid "Jupiter rise:"
+msgstr "Восход Юпитера:"
+
+msgid "Jupiter set:"
+msgstr "Закат Юпитера:"
+
+msgid "Jupiter culmination:"
+msgstr "Кульминация Юпитера:"
+
+msgid "Jupiter azimuth:"
+msgstr "Азимут Юпитера:"
+
+msgid "Saturn rise:"
+msgstr "Восход Сатурна:"
+
+msgid "Saturn set:"
+msgstr "Закат Сатурна:"
+
+msgid "Saturn culmination:"
+msgstr "Кульминация Сатурна:"
+
+msgid "Saturn azimuth:"
+msgstr "Азимут Сатурна:"
+
+msgid "Uranus rise:"
+msgstr "Восход Урана:"
+
+msgid "Uranus set:"
+msgstr "Закат Урана:"
+
+msgid "Uranus culmination:"
+msgstr "Кульминация Урана:"
+
+msgid "Uranus azimuth:"
+msgstr "Азимут Урана:"
+
+msgid "Neptune rise:"
+msgstr "Восход Нептуна:"
+
+msgid "Neptune set:"
+msgstr "Закат Нептуна:"
+
+msgid "Neptune culmination:"
+msgstr "Кульминация Нептуна:"
+
+msgid "Neptune azimuth:"
+msgstr "Азимут Нептуна:"
+
+msgid "Moon rise:"
 msgstr "Восход луны:"
 
-msgid "Moonset:"
+msgid "Moon set:"
 msgstr "Закат луны:"
 
-msgid "Moonlight:"
+msgid "Moon culmination:"
+msgstr "Кульминация Луны:"
+
+msgid "Moon azimuth:"
+msgstr "Азимут Луны:"
+
+msgid "Moon light:"
 msgstr "Видимость луны:"
 
 msgid "Moon distance:"
 msgstr "Расстояние до луны:"
+
+msgid "Rise:"
+msgstr "Восход:"
+
+msgid "Set:"
+msgstr "Закат:"
+
+msgid "Culmination:"
+msgstr "Кульминация:"
+
+msgid "Azimuth:"
+msgstr "Азимут:"
+
+msgid "Sun:"
+msgstr "Солнце:"
+
+msgid "Mercury:"
+msgstr "Меркурий:"
+
+msgid "Venus:"
+msgstr "Венера:"
+
+msgid "Mars:"
+msgstr "Марс:"
+
+msgid "Jupiter:"
+msgstr "Юпитер:"
+
+msgid "Saturn:"
+msgstr "Сатурн:"
+
+msgid "Uranus:"
+msgstr "Уран:"
+
+msgid "Neptune:"
+msgstr "Нептун:"
+
+msgid "Moon:"
+msgstr "Луна:"
 
 msgid "Location:"
 msgstr "Местоположение:"
@@ -109,11 +238,26 @@ msgstr "Поиск местоположения"
 msgid "Search Location Weather MSN"
 msgstr "Поиск местоположения Погода MSN"
 
+msgid "Scale of wind speed:"
+msgstr "Шкала скорости ветра:"
+
+msgid "Scale of temperature:"
+msgstr "Шкала температуры:"
+
+msgid "Celsius"
+msgstr "Цельсий"
+
+msgid "Fahrenheit"
+msgstr "Фаренгейт"
+
+msgid "Create converter in system:"
+msgstr "Создать конвертер в системе:"
+
 msgid "Configuration is saved"
 msgstr "Конфигурация сохранена"
 
-msgid "Scale of wind speed:"
-msgstr "Шкала скорости ветра:"
+msgid "Do you want to restart the GUI now ?"
+msgstr "Вы хотите перезапустить GUI сейчас ?"
 
 msgid "New moon"
 msgstr "Новолуние"
@@ -122,22 +266,22 @@ msgid "Full moon"
 msgstr "Полнолуние"
 
 msgid "Waxing cresent"
-msgstr "Растущий серп"
+msgstr "Возрастающий полумесяц"
 
 msgid "First quarter"
 msgstr "Первая четверть"
 
 msgid "Waxing gibbous"
-msgstr "Растущая луна"
+msgstr "Возрастающая луна"
 
 msgid "Waning crescent"
-msgstr "Стареющий серп"
+msgstr "Убывающий полумесяц"
 
 msgid "Last quarter"
 msgstr "Последняя четверть"
 
 msgid "Waning gibbous"
-msgstr "Стареющая луна"
+msgstr "Убывающая луна"
 
 msgid "%.01f m/s"
 msgstr "%.01f м/с"
@@ -163,28 +307,24 @@ msgstr "%s миль/ч"
 msgid "%s km"
 msgstr "%s км"
 
-msgid "Scale of temperature:"
-msgstr "Шкала температуры:"
-
-msgid "Celsius"
-msgstr "Цельсий"
-
-msgid "Fahrenheit"
-msgstr "Фаренгейт"
-
 msgid ""
-"Weather MSN\n"
+"Weather MSN \n"
 "Developer: Sirius0103 \n"
 "Homepage: www.gisclub.tv \n"
 "Github: www.github.com/Sirius0103 \n"
 "\n"
-"Donate:\n"
-"VISA 4276 4000 5465 0552"
+"Donate: \n"
+"R460680746216 \n"
+"Z395874509364 \n"
+"E284580190260"
 msgstr ""
-"Погода MSN\n"
+"Погода MSN \n"
 "Разработчик: Sirius0103 \n"
 "Homepage: www.gisclub.tv \n"
 "Github: www.github.com/Sirius0103 \n"
 "\n"
-"Поблагодарить:\n"
-"VISA 4276 4000 5465 0552"
+"Поблагодарить: \n"
+" \n"
+"R460680746216 \n"
+"Z395874509364 \n"
+"E284580190260"
