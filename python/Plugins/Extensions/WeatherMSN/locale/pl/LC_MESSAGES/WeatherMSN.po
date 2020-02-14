@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WeatherMSN\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-07-29 01:13+0100\n"
-"PO-Revision-Date: 2020-02-14 12:53+0100\n"
+"PO-Revision-Date: 2020-02-14 16:53+0100\n"
 "Last-Translator: Sirius <sirius.altech@gmail.com>\n"
 "Language-Team: sirius.altech@gmail.com\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgid "Config Weather MSN"
 msgstr "Konfiguracja Pogody MSN"
 
 msgid "Show Weather MSN in menu information:"
-msgstr "Pokaż menu informacji o pogodzie MSN:"
+msgstr "Pokaż w menu informację o Pogodzie MSN:"
 
 msgid "Julian day:"
 msgstr "Data Juliańska:"
@@ -185,10 +185,10 @@ msgid "Timezone:"
 msgstr "Strefa czasowa:"
 
 msgid "Latitude:"
-msgstr "Szerokość Geo:"
+msgstr "Szerokość geograficzna:"
 
 msgid "Longitude:"
-msgstr "Długość Geo:"
+msgstr "Długość geograficzna:"
 
 msgid "Temperature:"
 msgstr "Temperatura:"
@@ -218,19 +218,31 @@ msgid "m/s"
 msgstr "m/s"
 
 msgid "ft/s"
-msgstr "stóp/s"
+msgstr "stopy/s"
 
 msgid "km/h"
 msgstr "km/h"
 
 msgid "mp/h"
-msgstr "mil/godz"
+msgstr "mile/godz"
 
 msgid "knots"
 msgstr "węzły"
 
 msgid "%s h"
 msgstr "%s godz"
+
+msgid "no"
+msgstr "nie"
+
+msgid "yes"
+msgstr "tak"
+
+msgid "Close"
+msgstr "Zamknij"
+
+msgid "Save"
+msgstr "Zapisz"
 
 msgid "Search Location"
 msgstr "Szukaj lokalizacji"
@@ -239,10 +251,10 @@ msgid "Search Location Weather MSN"
 msgstr "Szukaj lokalizacji Pogody MSN"
 
 msgid "Scale of wind speed:"
-msgstr "Skala prędkości wiatru:"
+msgstr "Jednostka prędkości wiatru:"
 
 msgid "Scale of temperature:"
-msgstr "Skala temperatury:"
+msgstr "Jednostka temperatury:"
 
 msgid "Celsius"
 msgstr "Celsjusz"
@@ -293,7 +305,7 @@ msgid "%.01f mp/h"
 msgstr "%.01f mil/godz"
 
 msgid "%.01f knots"
-msgstr "%.01f węzły"
+msgstr "%.01f węzły/ów"
 
 msgid "%s m/s"
 msgstr "%s m/s"
@@ -306,6 +318,9 @@ msgstr "%s mil/godz"
 
 msgid "%s km"
 msgstr "%s km"
+
+msgid "Enter text to search city"
+msgstr "Wprowadź tekst aby wyszukać miasto"
 
 msgid ""
 "Weather MSN \n"
