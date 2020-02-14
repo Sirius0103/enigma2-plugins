@@ -535,7 +535,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self["neptuneazimuthtxt"] = StaticText(_("Neptune azimuth:"))
 		self["moondisttxt"] = StaticText(_("Moon distance:"))
 		self["moonculminationtxt"] = StaticText(_("Moon culmination:"))
-		self["moonazimuthtxt"] = StaticText(_("Moon azimutht:"))
+		self["moonazimuthtxt"] = StaticText(_("Moon azimuth:"))
 		self["moonrisetxt"] = StaticText(_("Moon rise:"))
 		self["moonsettxt"] = StaticText(_("Moon set:"))
 		self["moonlighttxt"] = StaticText(_("Moon light:"))
