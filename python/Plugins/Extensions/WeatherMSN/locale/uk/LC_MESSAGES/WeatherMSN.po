@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WeatherMSN\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-07-29 01:13+0100\n"
-"PO-Revision-Date: 2020-02-14 15:24+0300\n"
+"PO-Revision-Date: 2020-02-15 18:22+0300\n"
 "Last-Translator: Sirius <sirius.altech@gmail.com>\n"
 "Language-Team: sirius.altech@gmail.com\n"
 "MIME-Version: 1.0\n"
@@ -286,6 +286,9 @@ msgstr "Спадаючий опуклий місяць"
 msgid "%.01f m/s"
 msgstr "%.01f м/с"
 
+msgid "%.01f km/h"
+msgstr "%.01f км/год"
+
 msgid "%.01f ft/s"
 msgstr "%.01f фут/с"
 
@@ -307,8 +310,39 @@ msgstr "%s миль/год"
 msgid "%s km"
 msgstr "%s км"
 
+# python-formats
+msgid "%s"
+msgstr "%s"
+
+msgid "%s%s%s"
+msgstr "%s%s%s"
+
+msgid "%s %s"
+msgstr "%s %s"
+
+msgid "%s %s %s"
+msgstr "%s %s %s"
+
+msgid "%s%s%s / %s%s%s"
+msgstr "%s%s%s / %s%s%s"
+
 msgid "Enter text to search city"
 msgstr "Вкажіть назву для пошуку"
+
+msgid "Close"
+msgstr "Закрити"
+
+msgid "Save"
+msgstr "Зберегти"
+
+msgid "no"
+msgstr "Ні"
+
+msgid "yes"
+msgstr "Так"
+
+msgid "n/a"
+msgstr "n/a"
 
 msgid ""
 "Weather MSN \n"

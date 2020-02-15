@@ -1556,10 +1556,10 @@ class WeatherMSN(ConfigListScreen, Screen):
 		if RA < 0:
 			RA = RA + 2 * PI
 		BETA = math.acos((math.cos(89.55 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-		SMR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530 - zone + long / 15, 24)
+		SMR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530, 24)
 		if SMR < 0:
 			SMR = SMR + 24
-		SMS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530 - zone + long / 15, 24)
+		SMS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530, 24)
 		if SMS < 0:
 			SMS = SMS + 24
 		if SMR < SMS:
