@@ -211,6 +211,8 @@ class DownSkinLIB(Screen):
 	# install plugin
 			os.system("cp /tmp/plugin.py %sDownSkinLIB/plugin.py" % (pluginpath))
 			os.system("cp /tmp/ruDownSkinLIB.mo %sDownSkinLIB/locale/ru/LC_MESSAGES/DownSkinLIB.mo" % (pluginpath))
+			os.system("cp /tmp/deDownSkinLIB.mo %sDownSkinLIB/locale/de/LC_MESSAGES/DownSkinLIB.mo" % (pluginpath))
+			os.system("cp /tmp/ukDownSkinLIB.mo %sDownSkinLIB/locale/uk/LC_MESSAGES/DownSkinLIB.mo" % (pluginpath))
 	# end
 			self.session.openWithCallback(self.restart, MessageBox,_("Do you want to restart the GUI now ?"), MessageBox.TYPE_YESNO)
 
@@ -315,6 +317,7 @@ class DownSkinLIB(Screen):
 			downloadPage("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/plugin.py","/tmp/plugin.py").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
 			downloadPage("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/locale/ru/LC_MESSAGES/DownSkinLIB.mo","/tmp/ruDownSkinLIB.mo").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
 			downloadPage("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/locale/de/LC_MESSAGES/DownSkinLIB.mo","/tmp/deDownSkinLIB.mo").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
+			downloadPage("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/locale/uk/LC_MESSAGES/DownSkinLIB.mo","/tmp/ukDownSkinLIB.mo").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
 	# end
 			self.install_pl()
 		except:
