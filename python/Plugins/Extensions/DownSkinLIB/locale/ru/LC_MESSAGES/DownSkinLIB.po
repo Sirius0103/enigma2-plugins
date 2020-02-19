@@ -28,6 +28,9 @@ msgstr "Обновить библиотеку"
 msgid "Do you want to restart the GUI now ?"
 msgstr "Вы хотите перезапустить GUI сейчас ?"
 
+msgid "Download failed, check your internet connection !!!"
+msgstr "Загрузка не удалась, проверьте соединение интернет !!!"
+
 msgid ""
 "Download SkinLIB \n"
 "Developer: Sirius0103 \n"
