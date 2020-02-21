@@ -120,9 +120,38 @@ class DownSkinLIB(Screen):
 		self["info_conv_r"] = Label(_(" "))
 		self["info_rend"] = Label(_(" "))
 
+		self.notdata = False
+		self.version_data()
 		self.infocom()
-		self.infogit()
 		self.infopl()
+
+	def version(self):
+		downloadPage("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/version","/tmp/version").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
+
+	def downloadFinished(self, result):
+		print "[DownSkinLIB] Download finished"
+		self.notdata = False
+		self.infogit()
+
+	def downloadFailed(self, result):
+		self.notdata = True
+		print "[DownSkinLIB] Download failed!"
+
+	def version_data(self):
+		if not os.path.exists("/tmp/version") or self.notdata:
+			self.version()
+		else:
+			self.infogit()
+
+	def infogit(self):
+		version = ""
+		try:
+			for text in open("/tmp/version").readlines()[3]:
+				version += text
+			self["info_git"].setText(version)
+			return version
+		except:
+			return ""
 
 	def infopl(self):
 		pluginpath = "/usr/lib/enigma2/python/Plugins/Extensions/"
@@ -131,20 +160,6 @@ class DownSkinLIB(Screen):
 			for text in open("%sDownSkinLIB/version" % (pluginpath)).readlines()[1]:
 				version += text
 			self["info_pl"].setText(version)
-			return version
-		except:
-			return ""
-
-	def infogit(self):
-		try:
-			downloadPage ("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/version","/tmp/version").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
-		except:
-			pass
-		version = ""
-		try:
-			for text in open("/tmp/version").readlines()[3]:
-				version += text
-			self["info_git"].setText(version)
 			return version
 		except:
 			return ""
@@ -372,19 +387,12 @@ class DownSkinLIB(Screen):
 		except:
 			self.session.open(MessageBox,(_("Download failed, check your internet connection !!!")), MessageBox.TYPE_INFO, timeout = 10)
 
-	def downloadFinished(self, result):
-		print "[DownSkinLIB] Download finished"
-		self.notdata = False
-		self.parse_weather_data()
-
-	def downloadFailed(self, result):
-		self.notdata = True
-		print "[DownSkinLIB] Download failed!"
-
 	def exit(self):
+		os.system("rm -f /tmp/version")
 		self.close()
 
 	def restart(self, answer):
+		os.system("rm -f /tmp/version")
 		if answer is True:
 			self.session.open(TryQuitMainloop, 3)
 
