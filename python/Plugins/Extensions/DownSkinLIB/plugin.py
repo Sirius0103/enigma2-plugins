@@ -120,9 +120,9 @@ class DownSkinLIB(Screen):
 		self["info_conv_r"] = Label(_(" "))
 		self["info_rend"] = Label(_(" "))
 
-		self.infopl()
-		self.infogit()
 		self.infocom()
+		self.infogit()
+		self.infopl()
 
 	def infopl(self):
 		pluginpath = "/usr/lib/enigma2/python/Plugins/Extensions/"
