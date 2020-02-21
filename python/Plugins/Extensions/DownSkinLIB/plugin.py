@@ -376,11 +376,9 @@ class DownSkinLIB(Screen):
 			self.session.open(MessageBox,(_("Download failed, check your internet connection !!!")), MessageBox.TYPE_INFO, timeout = 10)
 
 	def exit(self):
-		os.system("rm -f /tmp/version")
 		self.close()
 
 	def restart(self, answer):
-		os.system("rm -f /tmp/version")
 		if answer is True:
 			self.session.open(TryQuitMainloop, 3)
 
