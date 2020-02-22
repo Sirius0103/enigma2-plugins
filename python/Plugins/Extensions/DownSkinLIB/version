@@ -1,7 +1,7 @@
 Плагин: DownloadSkinLIB
-Версия плагина: 1.4-r1 Версия библиотек компонентов скинов: 9.4-r4
+Версия плагина: 1.5-r1 Версия библиотек компонентов скинов: 9.4-r4
 
-Изменения: 22.02.2020 обновление плагина до 1.4-r1 устанавливать только в .ipk, CaidInfo2 15.02.2020 CaidInfo2 25.01.2020 CamdInfo3, EmuName, ProgressDiskSpaceInfo
+Изменения: 22.02.2020 обновление плагина до 1.5-r1 устанавливать только в .ipk, CaidInfo2 15.02.2020 CaidInfo2 25.01.2020 CamdInfo3, EmuName, ProgressDiskSpaceInfo
 11.01.2020 обновление плагина до 1.2-r2, ServiceName2, ProgressDiskSpaceInfo
 09.03.2019 обновление плагина до 1.2-r1, MovieInfo2, ProgressDiskSpaceInfo, FanTempInfo, AnimatedWeatherPixmap, AnimatedMoonPixmap
 15.01.2019 обновление плагина до 1.1-r2, ServiceName2, ServiceInfoEX, ServiceInfo2, RendVolumeText, RendVolumeTextP, AnimatedWeatherPixmap
