@@ -209,7 +209,7 @@ class DownSkinLIB(Screen):
 	def install_pl(self):
 		pluginpath = "/usr/lib/enigma2/python/Plugins/Extensions/"
 		if fileExists ("/tmp/version"\
-			and "/tmp/plugin.py":
+			and "/tmp/plugin.py"):
 
 			os.system("cp /tmp/version %sDownSkinLIB/version" % (pluginpath))
 	# install plugin
