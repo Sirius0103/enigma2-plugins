@@ -326,18 +326,6 @@ class DownSkinLIB(Screen):
 		f = open("/tmp/plugin.py", "w")
 		f.write(file)
 		f.close()
-		file = requests.get("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/locale/ru/LC_MESSAGES/DownSkinLIB.mo").text
-		f = open("/tmp/ruDownSkinLIB.mo", "w")
-		f.write(file)
-		f.close()
-		file = requests.get("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/locale/de/LC_MESSAGES/DownSkinLIB.mo").text
-		f = open("/tmp/deDownSkinLIB.mo", "w")
-		f.write(file)
-		f.close()
-		file = requests.get("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/locale/uk/LC_MESSAGES/DownSkinLIB.mo").text
-		f = open("/tmp/ukDownSkinLIB.mo", "w")
-		f.write(file)
-		f.close()
 # end
 		self.install_pl()
 
