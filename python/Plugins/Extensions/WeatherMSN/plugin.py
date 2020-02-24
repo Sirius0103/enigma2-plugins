@@ -39,7 +39,7 @@ from Components.config import getConfigListEntry, ConfigText, ConfigYesNo, Confi
 from Components.Pixmap import Pixmap
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_LANGUAGE
 from xml.etree.cElementTree import fromstring as cet_fromstring
-from urllib2 import Request, urlopen, URLError, HTTPError
+from urllib2 import urlopen, Request, URLError, HTTPError
 from twisted.web.client import downloadPage
 from time import localtime, strftime
 from enigma import eTimer, ePoint

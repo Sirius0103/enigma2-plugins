@@ -21,6 +21,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
+import os
+import math
+import gettext
+import datetime, time
 from Tools.Directories import fileExists, pathExists
 from Components.Converter.Converter import Converter
 from Components.Element import cached
@@ -31,10 +35,6 @@ from time import localtime, strftime
 from datetime import date
 from os import environ
 from Poll import Poll
-import datetime, time
-import gettext
-import math
-import os
 
 weather_city = config.plugins.weathermsn.city.value # 'Moscow,Russia'
 degreetype = config.plugins.weathermsn.degreetype.value # 'C'
