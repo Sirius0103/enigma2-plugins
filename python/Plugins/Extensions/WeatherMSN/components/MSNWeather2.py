@@ -805,7 +805,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP1 + EL
 		M0 = math.fmod(174.795 + 4.092317 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP1 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP1 - EP1 * math.sin(M0 * DEG2RAD)/(-1.0 + EP1 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (0.3870986 * (1 - EP1 * EP1)) / (EP1 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP1 * DEG2RAD) * math.cos((wP1 + MP) * DEG2RAD) - math.sin(WP1 * DEG2RAD) * math.cos(IP1 * DEG2RAD) * math.sin((wP1 + MP) * DEG2RAD))
@@ -882,7 +882,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP2 + EL + CP
 		M0 = math.fmod(50.416 + 1.602136 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP2 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP2 - EP2 * math.sin(M0 * DEG2RAD)/(-1.0 + EP2 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (0.7233316 * (1 - EP2 * EP2)) / (EP2 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP2 * DEG2RAD) * math.cos((wP2 + MP) * DEG2RAD) - math.sin(WP2 * DEG2RAD) * math.cos(IP2 * DEG2RAD) * math.sin((wP2 + MP) * DEG2RAD))
@@ -963,7 +963,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP4 + EL + CP
 		M0 = math.fmod(19.373 + 0.524039 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP4 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP4 - EP4 * math.sin(M0 * DEG2RAD)/(-1.0 + EP4 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (1.5236883 * (1 - EP4 * EP4)) / (EP4 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP4 * DEG2RAD) * math.cos((wP4 + MP) * DEG2RAD) - math.sin(WP4 * DEG2RAD) * math.cos(IP4 * DEG2RAD) * math.sin((wP4 + MP) * DEG2RAD))
@@ -1064,7 +1064,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP5 + EL
 		M0 = math.fmod(20.020 + 0.083056 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP5 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP5 - EP5 * math.sin(M0 * DEG2RAD)/(-1.0 + EP5 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (5.202561 * (1 - EP5 * EP5)) / (EP5 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP5 * DEG2RAD) * math.cos((wP5 + MP) * DEG2RAD) - math.sin(WP5 * DEG2RAD) * math.cos(IP5 * DEG2RAD) * math.sin((wP5 + MP) * DEG2RAD))
@@ -1168,7 +1168,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP6 + EL
 		M0 = math.fmod(317.021 + 0.033371 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP6 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP6 - EP6 * math.sin(M0 * DEG2RAD)/(-1.0 + EP6 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (9.554747 * (1 - EP6 * EP6)) / (EP6 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP6 * DEG2RAD) * math.cos((wP6 + MP) * DEG2RAD) - math.sin(WP6 * DEG2RAD) * math.cos(IP6 * DEG2RAD) * math.sin((wP6 + MP) * DEG2RAD))
@@ -1250,7 +1250,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP7 + EL
 		M0 = math.fmod(141.050 + 0.011698 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP7 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP7 - EP7 * math.sin(M0 * DEG2RAD)/(-1.0 + EP7 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (19.21814 * (1 - EP7 * EP7)) / (EP7 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP7 * DEG2RAD) * math.cos((wP7 + MP) * DEG2RAD) - math.sin(WP7 * DEG2RAD) * math.cos(IP7 * DEG2RAD) * math.sin((wP7 + MP) * DEG2RAD))
@@ -1327,7 +1327,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP8 + EL
 		M0 = math.fmod(256.225 + 0.005965 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP8 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP8 - EP8 * math.sin(M0 * DEG2RAD)/(-1.0 + EP8 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (30.10957 * (1 - EP8 * EP8)) / (EP8 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP8 * DEG2RAD) * math.cos((wP8 + MP) * DEG2RAD) - math.sin(WP8 * DEG2RAD) * math.cos(IP8 * DEG2RAD) * math.sin((wP8 + MP) * DEG2RAD))
@@ -1492,7 +1492,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP1 + EL
 		M0 = math.fmod(174.795 + 4.092317 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP1 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP1 - EP1 * math.sin(M0 * DEG2RAD)/(-1.0 + EP1 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (0.3870986 * (1 - EP1 * EP1)) / (EP1 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP1 * DEG2RAD) * math.cos((wP1 + MP) * DEG2RAD) - math.sin(WP1 * DEG2RAD) * math.cos(IP1 * DEG2RAD) * math.sin((wP1 + MP) * DEG2RAD))
@@ -1532,7 +1532,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP2 + EL + CP
 		M0 = math.fmod(50.416 + 1.602136 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP2 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP2 - EP2 * math.sin(M0 * DEG2RAD)/(-1.0 + EP2 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (0.7233316 * (1 - EP2 * EP2)) / (EP2 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP2 * DEG2RAD) * math.cos((wP2 + MP) * DEG2RAD) - math.sin(WP2 * DEG2RAD) * math.cos(IP2 * DEG2RAD) * math.sin((wP2 + MP) * DEG2RAD))
@@ -1577,7 +1577,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP4 + EL + CP
 		M0 = math.fmod(19.373 + 0.524039 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP4 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP4 - EP4 * math.sin(M0 * DEG2RAD)/(-1.0 + EP4 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (1.5236883 * (1 - EP4 * EP4)) / (EP4 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP4 * DEG2RAD) * math.cos((wP4 + MP) * DEG2RAD) - math.sin(WP4 * DEG2RAD) * math.cos(IP4 * DEG2RAD) * math.sin((wP4 + MP) * DEG2RAD))
@@ -1642,7 +1642,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP5 + EL
 		M0 = math.fmod(20.020 + 0.083056 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP5 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP5 - EP5 * math.sin(M0 * DEG2RAD)/(-1.0 + EP5 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (5.202561 * (1 - EP5 * EP5)) / (EP5 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP5 * DEG2RAD) * math.cos((wP5 + MP) * DEG2RAD) - math.sin(WP5 * DEG2RAD) * math.cos(IP5 * DEG2RAD) * math.sin((wP5 + MP) * DEG2RAD))
@@ -1710,7 +1710,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP6 + EL
 		M0 = math.fmod(317.021 + 0.033371 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP6 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP6 - EP6 * math.sin(M0 * DEG2RAD)/(-1.0 + EP6 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (9.554747 * (1 - EP6 * EP6)) / (EP6 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP6 * DEG2RAD) * math.cos((wP6 + MP) * DEG2RAD) - math.sin(WP6 * DEG2RAD) * math.cos(IP6 * DEG2RAD) * math.sin((wP6 + MP) * DEG2RAD))
@@ -1756,7 +1756,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP7 + EL
 		M0 = math.fmod(141.050 + 0.011698 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP7 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP7 - EP7 * math.sin(M0 * DEG2RAD)/(-1.0 + EP7 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (19.21814 * (1 - EP7 * EP7)) / (EP7 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP7 * DEG2RAD) * math.cos((wP7 + MP) * DEG2RAD) - math.sin(WP7 * DEG2RAD) * math.cos(IP7 * DEG2RAD) * math.sin((wP7 + MP) * DEG2RAD))
@@ -1798,7 +1798,7 @@ class MSNWeather2(Poll, Converter, object):
 
 		LP = LP8 + EL
 		M0 = math.fmod(256.225 + 0.005965 * (JDN - 2451545), 360) # ср аномалия
-		MP = M0 - EP8 * math.sin(M0 * DEG2RAD) # уравнение Кеплера
+		MP = M0 + EP8 - EP8 * math.sin(M0 * DEG2RAD)/(-1.0 + EP8 * math.cos(M0 * DEG2RAD)) # уравнение Кеплера
 		DP = (30.10957 * (1 - EP8 * EP8)) / (EP8 * math.cos((MP + LP) * DEG2RAD) + 1) # расстояние до солнца в а.е.
 		# гелиоцентрические координаты
 		XP = DP * (math.cos(WP8 * DEG2RAD) * math.cos((wP8 + MP) * DEG2RAD) - math.sin(WP8 * DEG2RAD) * math.cos(IP8 * DEG2RAD) * math.sin((wP8 + MP) * DEG2RAD))
