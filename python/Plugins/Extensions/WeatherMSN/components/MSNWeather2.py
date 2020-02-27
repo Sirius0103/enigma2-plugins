@@ -725,7 +725,7 @@ class MSNWeather2(Poll, Converter, object):
 # Звездное время
 		T = (JDN - 2451545) / 36525 # юлианское столетие на полночь по Гринвичу
 		STT = math.fmod((6.697374558333 + 2400.0513369072223 * T + 0.0000258622 * T * T - 0.00000000172 * T * T * T), 24) # звёздное время в Гринвиче в полночь
-		ST = math.fmod((STT + UT * 1.0027379093 + (long / 15) * 0.0027379093), 24) # местное звёздное время на момент местного времени
+		ST = math.fmod((STT + UT * 1.0027379093 - zone * 1.0027379093 + long / 15), 24) # местное звёздное время на момент местного времени
 		if ST < 0:
 			ST = ST + 24
 		ST = ST * 15 # звёздное время на момент рассчёта в градусах
@@ -824,11 +824,10 @@ class MSNWeather2(Poll, Converter, object):
 			RA = RA + 2 * PI
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-
-		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 		if SPR < SPS:
@@ -901,10 +900,10 @@ class MSNWeather2(Poll, Converter, object):
 			RA = RA + 2 * PI
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 		if SPR < SPS:
@@ -982,10 +981,10 @@ class MSNWeather2(Poll, Converter, object):
 			RA = RA + 2 * PI
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 		if SPR < SPS:
@@ -1083,10 +1082,10 @@ class MSNWeather2(Poll, Converter, object):
 			RA = RA + 2 * PI
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 		if SPR < SPS:
@@ -1187,10 +1186,10 @@ class MSNWeather2(Poll, Converter, object):
 			RA = RA + 2 * PI
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 		if SPR < SPS:
@@ -1269,10 +1268,10 @@ class MSNWeather2(Poll, Converter, object):
 			RA = RA + 2 * PI
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 		if SPR < SPS:
@@ -1346,10 +1345,10 @@ class MSNWeather2(Poll, Converter, object):
 			RA = RA + 2 * PI
 		DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 		BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-		SPR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPR < 0:
 			SPR = SPR + 24
-		SPS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SPS < 0:
 			SPS = SPS + 24
 		if SPR < SPS:
@@ -1427,10 +1426,10 @@ class MSNWeather2(Poll, Converter, object):
 		if RA < 0:
 			RA = RA + 2 * PI
 		BETA = math.acos((math.cos(89.55 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-		SMR = math.fmod((RA - BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SMR = math.fmod((RA - BETA - long - STT * 15 + zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SMR < 0:
 			SMR = SMR + 24
-		SMS = math.fmod((RA + BETA - STT * 15) / 15 * 0.997269566423530, 24)
+		SMS = math.fmod((RA + BETA - long - STT * 15 + zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 		if SMS < 0:
 			SMS = SMS + 24
 		if SMR < SMS:
