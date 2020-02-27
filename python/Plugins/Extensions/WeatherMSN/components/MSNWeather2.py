@@ -527,9 +527,9 @@ class MSNWeather2(Poll, Converter, object):
 				if "<weather" in line:
 					msnweather['Location'] = line.split('weatherlocationname')[1].split('"')[1].split(',')[0]
 					if not line.split('timezone')[1].split('"')[1][0] is '0':
-						msnweather['Timezone'] = '+' + line.split('timezone')[1].split('"')[1] + ' h'
+						msnweather['Timezone'] = _('+%s h') % line.split('timezone')[1].split('"')[1]
 					else:
-						msnweather['Timezone'] = line.split('timezone')[1].split('"')[1] + ' h'
+						msnweather['Timezone'] = _('%s h') % line.split('timezone')[1].split('"')[1]
 					timezone = '%s' % float(line.split('timezone')[1].split('"')[1])
 					msnweather['Latitude'] = line.split(' lat')[1].split('"')[1]
 					msnweather['Longitude'] = line.split(' long')[1].split('"')[1]
