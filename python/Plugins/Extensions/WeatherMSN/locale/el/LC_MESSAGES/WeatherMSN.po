@@ -1,0 +1,385 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WeatherMSN Greek Translation\n"
+"POT-Creation-Date: 2020-02-13 18:34+0300\n"
+"PO-Revision-Date: 2020-02-29 21:09+0200\n"
+"Last-Translator: MCelliotG <mcelliotg@gmail.com>\n"
+"Language-Team: *MCelliotG*\n"
+"Language: el_GR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"X-Poedit-Basepath: WeatherMSN\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#, python-format
+msgid "%s m/s"
+msgstr "%s μ/δ"
+
+#, python-format
+msgid "%.01f m/s"
+msgstr "%.01f μ/δ"
+
+#, python-format
+msgid "%.01f ft/s"
+msgstr "%.01f π/δ"
+
+#, python-format
+msgid "%.01f mp/h"
+msgstr "%.01f μλ/ω"
+
+#, python-format
+msgid "%s mp/h"
+msgstr "%s μλ/ω"
+
+#, python-format
+msgid "%.01f knots"
+msgstr "%.01f κόμβοι"
+
+#, python-format
+msgid "%.01f km/h"
+msgstr "%.01f χλμ/ω"
+
+#, python-format
+msgid "%s km/h"
+msgstr "%s χλμ/ω"
+
+msgid "New moon"
+msgstr "Νέα Σελήνη"
+
+msgid "Waxing cresent"
+msgstr "Αύξουσα ημισέληνος"
+
+msgid "Waning crescent"
+msgstr "Φθίνουσα ημισέληνος"
+
+msgid "First quarter"
+msgstr "Πρώτο τέταρτο"
+
+msgid "Last quarter"
+msgstr "Τελευταίο τέταρτο"
+
+msgid "Waxing gibbous"
+msgstr "Aύξων αμφίκυρτος"
+
+msgid "Waning gibbous"
+msgstr "Φθίνων αμφίκυρτος"
+
+msgid "Full moon"
+msgstr "Πανσέληνος"
+
+#, python-format
+msgid "%s km"
+msgstr "%s χλμ"
+
+msgid "no"
+msgstr "όχι"
+
+msgid "yes"
+msgstr "ναι"
+
+msgid "m/s"
+msgstr "μ/δ"
+
+msgid "ft/s"
+msgstr "π/δ"
+
+msgid "km/h"
+msgstr "χλμ/ω"
+
+msgid "mp/h"
+msgstr "μλ/ω"
+
+msgid "knots"
+msgstr "κόμβοι"
+
+msgid "Celsius"
+msgstr "Κελσίου"
+
+msgid "Fahrenheit"
+msgstr "Φαρενάιτ"
+
+msgid "Weather MSN"
+msgstr "Καιρός MSN"
+
+msgid "Julian day:"
+msgstr "Ιουλιανό ημερολόγιο:"
+
+msgid "Sun rise:"
+msgstr "Ανατολή ηλίου:"
+
+msgid "Sun set:"
+msgstr "Δύση ηλίου:"
+
+msgid "Solstice:"
+msgstr "Θερινό ηλιοστάσιο"
+
+msgid "Mercury rise:"
+msgstr "Ανατολή Ερμή:"
+
+msgid "Mercury set:"
+msgstr "Δύση Ερμή:"
+
+msgid "Mercury culmination:"
+msgstr "Μεσουράνημα Ερμή:"
+
+msgid "Mercury azimuth:"
+msgstr "Αζιμούθιο Ερμή:"
+
+msgid "Venus rise:"
+msgstr "Ανατολή Αφροδίτης:"
+
+msgid "Venus set:"
+msgstr "Δύση Αφροδίτης:"
+
+msgid "Venus culmination:"
+msgstr "Μεσουράνημα Αφροδίτης:"
+
+msgid "Venus azimuth:"
+msgstr "Αζιμούθιο Αφροδίτης:"
+
+msgid "Mars rise:"
+msgstr "Ανατολή Άρη:"
+
+msgid "Mars set:"
+msgstr "Δύση Άρη:"
+
+msgid "Mars culmination:"
+msgstr "Μεσουράνημα Άρη:"
+
+msgid "Mars azimuth:"
+msgstr "Αζιμούθιο Άρη:"
+
+msgid "Jupiter rise:"
+msgstr "Ανατολή Δία:"
+
+msgid "Jupiter set:"
+msgstr "Δύση Δία:"
+
+msgid "Jupiter culmination:"
+msgstr "Μεσουράνημα Δία:"
+
+msgid "Jupiter azimuth:"
+msgstr "Αζιμούθιο Δία:"
+
+msgid "Saturn rise:"
+msgstr "Ανατολή Κρόνου:"
+
+msgid "Saturn set:"
+msgstr "Δύση Κρόνου:"
+
+msgid "Saturn culmination:"
+msgstr "Μεσουράνημα Κρόνου:"
+
+msgid "Saturn azimuth:"
+msgstr "Αζιμούθιο Κρόνου:"
+
+msgid "Uranus rise:"
+msgstr "Ανατολή Ουρανού:"
+
+msgid "Uranus set:"
+msgstr "Δύση Ουρανού:"
+
+msgid "Uranus culmination:"
+msgstr "Μεσουράνημα Ουρανού:"
+
+msgid "Uranus azimuth:"
+msgstr "Αζιμούθιο Ουρανού:"
+
+msgid "Neptune rise:"
+msgstr "Ανατολή Ποσειδώνα:"
+
+msgid "Neptune set:"
+msgstr "Δύση Ποσειδώνα:"
+
+msgid "Neptune culmination:"
+msgstr "Μεσουράνημα Ποσειδώνα:"
+
+msgid "Neptune azimuth:"
+msgstr "Αζιμούθιο Ποσειδώνα:"
+
+msgid "Moon distance:"
+msgstr "Απόσταση σελήνης:"
+
+msgid "Moon culmination:"
+msgstr "Μεσουράνημα σελήνης:"
+
+msgid "Moon azimutht:"
+msgstr "Αζιμούθιο σελήνης:"
+
+msgid "Moon rise:"
+msgstr "Ανατολή σελήνης:"
+
+msgid "Moon set:"
+msgstr "Δύση σελήνης:"
+
+msgid "Moon light:"
+msgstr "Φως σελήνης:"
+
+msgid "Rise:"
+msgstr "Ανατολή:"
+
+msgid "Set:"
+msgstr "Δύση:"
+
+msgid "Culmination:"
+msgstr "Μεσουράνημα:"
+
+msgid "Azimuth:"
+msgstr "Αζιμούθιο:"
+
+msgid "Sun:"
+msgstr "Ήλιος:"
+
+msgid "Mercury:"
+msgstr "Ερμής:"
+
+msgid "Venus:"
+msgstr "Αφροδίτη:"
+
+msgid "Mars:"
+msgstr "Άρης:"
+
+msgid "Jupiter:"
+msgstr "Ζευς:"
+
+msgid "Saturn:"
+msgstr "Κρόνος:"
+
+msgid "Uranus:"
+msgstr "Ουρανός:"
+
+msgid "Neptune:"
+msgstr "Ποσειδώνας:"
+
+msgid "Moon:"
+msgstr "Σελήνη:"
+
+msgid "Location:"
+msgstr "Τοποθεσία:"
+
+msgid "Timezone:"
+msgstr "Χρονική ζώνη:"
+
+msgid "Latitude:"
+msgstr "Γεωγραφικό πλάτος:"
+
+msgid "Longitude:"
+msgstr "Γεωγραφικό μήκος:"
+
+msgid "Temperature:"
+msgstr "Θερμοκρασία:"
+
+msgid "Feels like:"
+msgstr "Αίσθηση:"
+
+msgid "Humidity:"
+msgstr "Υγρασία:"
+
+msgid "Chance precip:"
+msgstr "Πιθανότητα υετού:"
+
+msgid "Natural events:"
+msgstr "Φυσικά φαινόμενα:"
+
+msgid "Wind:"
+msgstr "Άνεμος:"
+
+msgid "Observation point:"
+msgstr "Σημείο παρατήρησης:"
+
+msgid "Date:"
+msgstr "Ημερομηνία:"
+
+msgid "Day week:"
+msgstr "Ημέρα εβδομάδας:"
+
+#, python-format
+msgid "%s"
+msgstr "%s"
+
+msgid "n/a"
+msgstr "μ/δ"
+
+#, python-format
+msgid "%s h"
+msgstr "%s ω"
+
+#, python-format
+msgid "%s%s%s"
+msgstr "%s%s%s"
+
+#, python-format
+msgid "%s %s"
+msgstr "%s %s"
+
+#, python-format
+msgid "%s %s %s"
+msgstr "%s %s %s"
+
+#, python-format
+msgid "%s%s%s / %s%s%s"
+msgstr "%s%s%s / %s%s%s"
+
+msgid ""
+"Weather MSN \n"
+"Developer: Sirius0103 \n"
+"Homepage: www.gisclub.tv \n"
+"Github: www.github.com/Sirius0103 \n"
+"\n"
+"Donate: \n"
+"R460680746216 \n"
+"Z395874509364 \n"
+"E284580190260"
+msgstr ""
+"Καιρός MSN \n"
+"Προγραμματιστής: Sirius0103 \n"
+"Ιστοσελίδα: www.gisclub.tv \n"
+"Github: www.github.com/Sirius0103 \n"
+"\n"
+"Χορηγία: \n"
+"R460680746216 \n"
+"Z395874509364 \n"
+"E284580190260"
+
+msgid "Config Weather MSN"
+msgstr "Ρυθμίσεις Καιρού MSN"
+
+msgid "Close"
+msgstr "Κλείσιμο"
+
+msgid "Save"
+msgstr "Αποθήκευση"
+
+msgid "Search Location"
+msgstr "Αναζήτηση τοποθεσίας"
+
+msgid "Enter text to search city"
+msgstr "Εισαγωγή κειμένου για αναζήτηση πόλης"
+
+msgid "Show Weather MSN in menu information:"
+msgstr "Εμφάνιση Καιρού MSN στο μενού πληροφοριών:"
+
+msgid "Scale of wind speed:"
+msgstr "Κλίμακα ταχύτητας ανέμου:"
+
+msgid "Scale of temperature:"
+msgstr "Κλίμακα θερμοκρασίας:"
+
+msgid "Create converter in system:"
+msgstr "Δημιουργία μετατροπέα στο σύστημα:"
+
+msgid "Do you want to restart the GUI now ?"
+msgstr "Θέλετε να γίνει επανεκκίνηση της διεπαφής χρήστη τώρα;"
+
+msgid "Configuration is saved"
+msgstr "Η ρύθμιση αποθηκεύτηκε"
+
+msgid "Search Location Weather MSN"
+msgstr "Αναζήτηση τοποθεσίας Καιρού MSN"
+
+msgid "Weather forecast, astronomical calculations"
+msgstr "Πρόγνωση καιρού, αστρονομικοί υπολογισμοί"
