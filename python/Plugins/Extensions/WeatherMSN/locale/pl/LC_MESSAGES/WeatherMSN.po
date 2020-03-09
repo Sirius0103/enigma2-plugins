@@ -1,32 +1,113 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WeatherMSN\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-29 01:13+0100\n"
-"PO-Revision-Date: 2020-02-14 16:53+0100\n"
-"Last-Translator: Sirius <sirius.altech@gmail.com>\n"
-"Language-Team: sirius.altech@gmail.com\n"
+"POT-Creation-Date: 2020-03-07 11:34+0300\n"
+"PO-Revision-Date: 2020-03-07 12:49+0100\n"
+"Last-Translator: rg\n"
+"Language-Team: \n"
+"Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"Language: pl_PL\n"
 "X-Generator: Poedit 2.3\n"
+"X-Poedit-Basepath: WeatherMSN\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#, python-format
+msgid "%s m/s"
+msgstr "%s m/s"
+
+#, python-format
+msgid "%.01f m/s"
+msgstr "%.01f m/s"
+
+#, python-format
+msgid "%.01f ft/s"
+msgstr "%.01f stpy/s"
+
+#, python-format
+msgid "%.01f mp/h"
+msgstr "%.01f mile/godz"
+
+#, python-format
+msgid "%s mp/h"
+msgstr "%s mil/godz"
+
+#, python-format
+msgid "%.01f knots"
+msgstr "%.01f węzły"
+
+#, python-format
+msgid "%.01f km/h"
+msgstr "%.01f km/godz"
+
+#, python-format
+msgid "%s km/h"
+msgstr "%s km/h"
+
+#, python-format
+msgid "%s km"
+msgstr "%s km"
+
+msgid "New moon"
+msgstr "Nów"
+
+msgid "Waxing cresent"
+msgstr "Sierp rosnący"
+
+msgid "Waning crescent"
+msgstr "Sierp ubywający"
+
+msgid "First quarter"
+msgstr "Pierwsza kwadra"
+
+msgid "Last quarter"
+msgstr "Ostatnia kwadra"
+
+msgid "Waxing gibbous"
+msgstr "Rosnący garbaty księżyc"
+
+msgid "Waning gibbous"
+msgstr "Malejący garbaty księżyc"
+
+msgid "Full moon"
+msgstr "Pełnia"
+
+msgid "no"
+msgstr "Nie"
+
+msgid "yes"
+msgstr "Tak"
+
+msgid "m/s"
+msgstr "m/s"
+
+msgid "ft/s"
+msgstr "stopy/s"
+
+msgid "km/h"
+msgstr "km/h"
+
+msgid "mp/h"
+msgstr "mile/godz"
+
+msgid "knots"
+msgstr "węzły"
+
+msgid "Celsius"
+msgstr "Celsius"
+
+msgid "Fahrenheit"
+msgstr "Fahrenheit"
 
 msgid "Weather MSN"
-msgstr "Pogoda MSN"
-
-msgid "Weather forecast, astronomical calculations"
-msgstr "Prognoza pogody, obliczenia astronomiczne"
-
-msgid "Config Weather MSN"
-msgstr "Konfiguracja Pogody MSN"
-
-msgid "Show Weather MSN in menu information:"
-msgstr "Pokaż w menu informację o Pogodzie MSN:"
+msgstr "Weather MSN"
 
 msgid "Julian day:"
-msgstr "Data Juliańska:"
+msgstr "Dzień juliański:"
 
 msgid "Sun rise:"
 msgstr "Wschód słońca:"
@@ -194,13 +275,16 @@ msgid "Temperature:"
 msgstr "Temperatura:"
 
 msgid "Feels like:"
-msgstr "Temp. odczuwalna:"
+msgstr "Temperatura odczuwalna:"
 
 msgid "Humidity:"
 msgstr "Wilgotność:"
 
 msgid "Chance precip:"
 msgstr "Możliwość opadów:"
+
+msgid "Natural events:"
+msgstr "Zdarzenia naturalne:"
 
 msgid "Wind:"
 msgstr "Wiatr:"
@@ -214,113 +298,32 @@ msgstr "Data:"
 msgid "Day week:"
 msgstr "Dzień tygodnia:"
 
-msgid "m/s"
-msgstr "m/s"
+#, python-format
+msgid "%s"
+msgstr "%s"
 
-msgid "ft/s"
-msgstr "stopy/s"
+msgid "n/a"
+msgstr "n/a"
 
-msgid "km/h"
-msgstr "km/h"
-
-msgid "mp/h"
-msgstr "mile/godz"
-
-msgid "knots"
-msgstr "węzły"
-
+#, python-format
 msgid "%s h"
 msgstr "%s godz"
 
-msgid "no"
-msgstr "nie"
+#, python-format
+msgid "%s%s%s"
+msgstr "%s%s%s"
 
-msgid "yes"
-msgstr "tak"
+#, python-format
+msgid "%s %s"
+msgstr "%s %s"
 
-msgid "Close"
-msgstr "Zamknij"
+#, python-format
+msgid "%s %s %s"
+msgstr "%s %s %s"
 
-msgid "Save"
-msgstr "Zapisz"
-
-msgid "Search Location"
-msgstr "Szukaj lokalizacji"
-
-msgid "Search Location Weather MSN"
-msgstr "Szukaj lokalizacji Pogody MSN"
-
-msgid "Scale of wind speed:"
-msgstr "Jednostka prędkości wiatru:"
-
-msgid "Scale of temperature:"
-msgstr "Jednostka temperatury:"
-
-msgid "Celsius"
-msgstr "Celsjusz"
-
-msgid "Fahrenheit"
-msgstr "Fahrenheit"
-
-msgid "Create converter in system:"
-msgstr "Utwórz konwerter w systemie:"
-
-msgid "Configuration is saved"
-msgstr "Konfiguracja zapisana"
-
-msgid "Do you want to restart the GUI now ?"
-msgstr "Czy chcesz zrestartować GUI teraz?"
-
-msgid "New moon"
-msgstr "Nów"
-
-msgid "Full moon"
-msgstr "Pełnia"
-
-msgid "Waxing cresent"
-msgstr "Zanikający półksiężyc"
-
-msgid "First quarter"
-msgstr "Pierwsza kwadra"
-
-msgid "Waxing gibbous"
-msgstr "Rosnący garbaty księżyc"
-
-msgid "Waning crescent"
-msgstr "Zanikający półksiężyc"
-
-msgid "Last quarter"
-msgstr "Ostatnia kwadra"
-
-msgid "Waning gibbous"
-msgstr "Malejący garbaty księżyc"
-
-msgid "%.01f m/s"
-msgstr "%.01f m/s"
-
-msgid "%.01f ft/s"
-msgstr "%.01f stóp/s"
-
-msgid "%.01f mp/h"
-msgstr "%.01f mil/godz"
-
-msgid "%.01f knots"
-msgstr "%.01f węzły/ów"
-
-msgid "%s m/s"
-msgstr "%s m/s"
-
-msgid "%s km/h"
-msgstr "%s km/h"
-
-msgid "%s mp/h"
-msgstr "%s mil/godz"
-
-msgid "%s km"
-msgstr "%s km"
-
-msgid "Enter text to search city"
-msgstr "Wprowadź tekst aby wyszukać miasto"
+#, python-format
+msgid "%s%s%s / %s%s%s"
+msgstr "%s%s%s / %s%s%s"
 
 msgid ""
 "Weather MSN \n"
@@ -342,3 +345,42 @@ msgstr ""
 "R460680746216 \n"
 "Z395874509364 \n"
 "E284580190260"
+
+msgid "Config Weather MSN"
+msgstr "Konfiguracja Weather MSN"
+
+msgid "Close"
+msgstr "Zamknij"
+
+msgid "Save"
+msgstr "Zapisz"
+
+msgid "Search Location"
+msgstr "Szukaj lokalizacji"
+
+msgid "Enter text to search city"
+msgstr "Wprowadź tekst aby wyszukać miasto"
+
+msgid "Show Weather MSN in menu information:"
+msgstr "Pokaż w menu informacje o Weather MSN:"
+
+msgid "Scale of wind speed:"
+msgstr "Jednostka prędkości wiatru:"
+
+msgid "Scale of temperature:"
+msgstr "Jednostka temperatury:"
+
+msgid "Create converter in system:"
+msgstr "Utwórz konwerter w systemie:"
+
+msgid "Do you want to restart the GUI now ?"
+msgstr "Czy chcesz zrestartować GUI teraz?"
+
+msgid "Configuration is saved"
+msgstr "Konfiguracja zapisana"
+
+msgid "Search Location Weather MSN"
+msgstr "Szukaj lokalizacji Weather MSN"
+
+msgid "Weather forecast, astronomical calculations"
+msgstr "Prognoza pogody, obliczenia astronomiczne"
