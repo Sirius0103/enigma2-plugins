@@ -187,6 +187,7 @@ class DownSkinLIB(Screen):
 			\n   ServiceInfoEX.py\
 			\n   ServiceName2.py\
 			\n   ServiceOrbitalPosition2.py\
+			\n   TestConnection.py\
 			\n   TunerBar.py\
 			\n   WiFiInfo.py\
 			"
@@ -252,6 +253,7 @@ class DownSkinLIB(Screen):
 			and "/tmp/ServiceName2.py"\
 			and "/tmp/ServiceName2.ref"\
 			and "/tmp/ServiceOrbitalPosition2.py"\
+			and "/tmp/TestConnection.py"\
 			and "/tmp/TunerBar.py"\
 			and "/tmp/WiFiInfo.py"\
 	# renderer
@@ -296,6 +298,7 @@ class DownSkinLIB(Screen):
 			os.system("cp /tmp/ServiceName2.py %sConverter/ServiceName2.py" % (componentspath))
 			os.system("cp /tmp/ServiceName2.ref %sConverter/ServiceName2.ref" % (componentspath))
 			os.system("cp /tmp/ServiceOrbitalPosition2.py %sConverter/ServiceOrbitalPosition2.py" % (componentspath))
+			os.system("cp /tmp/TunerBar.py %sConverter/TestConnection.py" % (componentspath))
 			os.system("cp /tmp/TunerBar.py %sConverter/TunerBar.py" % (componentspath))
 			os.system("cp /tmp/WiFiInfo.py %sConverter/WiFiInfo.py" % (componentspath))
 	# install renderer
@@ -436,6 +439,10 @@ class DownSkinLIB(Screen):
 		f.close()
 		file = requests.get("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Converter/ServiceOrbitalPosition2.py").text
 		f = open("/tmp/ServiceOrbitalPosition2.py", "w")
+		f.write(file)
+		f.close()
+		file = requests.get("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Converter/TestConnection.py").text
+		f = open("/tmp/TestConnection.py", "w")
 		f.write(file)
 		f.close()
 		file = requests.get("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Converter/TunerBar.py").text

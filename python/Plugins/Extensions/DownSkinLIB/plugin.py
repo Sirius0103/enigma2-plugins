@@ -184,6 +184,7 @@ class DownSkinLIB(Screen):
 			\n   ServiceInfoEX.py\
 			\n   ServiceName2.py\
 			\n   ServiceOrbitalPosition2.py\
+			\n   TestConnection.py\
 			\n   TunerBar.py\
 			\n   WiFiInfo.py\
 			"
@@ -255,6 +256,7 @@ class DownSkinLIB(Screen):
 			and "/tmp/ServiceName2.py"\
 			and "/tmp/ServiceName2.ref"\
 			and "/tmp/ServiceOrbitalPosition2.py"\
+			and "/tmp/TestConnection.py"\
 			and "/tmp/TunerBar.py"\
 			and "/tmp/WiFiInfo.py"\
 	# renderer
@@ -299,6 +301,7 @@ class DownSkinLIB(Screen):
 			os.system("cp /tmp/ServiceName2.py %sConverter/ServiceName2.py" % (componentspath))
 			os.system("cp /tmp/ServiceName2.ref %sConverter/ServiceName2.ref" % (componentspath))
 			os.system("cp /tmp/ServiceOrbitalPosition2.py %sConverter/ServiceOrbitalPosition2.py" % (componentspath))
+			os.system("cp /tmp/TunerBar.py %sConverter/TestConnection.py" % (componentspath))
 			os.system("cp /tmp/TunerBar.py %sConverter/TunerBar.py" % (componentspath))
 			os.system("cp /tmp/WiFiInfo.py %sConverter/WiFiInfo.py" % (componentspath))
 	# install renderer
@@ -320,9 +323,6 @@ class DownSkinLIB(Screen):
 	def download_pl(self):
 	# download plugin
 		urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/plugin.py","/tmp/plugin.py")
-		urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/locale/ru/LC_MESSAGES/DownSkinLIB.mo","/tmp/ruDownSkinLIB.mo")
-		urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/locale/de/LC_MESSAGES/DownSkinLIB.mo","/tmp/deDownSkinLIB.mo")
-		urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-plugins/master/python/Plugins/Extensions/DownSkinLIB/locale/uk/LC_MESSAGES/DownSkinLIB.mo","/tmp/ukDownSkinLIB.mo")
 	# end
 		self.install_pl()
 
@@ -356,6 +356,7 @@ class DownSkinLIB(Screen):
 		urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Converter/ServiceName2.py","/tmp/ServiceName2.py")
 		urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Converter/ServiceName2.ref","/tmp/ServiceName2.ref")
 		urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Converter/ServiceOrbitalPosition2.py","/tmp/ServiceOrbitalPosition2.py")
+		urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Converter/TestConnection.py","/tmp/TestConnection.py")
 		urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Converter/TunerBar.py","/tmp/TunerBar.py")
 		urllib.urlretrieve("https://raw.githubusercontent.com/Sirius0103/enigma2-components/master/python/Components/Converter/WiFiInfo.py","/tmp/WiFiInfo.py")
 	# download renderer
