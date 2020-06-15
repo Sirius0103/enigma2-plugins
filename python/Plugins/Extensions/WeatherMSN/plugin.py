@@ -116,8 +116,8 @@ if getDesktop(0).size().width() >= 1920: #FHD
 			<widget source="saturntxt" render="Label" position="20,625" size="200,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget source="uranustxt" render="Label" position="20,660" size="200,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 			<widget source="neptunetxt" render="Label" position="20,695" size="200,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-			<widget source="moonlighttxt" render="Label" position="280,800" size="350,30" font="Regular; 25" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
-			<widget source="moondisttxt" render="Label" position="280,835" size="350,30" font="Regular; 25" foregroundColor="unf4f4f4" backgroundColor="background" halign="left" transparent="1" />
+			<widget source="moonlighttxt" render="Label" position="280,800" size="350,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+			<widget source="moondisttxt" render="Label" position="280,835" size="350,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
 
 			<widget source="sunrise" render="Label" position="220,450" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
 			<widget source="sunset" render="Label" position="390,450" size="150,30" font="Regular; 25" foregroundColor="#00f4f4f4" backgroundColor="background" halign="center" transparent="1" />
