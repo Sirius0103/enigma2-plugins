@@ -21,6 +21,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
+from __future__ import print_function
 import urllib2
 import datetime, time
 import os, math, gettext
@@ -667,13 +668,13 @@ class WeatherMSN(ConfigListScreen, Screen):
 		downloadPage(xmlfile, "/tmp/weathermsn1.xml").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
 
 	def downloadFinished(self, result):
-		print "[WeatherMSN] Download finished"
+		print("[WeatherMSN] Download finished")
 		self.notdata = False
 		self.parse_weather_data()
 
 	def downloadFailed(self, result):
 		self.notdata = True
-		print "[WeatherMSN] Download failed!"
+		print("[WeatherMSN] Download failed!")
 
 	def get_weather_data(self):
 		if not os.path.exists("/tmp/weathermsn1.xml") or int((time.time() - os.stat("/tmp/weathermsn1.xml").st_mtime)/60) >= self.time_update or self.notdata:
@@ -2836,7 +2837,7 @@ def search_title(id):
 	try:
 		watchvideopage = urlopen(watchrequest)
 	except (URLError, HTTPException, socket.error) as err:
-		print "[Location] Error: Unable to retrieve page - Error code: ", str(err)
+		print("[Location] Error: Unable to retrieve page - Error code: ", str(err))
 	content = watchvideopage.read()
 	root = cet_fromstring(content)
 	search_results = []
