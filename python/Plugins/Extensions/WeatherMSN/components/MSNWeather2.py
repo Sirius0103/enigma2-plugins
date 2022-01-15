@@ -21,20 +21,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-import os
 import math
-import gettext
-import datetime, time
-from Tools.Directories import fileExists, pathExists
+from Tools.Directories import fileExists
 from Components.Converter.Converter import Converter
+from Components.Converter.Poll import Poll
 from Components.Element import cached
-from Components.config import config, configfile
-from Components.Console import Console as iConsole
-from Components.Language import language
-from time import localtime, strftime
-from datetime import date
-from os import environ
-from Poll import Poll
+from Components.config import config
+from Components.Console import Console
+from time import strftime, time
+from os import stat
 
 weather_city = config.plugins.weathermsn.city.value # 'Moscow,Russia'
 degreetype = config.plugins.weathermsn.degreetype.value # 'C'
@@ -47,7 +42,7 @@ if weather_location == 'en-EN':
 time_update = 30
 time_update_ms = 3000
 
-class MSNWeather2(Poll, Converter, object):
+class MSNWeather2(Converter, Poll):
 
 	VFD = 1
 	DATE = 2
@@ -379,7 +374,7 @@ class MSNWeather2(Poll, Converter, object):
 		elif type == "Precip4":
 			self.type = self.PRECIP4
 
-		self.iConsole = iConsole()
+		self.iConsole = Console()
 		self.poll_interval = time_update_ms
 		self.poll_enabled = True
 
@@ -513,7 +508,7 @@ class MSNWeather2(Poll, Converter, object):
 			}
 #
 		if fileExists("/tmp/weathermsn2.xml"):
-			if int((time.time() - os.stat("/tmp/weathermsn2.xml").st_mtime)/60) >= time_update:
+			if int((time() - stat("/tmp/weathermsn2.xml").st_mtime)/60) >= time_update:
 				self.get_xmlfile()
 		else:
 			self.get_xmlfile()
@@ -537,16 +532,16 @@ class MSNWeather2(Poll, Converter, object):
 					longitude = '%s' %  line.split(' long')[1].split('"')[1].replace(',', '.')
 				if "<current" in line:
 					if not line.split('temperature')[1].split('"')[1][0] is '-' and not line.split('temperature')[1].split('"')[1][0] is '0':
-						msnweather['Temp'] = '+' + line.split('temperature')[1].split('"')[1] + '%s%s' % (unichr(176).encode("latin-1"), degreetype)
+						msnweather['Temp'] = '+' + line.split('temperature')[1].split('"')[1] + '%s%s' % (chr(176).encode("latin-1"), degreetype)
 					else:
-						msnweather['Temp'] = line.split('temperature')[1].split('"')[1] + '%s%s' % (unichr(176).encode("latin-1"), degreetype)
+						msnweather['Temp'] = line.split('temperature')[1].split('"')[1] + '%s%s' % (chr(176).encode("latin-1"), degreetype)
 					if not line.split('feelslike')[1].split('"')[1][0] is '-' and not line.split('feelslike')[1].split('"')[1][0] is '0':
-						msnweather['Feelslike'] = '+' + line.split('feelslike')[1].split('"')[1] + '%s%s' % (unichr(176).encode("latin-1"), degreetype)
+						msnweather['Feelslike'] = '+' + line.split('feelslike')[1].split('"')[1] + '%s%s' % (chr(176).encode("latin-1"), degreetype)
 					else:
-						msnweather['Feelslike'] = line.split('feelslike')[1].split('"')[1] + '%s%s' % (unichr(176).encode("latin-1"), degreetype)
+						msnweather['Feelslike'] = line.split('feelslike')[1].split('"')[1] + '%s%s' % (chr(176).encode("latin-1"), degreetype)
 					msnweather['Picon'] = line.split('skycode')[1].split('"')[1]
 					msnweather['Skytext'] = line.split('skytext')[1].split('"')[1]
-					msnweather['Humidity'] = line.split('humidity')[1].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
+					msnweather['Humidity'] = line.split('humidity')[1].split('"')[1] + ' %s' % chr(37).encode("latin-1")
 					try:
 						msnweather['Wind'] = line.split('winddisplay')[1].split('"')[1].split(' ')[2]
 					except:
@@ -593,16 +588,16 @@ class MSNWeather2(Poll, Converter, object):
 # День 0
 				if "<forecast" in line:
 					if not line.split('low')[1].split('"')[1][0] is '-' and not line.split('low')[1].split('"')[1][0] is '0':
-						low0weather = '+' + line.split('low')[1].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						low0weather = '+' + line.split('low')[1].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Lowtemp0'] = '%s%s' % (low0weather, degreetype)
 					else:
-						low0weather = line.split('low')[1].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						low0weather = line.split('low')[1].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Lowtemp0'] = '%s%s' % (low0weather, degreetype)
 					if not line.split('high')[1].split('"')[1][0] is '-' and not line.split('high')[1].split('"')[1][0] is '0':
-						hi0weather = '+' + line.split('high')[1].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						hi0weather = '+' + line.split('high')[1].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Hightemp0'] = '%s%s' % (hi0weather, degreetype)
 					else:
-						hi0weather = line.split('high')[1].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						hi0weather = line.split('high')[1].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Hightemp0'] = '%s%s' % (hi0weather, degreetype)
 					msnweather['Temp0'] = '%s / %s' % (hi0weather, low0weather)
 					msnweather['Picon0'] = line.split('skycodeday')[1].split('"')[1]
@@ -611,20 +606,20 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Day0'] = line.split(' day')[2].split('"')[1]
 					msnweather['Shortday0'] = line.split('shortday')[2].split('"')[1]
 					msnweather['Skytext0'] = line.split('skytextday')[1].split('"')[1]
-					msnweather['Precip0'] = line.split('precip')[1].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
+					msnweather['Precip0'] = line.split('precip')[1].split('"')[1] + ' %s' % chr(37).encode("latin-1")
 # День 1
 				if "<forecast" in line:
 					if not line.split('low')[2].split('"')[1][0] is '-' and not line.split('low')[2].split('"')[1][0] is '0':
-						low1weather = '+' + line.split('low')[2].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						low1weather = '+' + line.split('low')[2].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Lowtemp1'] = '%s%s' % (low1weather, degreetype)
 					else:
-						low1weather = line.split('low')[2].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						low1weather = line.split('low')[2].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Lowtemp1'] = '%s%s' % (low1weather, degreetype)
 					if not line.split('high')[2].split('"')[1][0] is '-' and not line.split('high')[2].split('"')[1][0] is '0':
-						hi1weather = '+' + line.split('high')[2].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						hi1weather = '+' + line.split('high')[2].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Hightemp1'] = '%s%s' % (hi1weather, degreetype)
 					else:
-						hi1weather = line.split('high')[2].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						hi1weather = line.split('high')[2].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Hightemp1'] = '%s%s' % (hi1weather, degreetype)
 					msnweather['Temp1'] = '%s / %s' % (hi1weather, low1weather)
 					msnweather['Picon1'] = line.split('skycodeday')[2].split('"')[1]
@@ -633,20 +628,20 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Day1'] = line.split(' day')[3].split('"')[1]
 					msnweather['Shortday1'] = line.split('shortday')[3].split('"')[1]
 					msnweather['Skytext1'] = line.split('skytextday')[2].split('"')[1]
-					msnweather['Precip1'] = line.split('precip')[2].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
+					msnweather['Precip1'] = line.split('precip')[2].split('"')[1] + ' %s' % chr(37).encode("latin-1")
 # День 2
 				if "<forecast" in line:
 					if not line.split('low')[3].split('"')[1][0] is '-' and not line.split('low')[3].split('"')[1][0] is '0':
-						low2weather = '+' + line.split('low')[3].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						low2weather = '+' + line.split('low')[3].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Lowtemp2'] = '%s%s' % (low2weather, degreetype)
 					else:
-						low2weather = line.split('low')[3].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						low2weather = line.split('low')[3].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Lowtemp2'] = '%s%s' % (low2weather, degreetype)
 					if not line.split('high')[3].split('"')[1][0] is '-' and not line.split('high')[3].split('"')[1][0] is '0':
-						hi2weather = '+' + line.split('high')[3].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						hi2weather = '+' + line.split('high')[3].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Hightemp2'] = '%s%s' % (hi2weather, degreetype)
 					else:
-						hi2weather = line.split('high')[3].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						hi2weather = line.split('high')[3].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Hightemp2'] = '%s%s' % (hi2weather, degreetype)
 					msnweather['Temp2'] = '%s / %s' % (hi2weather, low2weather)
 					msnweather['Picon2'] = line.split('skycodeday')[3].split('"')[1]
@@ -655,20 +650,20 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Day2'] = line.split(' day')[4].split('"')[1]
 					msnweather['Shortday2'] = line.split('shortday')[4].split('"')[1]
 					msnweather['Skytext2'] = line.split('skytextday')[3].split('"')[1]
-					msnweather['Precip2'] = line.split('precip')[3].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
+					msnweather['Precip2'] = line.split('precip')[3].split('"')[1] + ' %s' % chr(37).encode("latin-1")
 # День 3
 				if "<forecast" in line:
 					if not line.split('low')[4].split('"')[1][0] is '-' and not line.split('low')[4].split('"')[1][0] is '0':
-						low3weather = '+' + line.split('low')[4].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						low3weather = '+' + line.split('low')[4].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Lowtemp3'] = '%s%s' % (low3weather, degreetype)
 					else:
-						low3weather = line.split('low')[4].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						low3weather = line.split('low')[4].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Lowtemp3'] = '%s%s' % (low3weather, degreetype)
 					if not line.split('high')[4].split('"')[1][0] is '-' and not line.split('high')[4].split('"')[1][0] is '0':
-						hi3weather = '+' + line.split('high')[4].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						hi3weather = '+' + line.split('high')[4].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Hightemp3'] = '%s%s' % (hi3weather, degreetype)
 					else:
-						hi3weather = line.split('high')[4].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						hi3weather = line.split('high')[4].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Hightemp3'] = '%s%s' % (hi3weather, degreetype)
 					msnweather['Temp3'] = '%s / %s' % (hi3weather, low3weather)
 					msnweather['Picon3'] = line.split('skycodeday')[4].split('"')[1]
@@ -677,20 +672,20 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Day3'] = line.split(' day')[5].split('"')[1]
 					msnweather['Shortday3'] = line.split('shortday')[5].split('"')[1]
 					msnweather['Skytext3'] = line.split('skytextday')[4].split('"')[1]
-					msnweather['Precip3'] = line.split('precip')[4].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
+					msnweather['Precip3'] = line.split('precip')[4].split('"')[1] + ' %s' % chr(37).encode("latin-1")
 # День 4
 				if "<forecast" in line:
 					if not line.split('low')[5].split('"')[1][0] is '-' and not line.split('low')[5].split('"')[1][0] is '0':
-						low4weather = '+' + line.split('low')[5].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						low4weather = '+' + line.split('low')[5].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Lowtemp4'] = '%s%s' % (low4weather, degreetype)
 					else:
-						low4weather = line.split('low')[5].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						low4weather = line.split('low')[5].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Lowtemp4'] = '%s%s' % (low4weather, degreetype)
 					if not line.split('high')[5].split('"')[1][0] is '-' and not line.split('high')[5].split('"')[1][0] is '0':
-						hi4weather = '+' + line.split('high')[5].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						hi4weather = '+' + line.split('high')[5].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Hightemp4'] = '%s%s' % (hi4weather, degreetype)
 					else:
-						hi4weather = line.split('high')[5].split('"')[1] + '%s' % unichr(176).encode("latin-1")
+						hi4weather = line.split('high')[5].split('"')[1] + '%s' % chr(176).encode("latin-1")
 						msnweather['Hightemp4'] = '%s%s' % (hi4weather, degreetype)
 					msnweather['Temp4'] = '%s / %s' % (hi4weather, low4weather)
 					msnweather['Picon4'] = line.split('skycodeday')[5].split('"')[1]
@@ -699,7 +694,7 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Day4'] = line.split(' day')[6].split('"')[1]
 					msnweather['Shortday4'] = line.split('shortday')[6].split('"')[1]
 					msnweather['Skytext4'] = line.split('skytextday')[5].split('"')[1]
-					msnweather['Precip4'] = line.split('precip')[5].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
+					msnweather['Precip4'] = line.split('precip')[5].split('"')[1] + ' %s' % chr(37).encode("latin-1")
 			except:
 				pass
 # Астро
@@ -707,11 +702,11 @@ class MSNWeather2(Poll, Converter, object):
 		DEG2RAD = PI / 180 # радианы
 		RAD2DEG = 180 / PI # градусы
 		try:
-			long = float(longitude)
-			lat = float(latitude)
-			zone = float(timezone)
+			longitude = float(longitude)
+			latitude = float(latitude)
+			timezone = float(timezone)
 		except:
-			long = lat = zone = 0
+			longitude = latitude = timezone = 0
 		UT = hour + min / 60 + sec / 3600
 # Юлианская дата
 		if month <= 2:
@@ -725,7 +720,7 @@ class MSNWeather2(Poll, Converter, object):
 # Звездное время
 		T = (JDN - 2451545) / 36525 # юлианское столетие на полночь по Гринвичу
 		STT = math.fmod((6.697374558333 + 2400.0513369072223 * T + 0.0000258622 * T * T - 0.00000000172 * T * T * T), 24) # звёздное время в Гринвиче в полночь
-		ST = math.fmod((STT + UT * 1.0027379093 - zone * 1.0027379093 + long / 15), 24) # местное звёздное время на момент местного времени
+		ST = math.fmod((STT + UT * 1.0027379093 - timezone * 1.0027379093 + longitude / 15), 24) # местное звёздное время на момент местного времени
 		if ST < 0:
 			ST = ST + 24
 		ST = ST * 15 # звёздное время на момент рассчёта в градусах
@@ -752,8 +747,8 @@ class MSNWeather2(Poll, Converter, object):
 			# эклиптические координаты
 			DEC = math.asin(math.sin(EPS * DEG2RAD) * math.sin(SLong * DEG2RAD)) * RAD2DEG # склонение
 			ALFA = (7.53 * math.cos(LS * DEG2RAD) + 1.5 * math.sin(LS * DEG2RAD) - 9.87 * math.sin(2 * LS * DEG2RAD)) / 60 # уравнение времени
-			BETA = math.acos((math.cos(90.85 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG
-			SSS = ALFA + (180 - long) / 15 + zone
+			BETA = math.acos((math.cos(90.85 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG
+			SSS = ALFA + (180 - longitude) / 15 + timezone
 			# Время восхода/захода
 			SCh = int(SSS)
 			SCm = int(round((SSS - SCh) * 60))
@@ -827,11 +822,11 @@ class MSNWeather2(Poll, Converter, object):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -906,11 +901,11 @@ class MSNWeather2(Poll, Converter, object):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -990,11 +985,11 @@ class MSNWeather2(Poll, Converter, object):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -1094,11 +1089,11 @@ class MSNWeather2(Poll, Converter, object):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -1201,11 +1196,11 @@ class MSNWeather2(Poll, Converter, object):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -1286,11 +1281,11 @@ class MSNWeather2(Poll, Converter, object):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -1366,11 +1361,11 @@ class MSNWeather2(Poll, Converter, object):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -1450,11 +1445,11 @@ class MSNWeather2(Poll, Converter, object):
 			DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # склонение
 			if RA < 0:
 				RA = RA + 2 * PI
-			BETA = math.acos((math.cos(89.55 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SMR = math.fmod((RA - BETA - long - STT * 15 + zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(89.55 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SMR = math.fmod((RA - BETA - longitude - STT * 15 + timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SMR < 0:
 				SMR = SMR + 24
-			SMS = math.fmod((RA + BETA - long - STT * 15 + zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SMS = math.fmod((RA + BETA - longitude - STT * 15 + timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SMS < 0:
 				SMS = SMS + 24
 			if SMR < SMS:
@@ -1538,9 +1533,9 @@ class MSNWeather2(Poll, Converter, object):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P1A = round(AZ, 1)
 		except:
 			P1A ='-'
@@ -1581,9 +1576,9 @@ class MSNWeather2(Poll, Converter, object):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P2A = round(AZ, 1)
 		except:
 			P2A ='-'
@@ -1629,9 +1624,9 @@ class MSNWeather2(Poll, Converter, object):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P4A = round(AZ, 1)
 		except:
 			P4A ='-'
@@ -1697,9 +1692,9 @@ class MSNWeather2(Poll, Converter, object):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P5A = round(AZ, 1)
 		except:
 			P5A ='-'
@@ -1768,9 +1763,9 @@ class MSNWeather2(Poll, Converter, object):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P6A = round(AZ, 1)
 		except:
 			P6A ='-'
@@ -1817,9 +1812,9 @@ class MSNWeather2(Poll, Converter, object):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P7A = round(AZ, 1)
 		except:
 			P7A ='-'
@@ -1862,9 +1857,9 @@ class MSNWeather2(Poll, Converter, object):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P8A = round(AZ, 1)
 		except:
 			P8A ='-'
@@ -1945,9 +1940,9 @@ class MSNWeather2(Poll, Converter, object):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			MA = round(AZ, 1)
 	#
 			T = (JD + 0.5 / 24 - 2451545) / 36525
@@ -2094,44 +2089,44 @@ class MSNWeather2(Poll, Converter, object):
 			Mdist = MA = phase = light = '-'
 #
 		msnweather['Julianday'] = '%s' % JD
-		msnweather['Sunrise'] = '%s%s%s%s' % (SRh, unichr(58).encode("latin-1"), SRx, SRm)
-		msnweather['Sunset'] = '%s%s%s%s' % (SSh, unichr(58).encode("latin-1"), SSx, SSm)
-		msnweather['Solstice'] = '%s%s%s%s' % (SCh, unichr(58).encode("latin-1"), SCx, SCm)
-		msnweather['Mercuryrise'] = '%s%s%s%s' % (P1Rh, unichr(58).encode("latin-1"), P1Rx, P1Rm)
-		msnweather['Mercuryset'] = '%s%s%s%s' % (P1Sh, unichr(58).encode("latin-1"), P1Sx, P1Sm)
-		msnweather['Mercuryculmination'] = '%s%s%s%s' % (P1Ch, unichr(58).encode("latin-1"), P1Cx, P1Cm)
-		msnweather['Mercuryazimuth'] = '%s %s' % (P1A, unichr(176).encode("latin-1"))
-		msnweather['Venusrise'] = '%s%s%s%s' % (P2Rh, unichr(58).encode("latin-1"), P2Rx, P2Rm)
-		msnweather['Venusset'] = '%s%s%s%s' % (P2Sh, unichr(58).encode("latin-1"), P2Sx, P2Sm)
-		msnweather['Venusculmination'] = '%s%s%s%s' % (P2Ch, unichr(58).encode("latin-1"), P2Cx, P2Cm)
-		msnweather['Venusazimuth'] = '%s %s' % (P2A, unichr(176).encode("latin-1"))
-		msnweather['Marsrise'] = '%s%s%s%s' % (P4Rh, unichr(58).encode("latin-1"), P4Rx, P4Rm)
-		msnweather['Marsset'] = '%s%s%s%s' % (P4Sh, unichr(58).encode("latin-1"), P4Sx, P4Sm)
-		msnweather['Marsculmination'] = '%s%s%s%s' % (P4Ch, unichr(58).encode("latin-1"), P4Cx, P4Cm)
-		msnweather['Marsazimuth'] = '%s %s' % (P4A, unichr(176).encode("latin-1"))
-		msnweather['Jupiterrise'] = '%s%s%s%s' % (P5Rh, unichr(58).encode("latin-1"), P5Rx, P5Rm)
-		msnweather['Jupiterset'] = '%s%s%s%s' % (P5Sh, unichr(58).encode("latin-1"), P5Sx, P5Sm)
-		msnweather['Jupiterculmination'] = '%s%s%s%s' % (P5Ch, unichr(58).encode("latin-1"), P5Cx, P5Cm)
-		msnweather['Jupiterazimuth'] = '%s %s' % (P5A, unichr(176).encode("latin-1"))
-		msnweather['Saturnrise'] = '%s%s%s%s' % (P6Rh, unichr(58).encode("latin-1"), P6Rx, P6Rm)
-		msnweather['Saturnset'] = '%s%s%s%s' % (P6Sh, unichr(58).encode("latin-1"), P6Sx, P6Sm)
-		msnweather['Saturnculmination'] = '%s%s%s%s' % (P6Ch, unichr(58).encode("latin-1"), P6Cx, P6Cm)
-		msnweather['Saturnazimuth'] = '%s %s' % (P6A, unichr(176).encode("latin-1"))
-		msnweather['Uranusrise'] = '%s%s%s%s' % (P7Rh, unichr(58).encode("latin-1"), P7Rx, P7Rm)
-		msnweather['Uranusset'] = '%s%s%s%s' % (P7Sh, unichr(58).encode("latin-1"), P7Sx, P7Sm)
-		msnweather['Uranusculmination'] = '%s%s%s%s' % (P7Ch, unichr(58).encode("latin-1"), P7Cx, P7Cm)
-		msnweather['Uranusazimuth'] = '%s %s' % (P7A, unichr(176).encode("latin-1"))
-		msnweather['Neptunerise'] = '%s%s%s%s' % (P8Rh, unichr(58).encode("latin-1"), P8Rx, P8Rm)
-		msnweather['Neptuneset'] = '%s%s%s%s' % (P8Sh, unichr(58).encode("latin-1"), P8Sx, P8Sm)
-		msnweather['Neptuneculmination'] = '%s%s%s%s' % (P8Ch, unichr(58).encode("latin-1"), P8Cx, P8Cm)
-		msnweather['Neptuneazimuth'] = '%s %s' % (P8A, unichr(176).encode("latin-1"))
+		msnweather['Sunrise'] = '%s%s%s%s' % (SRh, chr(58).encode("latin-1"), SRx, SRm)
+		msnweather['Sunset'] = '%s%s%s%s' % (SSh, chr(58).encode("latin-1"), SSx, SSm)
+		msnweather['Solstice'] = '%s%s%s%s' % (SCh, chr(58).encode("latin-1"), SCx, SCm)
+		msnweather['Mercuryrise'] = '%s%s%s%s' % (P1Rh, chr(58).encode("latin-1"), P1Rx, P1Rm)
+		msnweather['Mercuryset'] = '%s%s%s%s' % (P1Sh, chr(58).encode("latin-1"), P1Sx, P1Sm)
+		msnweather['Mercuryculmination'] = '%s%s%s%s' % (P1Ch, chr(58).encode("latin-1"), P1Cx, P1Cm)
+		msnweather['Mercuryazimuth'] = '%s %s' % (P1A, chr(176).encode("latin-1"))
+		msnweather['Venusrise'] = '%s%s%s%s' % (P2Rh, chr(58).encode("latin-1"), P2Rx, P2Rm)
+		msnweather['Venusset'] = '%s%s%s%s' % (P2Sh, chr(58).encode("latin-1"), P2Sx, P2Sm)
+		msnweather['Venusculmination'] = '%s%s%s%s' % (P2Ch, chr(58).encode("latin-1"), P2Cx, P2Cm)
+		msnweather['Venusazimuth'] = '%s %s' % (P2A, chr(176).encode("latin-1"))
+		msnweather['Marsrise'] = '%s%s%s%s' % (P4Rh, chr(58).encode("latin-1"), P4Rx, P4Rm)
+		msnweather['Marsset'] = '%s%s%s%s' % (P4Sh, chr(58).encode("latin-1"), P4Sx, P4Sm)
+		msnweather['Marsculmination'] = '%s%s%s%s' % (P4Ch, chr(58).encode("latin-1"), P4Cx, P4Cm)
+		msnweather['Marsazimuth'] = '%s %s' % (P4A, chr(176).encode("latin-1"))
+		msnweather['Jupiterrise'] = '%s%s%s%s' % (P5Rh, chr(58).encode("latin-1"), P5Rx, P5Rm)
+		msnweather['Jupiterset'] = '%s%s%s%s' % (P5Sh, chr(58).encode("latin-1"), P5Sx, P5Sm)
+		msnweather['Jupiterculmination'] = '%s%s%s%s' % (P5Ch, chr(58).encode("latin-1"), P5Cx, P5Cm)
+		msnweather['Jupiterazimuth'] = '%s %s' % (P5A, chr(176).encode("latin-1"))
+		msnweather['Saturnrise'] = '%s%s%s%s' % (P6Rh, chr(58).encode("latin-1"), P6Rx, P6Rm)
+		msnweather['Saturnset'] = '%s%s%s%s' % (P6Sh, chr(58).encode("latin-1"), P6Sx, P6Sm)
+		msnweather['Saturnculmination'] = '%s%s%s%s' % (P6Ch, chr(58).encode("latin-1"), P6Cx, P6Cm)
+		msnweather['Saturnazimuth'] = '%s %s' % (P6A, chr(176).encode("latin-1"))
+		msnweather['Uranusrise'] = '%s%s%s%s' % (P7Rh, chr(58).encode("latin-1"), P7Rx, P7Rm)
+		msnweather['Uranusset'] = '%s%s%s%s' % (P7Sh, chr(58).encode("latin-1"), P7Sx, P7Sm)
+		msnweather['Uranusculmination'] = '%s%s%s%s' % (P7Ch, chr(58).encode("latin-1"), P7Cx, P7Cm)
+		msnweather['Uranusazimuth'] = '%s %s' % (P7A, chr(176).encode("latin-1"))
+		msnweather['Neptunerise'] = '%s%s%s%s' % (P8Rh, chr(58).encode("latin-1"), P8Rx, P8Rm)
+		msnweather['Neptuneset'] = '%s%s%s%s' % (P8Sh, chr(58).encode("latin-1"), P8Sx, P8Sm)
+		msnweather['Neptuneculmination'] = '%s%s%s%s' % (P8Ch, chr(58).encode("latin-1"), P8Cx, P8Cm)
+		msnweather['Neptuneazimuth'] = '%s %s' % (P8A, chr(176).encode("latin-1"))
 		msnweather['Moondist'] = _('%s km') % Mdist
-		msnweather['Moonazimuth'] = '%s %s' % (MA, unichr(176).encode("latin-1"))
-		msnweather['Moonrise'] = '%s%s%s%s' % (MRh, unichr(58).encode("latin-1"), MRx, MRm)
-		msnweather['Moonset'] = '%s%s%s%s' % (MSh, unichr(58).encode("latin-1"), MSx, MSm)
-		msnweather['Moonculmination'] = '%s%s%s%s' % (MCh, unichr(58).encode("latin-1"), MCx, MCm)
+		msnweather['Moonazimuth'] = '%s %s' % (MA, chr(176).encode("latin-1"))
+		msnweather['Moonrise'] = '%s%s%s%s' % (MRh, chr(58).encode("latin-1"), MRx, MRm)
+		msnweather['Moonset'] = '%s%s%s%s' % (MSh, chr(58).encode("latin-1"), MSx, MSm)
+		msnweather['Moonculmination'] = '%s%s%s%s' % (MCh, chr(58).encode("latin-1"), MCx, MCm)
 		msnweather['Moonphase'] = '%s' % phase
-		msnweather['Moonlight'] = '%s %s' % (light, unichr(37).encode("latin-1"))
+		msnweather['Moonlight'] = '%s %s' % (light, chr(37).encode("latin-1"))
 		msnweather['PiconMoon'] = '%s' % pic
 #
 		if self.type is self.VFD:
