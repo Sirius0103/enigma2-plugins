@@ -2881,7 +2881,7 @@ def search_title(id):
 	if content:
 		for childs in root:
 			if childs.tag == 'weather':
-				locationcode = "%s,%s" % (childs.attrib.get('weatherlocationname').encode('utf-8', 'ignore'), childs.attrib.get('region').encode('utf-8', 'ignore'))
+				locationcode = "%s,%s" % (childs.attrib.get('weatherlocationname'), childs.attrib.get('region'))
 				search_results.append(locationcode)
 	return search_results
 
