@@ -21,9 +21,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-import urllib2
-import datetime, time
-import os, math, gettext
+import math
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -35,29 +33,22 @@ from Components.Sources.StaticText import StaticText
 from Components.Language import language
 from Components.MenuList import MenuList
 from Components.ConfigList import ConfigListScreen
-from Components.config import getConfigListEntry, ConfigText, ConfigYesNo, ConfigSubsection, ConfigSelection, config, configfile, NoSave
+from Components.config import getConfigListEntry, ConfigText, ConfigSubsection, ConfigSelection, config, configfile
 from Components.Pixmap import Pixmap
-from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_LANGUAGE
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from xml.etree.cElementTree import fromstring as cet_fromstring
-from urllib2 import urlopen, Request, URLError, HTTPError, quote
+from urllib.request import urlopen, Request
+from urllib.error import HTTPError, URLError
+from urllib.parse import quote
 from twisted.web.client import downloadPage
-from time import localtime, strftime
-from enigma import eTimer, ePoint
-from enigma import getDesktop
-from os import system, environ
-from datetime import date
+from time import strftime, time
+from enigma import ePoint, getDesktop
+from os import environ, stat, system
+from os.path import exists
+from . import _
 
-lang = language.getLanguage()
-environ["LANGUAGE"] = lang[:2]
-gettext.bindtextdomain("enigma2", resolveFilename(SCOPE_LANGUAGE))
-gettext.textdomain("enigma2")
-gettext.bindtextdomain("WeatherMSN", "%s%s" % (resolveFilename(SCOPE_PLUGINS), "Extensions/WeatherMSN/locale"))
 
-def _(txt):
-	t = gettext.dgettext("WeatherMSN", txt)
-	if t == txt:
-		t = gettext.gettext(txt)
-	return t
+environ["LANGUAGE"] = language.getLanguage()[:2]
 
 config.plugins.weathermsn = ConfigSubsection()
 config.plugins.weathermsn.menu = ConfigSelection(default="no", choices = [
@@ -491,7 +482,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self.day4 = {'Day4':''}
 		self.pic4 = {'Pic4':''}
 
-		self["shortcuts"] = ActionMap(["OkCancelActions", "ColorActions", "MenuActions", "EPGSelectActions"], 
+		self["shortcuts"] = ActionMap(["OkCancelActions", "ColorActions", "MenuActions", "EPGSelectActions"],
 		{ "cancel": self.exit,
 		"menu": self.config,
 		"info": self.about,
@@ -664,7 +655,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 	def get_xmlfile(self):
 #		xmlfile = "http://weather.service.msn.com/data.aspx?weadegreetype=C&culture=ru-RU&weasearchstr=Moscow,Moscow-City,Russia&src=outlook"
 		xmlfile = "http://weather.service.msn.com/data.aspx?weadegreetype=%s&culture=%s&weasearchstr=%s&src=outlook" % (self.degreetype, self.language, quote(self.city))
-		downloadPage(xmlfile, "/tmp/weathermsn1.xml").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
+		downloadPage(xmlfile.encode(), "/tmp/weathermsn1.xml").addCallback(self.downloadFinished).addErrback(self.downloadFailed)
 
 	def downloadFinished(self, result):
 		print("[WeatherMSN] Download finished")
@@ -676,7 +667,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		print("[WeatherMSN] Download failed!")
 
 	def get_weather_data(self):
-		if not os.path.exists("/tmp/weathermsn1.xml") or int((time.time() - os.stat("/tmp/weathermsn1.xml").st_mtime)/60) >= self.time_update or self.notdata:
+		if not exists("/tmp/weathermsn1.xml") or int((time() - stat("/tmp/weathermsn1.xml").st_mtime)/60) >= self.time_update or self.notdata:
 			self.get_xmlfile()
 		else:
 			self.parse_weather_data()
@@ -693,7 +684,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 					else:
 						timezone = '%s' % float(line.split('timezone')[1].split('"')[1])
 						self.timezone['Timezone'] = line.split('timezone')[1].split('"')[1]
-					self.latitude['Latitude'] = latitude = line.split(' lat')[1].split('"')[1].replace(',', '.')
+					self.latitude['Latitude'] = latitude = line.split(' latitude')[1].split('"')[1].replace(',', '.')
 					self.longitude['Longitude'] = longitude = line.split(' long')[1].split('"')[1].replace(',', '.')
 					self.observationtime['Time'] = line.split('observationtime')[1].split('"')[1]
 					self.observationpoint['Point'] = line.split('observationpoint')[1].split('"')[1]
@@ -837,11 +828,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 		min = float(strftime('%M'))
 		sec = float(strftime('%S'))
 		try:
-			long = float(longitude)
-			lat = float(latitude)
-			zone = float(timezone)
+			longitude = float(longitude)
+			latitude = float(latitude)
+			timezone = float(timezone)
 		except:
-			long = lat = zone = 0
+			longitude = latitude = timezone = 0
 		UT = hour + min / 60 + sec / 3600
 # Юлианская дата
 		if month <= 2:
@@ -855,7 +846,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 # Звездное время
 		T = (JDN - 2451545) / 36525 # юлианское столетие на полночь по Гринвичу
 		STT = math.fmod((6.697374558333 + 2400.0513369072223 * T + 0.0000258622 * T * T - 0.00000000172 * T * T * T), 24) # звёздное время в Гринвиче в полночь
-		ST = math.fmod((STT + UT * 1.0027379093 - zone * 1.0027379093 + long / 15), 24) # местное звёздное время на момент местного времени
+		ST = math.fmod((STT + UT * 1.0027379093 - timezone * 1.0027379093 + longitude / 15), 24) # местное звёздное время на момент местного времени
 		if ST < 0:
 			ST = ST + 24
 		ST = ST * 15 # звёздное время на момент рассчёта в градусах
@@ -882,8 +873,8 @@ class WeatherMSN(ConfigListScreen, Screen):
 			# эклиптические координаты
 			DEC = math.asin(math.sin(EPS * DEG2RAD) * math.sin(SLong * DEG2RAD)) * RAD2DEG # склонение
 			ALFA = (7.53 * math.cos(LS * DEG2RAD) + 1.5 * math.sin(LS * DEG2RAD) - 9.87 * math.sin(2 * LS * DEG2RAD)) / 60 # уравнение времени
-			BETA = math.acos((math.cos(90.85 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG
-			SSS = ALFA + (180 - long) / 15 + zone
+			BETA = math.acos((math.cos(90.85 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG
+			SSS = ALFA + (180.0 - longitude) / 15 + timezone
 			# Время восхода/захода
 			SCh = int(SSS)
 			SCm = int(round((SSS - SCh) * 60))
@@ -957,11 +948,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -1036,11 +1027,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -1120,11 +1111,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -1224,11 +1215,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -1331,11 +1322,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -1416,11 +1407,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -1496,11 +1487,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			if RA < 0:
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
-			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SPR = math.fmod((RA - BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(90.35 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SPR = math.fmod((RA - BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPR < 0:
 				SPR = SPR + 24
-			SPS = math.fmod((RA + BETA + long - STT * 15 - zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SPS = math.fmod((RA + BETA + longitude - STT * 15 - timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SPS < 0:
 				SPS = SPS + 24
 			if SPR < SPS:
@@ -1580,11 +1571,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 			DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # склонение
 			if RA < 0:
 				RA = RA + 2 * PI
-			BETA = math.acos((math.cos(89.55 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(lat * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD))) * RAD2DEG # часовой угол
-			SMR = math.fmod((RA - BETA - long - STT * 15 + zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			BETA = math.acos((math.cos(89.55 * DEG2RAD) - math.sin(DEC * DEG2RAD) * math.sin(latitude * DEG2RAD)) / (math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD))) * RAD2DEG # часовой угол
+			SMR = math.fmod((RA - BETA - longitude - STT * 15 + timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SMR < 0:
 				SMR = SMR + 24
-			SMS = math.fmod((RA + BETA - long - STT * 15 + zone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
+			SMS = math.fmod((RA + BETA - longitude - STT * 15 + timezone * 15 * 1.0027379093) / 15 * 0.997269566423530, 24)
 			if SMS < 0:
 				SMS = SMS + 24
 			if SMR < SMS:
@@ -1668,9 +1659,9 @@ class WeatherMSN(ConfigListScreen, Screen):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P1A = round(AZ, 1)
 		except:
 			P1A ='-'
@@ -1711,9 +1702,9 @@ class WeatherMSN(ConfigListScreen, Screen):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P2A = round(AZ, 1)
 		except:
 			P2A ='-'
@@ -1759,9 +1750,9 @@ class WeatherMSN(ConfigListScreen, Screen):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P4A = round(AZ, 1)
 		except:
 			P4A ='-'
@@ -1827,9 +1818,9 @@ class WeatherMSN(ConfigListScreen, Screen):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P5A = round(AZ, 1)
 		except:
 			P5A ='-'
@@ -1898,9 +1889,9 @@ class WeatherMSN(ConfigListScreen, Screen):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P6A = round(AZ, 1)
 		except:
 			P6A ='-'
@@ -1947,9 +1938,9 @@ class WeatherMSN(ConfigListScreen, Screen):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P7A = round(AZ, 1)
 		except:
 			P7A ='-'
@@ -1992,9 +1983,9 @@ class WeatherMSN(ConfigListScreen, Screen):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(PLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(PLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(PLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			P8A = round(AZ, 1)
 		except:
 			P8A ='-'
@@ -2075,9 +2066,9 @@ class WeatherMSN(ConfigListScreen, Screen):
 				RA = RA + 2 * PI
 			DEC = math.asin(math.sin(MLat * DEG2RAD) * math.cos(EPS * DEG2RAD) + math.cos(MLat * DEG2RAD) * math.sin(EPS * DEG2RAD) * math.sin(MLong * DEG2RAD)) * RAD2DEG # склонение
 			TH = ST - RA
-			Z  = math.acos(math.sin(lat * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(lat * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
+			Z  = math.acos(math.sin(latitude * DEG2RAD) * math.sin(DEC * DEG2RAD) + math.cos(latitude * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(TH * DEG2RAD)) * RAD2DEG # косинус зенитного угла
 			H = 90 - Z # угол места
-			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(lat * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(lat * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
+			AZ = math.atan2(math.sin(TH * DEG2RAD) * math.cos(DEC * DEG2RAD) * math.cos(latitude * DEG2RAD), math.sin(H * DEG2RAD) * math.sin(latitude * DEG2RAD) - math.sin(DEC * DEG2RAD)) * RAD2DEG + 180 # азимут + 180
 			MA = round(AZ, 1)
 	#
 			T = (JD + 0.5 / 24 - 2451545) / 36525
@@ -2224,44 +2215,44 @@ class WeatherMSN(ConfigListScreen, Screen):
 			Mdist = MA = phase = light = '-'
 #
 		self.yulianday['Julianday'] = JD
-		self.sunrise['Sunrise'] = '%s%s%s%s' % (SRh, unichr(58).encode("latin-1"), SRx, SRm)
-		self.sunset['Sunset'] = '%s%s%s%s' % (SSh, unichr(58).encode("latin-1"), SSx, SSm)
-		self.sunculmination['Solstice'] = '%s%s%s%s' % (SCh, unichr(58).encode("latin-1"), SCx, SCm)
-		self.mercuryrise['Mercuryrise'] = '%s%s%s%s' % (P1Rh, unichr(58).encode("latin-1"), P1Rx, P1Rm)
-		self.mercuryset['Mercuryset'] = '%s%s%s%s' % (P1Sh, unichr(58).encode("latin-1"), P1Sx, P1Sm)
-		self.mercuryculmination['Mercuryculmination'] = '%s%s%s%s' % (P1Ch, unichr(58).encode("latin-1"), P1Cx, P1Cm)
-		self.mercuryazimuth['Mercuryazimuth'] = '%s %s' % (P1A, unichr(176).encode("latin-1"))
-		self.venusrise['Venusrise'] = '%s%s%s%s' % (P2Rh, unichr(58).encode("latin-1"), P2Rx, P2Rm)
-		self.venusset['Venusset'] = '%s%s%s%s' % (P2Sh, unichr(58).encode("latin-1"), P2Sx, P2Sm)
-		self.venusculmination['Venusculmination'] = '%s%s%s%s' % (P2Ch, unichr(58).encode("latin-1"), P2Cx, P2Cm)
-		self.venusazimuth['Venusazimuth'] = '%s %s' % (P2A, unichr(176).encode("latin-1"))
-		self.marsrise['Marsrise'] = '%s%s%s%s' % (P4Rh, unichr(58).encode("latin-1"), P4Rx, P4Rm)
-		self.marsset['Marsset'] = '%s%s%s%s' % (P4Sh, unichr(58).encode("latin-1"), P4Sx, P4Sm)
-		self.marsculmination['Marsculmination'] = '%s%s%s%s' % (P4Ch, unichr(58).encode("latin-1"), P4Cx, P4Cm)
-		self.marsazimuth['Marsazimuth'] = '%s %s' % (P4A, unichr(176).encode("latin-1"))
-		self.jupiterrise['Jupiterrise'] = '%s%s%s%s' % (P5Rh, unichr(58).encode("latin-1"), P5Rx, P5Rm)
-		self.jupiterset['Jupiterset'] = '%s%s%s%s' % (P5Sh, unichr(58).encode("latin-1"), P5Sx, P5Sm)
-		self.jupiterculmination['Jupiterculmination'] = '%s%s%s%s' % (P5Ch, unichr(58).encode("latin-1"), P5Cx, P5Cm)
-		self.jupiterazimuth['Jupiterazimuth'] = '%s %s' % (P5A, unichr(176).encode("latin-1"))
-		self.saturnrise['Saturnrise'] = '%s%s%s%s' % (P6Rh, unichr(58).encode("latin-1"), P6Rx, P6Rm)
-		self.saturnset['Saturnset'] = '%s%s%s%s' % (P6Sh, unichr(58).encode("latin-1"), P6Sx, P6Sm)
-		self.saturnculmination['Saturnculmination'] = '%s%s%s%s' % (P6Ch, unichr(58).encode("latin-1"), P6Cx, P6Cm)
-		self.saturnazimuth['Saturnazimuth'] = '%s %s' % (P6A, unichr(176).encode("latin-1"))
-		self.uranusrise['Uranusrise'] = '%s%s%s%s' % (P7Rh, unichr(58).encode("latin-1"), P7Rx, P7Rm)
-		self.uranusset['Uranusset'] = '%s%s%s%s' % (P7Sh, unichr(58).encode("latin-1"), P7Sx, P7Sm)
-		self.uranusculmination['Uranusculmination'] = '%s%s%s%s' % (P7Ch, unichr(58).encode("latin-1"), P7Cx, P7Cm)
-		self.uranusazimuth['Uranusazimuth'] = '%s %s' % (P7A, unichr(176).encode("latin-1"))
-		self.neptunerise['Neptunerise'] = '%s%s%s%s' % (P8Rh, unichr(58).encode("latin-1"), P8Rx, P8Rm)
-		self.neptuneset['Neptuneset'] = '%s%s%s%s' % (P8Sh, unichr(58).encode("latin-1"), P8Sx, P8Sm)
-		self.neptuneculmination['Neptuneculmination'] = '%s%s%s%s' % (P8Ch, unichr(58).encode("latin-1"), P8Cx, P8Cm)
-		self.neptuneazimuth['Neptuneazimuth'] = '%s %s' % (P8A, unichr(176).encode("latin-1"))
+		self.sunrise['Sunrise'] = '%s%s%s%s' % (SRh, chr(58), SRx, SRm)
+		self.sunset['Sunset'] = '%s%s%s%s' % (SSh, chr(58), SSx, SSm)
+		self.sunculmination['Solstice'] = '%s%s%s%s' % (SCh, chr(58), SCx, SCm)
+		self.mercuryrise['Mercuryrise'] = '%s%s%s%s' % (P1Rh, chr(58), P1Rx, P1Rm)
+		self.mercuryset['Mercuryset'] = '%s%s%s%s' % (P1Sh, chr(58), P1Sx, P1Sm)
+		self.mercuryculmination['Mercuryculmination'] = '%s%s%s%s' % (P1Ch, chr(58), P1Cx, P1Cm)
+		self.mercuryazimuth['Mercuryazimuth'] = '%s %s' % (P1A, chr(176))
+		self.venusrise['Venusrise'] = '%s%s%s%s' % (P2Rh, chr(58), P2Rx, P2Rm)
+		self.venusset['Venusset'] = '%s%s%s%s' % (P2Sh, chr(58), P2Sx, P2Sm)
+		self.venusculmination['Venusculmination'] = '%s%s%s%s' % (P2Ch, chr(58), P2Cx, P2Cm)
+		self.venusazimuth['Venusazimuth'] = '%s %s' % (P2A, chr(176))
+		self.marsrise['Marsrise'] = '%s%s%s%s' % (P4Rh, chr(58), P4Rx, P4Rm)
+		self.marsset['Marsset'] = '%s%s%s%s' % (P4Sh, chr(58), P4Sx, P4Sm)
+		self.marsculmination['Marsculmination'] = '%s%s%s%s' % (P4Ch, chr(58), P4Cx, P4Cm)
+		self.marsazimuth['Marsazimuth'] = '%s %s' % (P4A, chr(176))
+		self.jupiterrise['Jupiterrise'] = '%s%s%s%s' % (P5Rh, chr(58), P5Rx, P5Rm)
+		self.jupiterset['Jupiterset'] = '%s%s%s%s' % (P5Sh, chr(58), P5Sx, P5Sm)
+		self.jupiterculmination['Jupiterculmination'] = '%s%s%s%s' % (P5Ch, chr(58), P5Cx, P5Cm)
+		self.jupiterazimuth['Jupiterazimuth'] = '%s %s' % (P5A, chr(176))
+		self.saturnrise['Saturnrise'] = '%s%s%s%s' % (P6Rh, chr(58), P6Rx, P6Rm)
+		self.saturnset['Saturnset'] = '%s%s%s%s' % (P6Sh, chr(58), P6Sx, P6Sm)
+		self.saturnculmination['Saturnculmination'] = '%s%s%s%s' % (P6Ch, chr(58), P6Cx, P6Cm)
+		self.saturnazimuth['Saturnazimuth'] = '%s %s' % (P6A, chr(176))
+		self.uranusrise['Uranusrise'] = '%s%s%s%s' % (P7Rh, chr(58), P7Rx, P7Rm)
+		self.uranusset['Uranusset'] = '%s%s%s%s' % (P7Sh, chr(58), P7Sx, P7Sm)
+		self.uranusculmination['Uranusculmination'] = '%s%s%s%s' % (P7Ch, chr(58), P7Cx, P7Cm)
+		self.uranusazimuth['Uranusazimuth'] = '%s %s' % (P7A, chr(176))
+		self.neptunerise['Neptunerise'] = '%s%s%s%s' % (P8Rh, chr(58), P8Rx, P8Rm)
+		self.neptuneset['Neptuneset'] = '%s%s%s%s' % (P8Sh, chr(58), P8Sx, P8Sm)
+		self.neptuneculmination['Neptuneculmination'] = '%s%s%s%s' % (P8Ch, chr(58), P8Cx, P8Cm)
+		self.neptuneazimuth['Neptuneazimuth'] = '%s %s' % (P8A, chr(176))
 		self.moondist['Moondist'] = _('%s km') % Mdist
-		self.moonazimuth['Moonazimuth'] = '%s %s' % (MA, unichr(176).encode("latin-1"))
-		self.moonrise['Moonrise'] = '%s%s%s%s' % (MRh, unichr(58).encode("latin-1"), MRx, MRm)
-		self.moonset['Moonset'] = '%s%s%s%s' % (MSh, unichr(58).encode("latin-1"), MSx, MSm)
-		self.moonculmination['Moonculmination'] = '%s%s%s%s' % (MCh, unichr(58).encode("latin-1"), MCx, MCm)
+		self.moonazimuth['Moonazimuth'] = '%s %s' % (MA, chr(176))
+		self.moonrise['Moonrise'] = '%s%s%s%s' % (MRh, chr(58), MRx, MRm)
+		self.moonset['Moonset'] = '%s%s%s%s' % (MSh, chr(58), MSx, MSm)
+		self.moonculmination['Moonculmination'] = '%s%s%s%s' % (MCh, chr(58), MCx, MCm)
 		self.moonphase['Moonphase'] = '%s' % phase
-		self.moonlight['Moonlight'] = '%s %s' % (light, unichr(37).encode("latin-1"))
+		self.moonlight['Moonlight'] = '%s %s' % (light, chr(37))
 #
 		self.get_widgets()
 
@@ -2303,12 +2294,12 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self["attribution"].text = _('n/a')
 			self.notdata = True
 		if self.temperature['Temperature'] is not '':
-			self["temperature"].text = _('%s%s%s') % (self.temperature['Temperature'], unichr(176).encode("latin-1"), self.degreetype)
+			self["temperature"].text = _('%s%s%s') % (self.temperature['Temperature'], chr(176), self.degreetype)
 		else:
 			self["temperature"].text = _('n/a')
 			self.notdata = True
 		if self.feelslike['Feelslike'] is not '':
-			self["feelslike"].text = _('%s%s%s') % (self.feelslike['Feelslike'], unichr(176).encode("latin-1"), self.degreetype)
+			self["feelslike"].text = _('%s%s%s') % (self.feelslike['Feelslike'], chr(176), self.degreetype)
 		else:
 			self["feelslike"].text = _('n/a')
 			self.notdata = True
@@ -2318,12 +2309,12 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self["skytext"].text = _('n/a')
 			self.notdata = True
 		if self.humidity['Humidity'] is not '':
-			self["humidity"].text = _('%s %s') % (self.humidity['Humidity'], unichr(37).encode("latin-1"))
+			self["humidity"].text = _('%s %s') % (self.humidity['Humidity'], chr(37))
 		else:
 			self["humidity"].text = _('n/a')
 			self.notdata = True
 		if self.windspeed['Windspeed'] is not '':
-			self["wind"].text = _('%s %s %s') % (self.wind['Wind'], unichr(126).encode("latin-1"), self.windspeed['Windspeed'])
+			self["wind"].text = _('%s %s %s') % (self.wind['Wind'], chr(126), self.windspeed['Windspeed'])
 		else:
 			self["wind"].text = _('n/a')
 			self.notdata = True
@@ -2335,7 +2326,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self["pic"].instance.show()
 # День 0
 		if self.lowtemp0['Lowtemp0'] is not '' and self.hightemp0['Hightemp0'] is not '':
-			self["temperature0"].text = _('%s%s%s / %s%s%s') % (self.hightemp0['Hightemp0'], unichr(176).encode("latin-1"), self.degreetype, self.lowtemp0['Lowtemp0'], unichr(176).encode("latin-1"), self.degreetype)
+			self["temperature0"].text = _('%s%s%s / %s%s%s') % (self.hightemp0['Hightemp0'], chr(176), self.degreetype, self.lowtemp0['Lowtemp0'], chr(176), self.degreetype)
 		else:
 			self["temperature0"].text = _('n/a')
 			self.notdata = True
@@ -2345,7 +2336,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self["skytext0"].text = _('n/a')
 			self.notdata = True
 		if self.precip0['Precip0'] is not '':
-			self["precip0"].text = _('%s %s') % (self.precip0['Precip0'], unichr(37).encode("latin-1"))
+			self["precip0"].text = _('%s %s') % (self.precip0['Precip0'], chr(37))
 		else:
 			self["precip0"].text = _('n/a')
 			self.notdata = True
@@ -2367,7 +2358,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self["pic0"].instance.show()
 # День 1
 		if self.lowtemp1['Lowtemp1'] is not '' and self.hightemp1['Hightemp1'] is not '':
-			self["temperature1"].text = _('%s%s%s / %s%s%s') % (self.hightemp1['Hightemp1'], unichr(176).encode("latin-1"), self.degreetype, self.lowtemp1['Lowtemp1'], unichr(176).encode("latin-1"), self.degreetype)
+			self["temperature1"].text = _('%s%s%s / %s%s%s') % (self.hightemp1['Hightemp1'], chr(176), self.degreetype, self.lowtemp1['Lowtemp1'], chr(176), self.degreetype)
 		else:
 			self["temperature1"].text = _('n/a')
 			self.notdata = True
@@ -2377,7 +2368,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self["skytext1"].text = _('n/a')
 			self.notdata = True
 		if self.precip1['Precip1'] is not '':
-			self["precip1"].text = _('%s %s') % (self.precip1['Precip1'], unichr(37).encode("latin-1"))
+			self["precip1"].text = _('%s %s') % (self.precip1['Precip1'], chr(37))
 		else:
 			self["precip1"].text = _('n/a')
 			self.notdata = True
@@ -2399,7 +2390,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self["pic1"].instance.show()
 # День 2
 		if self.lowtemp2['Lowtemp2'] is not '' and self.hightemp2['Hightemp2'] is not '':
-			self["temperature2"].text = _('%s%s%s / %s%s%s') % (self.hightemp2['Hightemp2'], unichr(176).encode("latin-1"), self.degreetype, self.lowtemp2['Lowtemp2'], unichr(176).encode("latin-1"), self.degreetype)
+			self["temperature2"].text = _('%s%s%s / %s%s%s') % (self.hightemp2['Hightemp2'], chr(176), self.degreetype, self.lowtemp2['Lowtemp2'], chr(176), self.degreetype)
 		else:
 			self["temperature2"].text = _('n/a')
 			self.notdata = True
@@ -2409,7 +2400,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self["skytext2"].text = _('n/a')
 			self.notdata = True
 		if self.precip2['Precip2'] is not '':
-			self["precip2"].text = _('%s %s') % (self.precip2['Precip2'], unichr(37).encode("latin-1"))
+			self["precip2"].text = _('%s %s') % (self.precip2['Precip2'], chr(37))
 		else:
 			self["precip2"].text = _('n/a')
 			self.notdata = True
@@ -2431,7 +2422,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self["pic2"].instance.show()
 # День 3
 		if self.lowtemp3['Lowtemp3'] is not '' and self.hightemp3['Hightemp3'] is not '':
-			self["temperature3"].text = _('%s%s%s / %s%s%s') % (self.hightemp3['Hightemp3'], unichr(176).encode("latin-1"), self.degreetype, self.lowtemp3['Lowtemp3'], unichr(176).encode("latin-1"), self.degreetype)
+			self["temperature3"].text = _('%s%s%s / %s%s%s') % (self.hightemp3['Hightemp3'], chr(176), self.degreetype, self.lowtemp3['Lowtemp3'], chr(176), self.degreetype)
 		else:
 			self["temperature3"].text = _('n/a')
 			self.notdata = True
@@ -2441,7 +2432,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self["skytext3"].text = _('n/a')
 			self.notdata = True
 		if self.precip3['Precip3'] is not '':
-			self["precip3"].text = _('%s %s') % (self.precip3['Precip3'], unichr(37).encode("latin-1"))
+			self["precip3"].text = _('%s %s') % (self.precip3['Precip3'], chr(37))
 		else:
 			self["precip3"].text = _('n/a')
 			self.notdata = True
@@ -2463,7 +2454,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self["pic3"].instance.show()
 # День 4
 		if self.lowtemp4['Lowtemp4'] is not '' and self.hightemp4['Hightemp4'] is not '':
-			self["temperature4"].text = _('%s%s%s / %s%s%s') % (self.hightemp4['Hightemp4'], unichr(176).encode("latin-1"), self.degreetype, self.lowtemp4['Lowtemp4'], unichr(176).encode("latin-1"), self.degreetype)
+			self["temperature4"].text = _('%s%s%s / %s%s%s') % (self.hightemp4['Hightemp4'], chr(176), self.degreetype, self.lowtemp4['Lowtemp4'], chr(176), self.degreetype)
 		else:
 			self["temperature4"].text = _('n/a')
 			self.notdata = True
@@ -2473,7 +2464,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			self["skytext4"].text = _('n/a')
 			self.notdata = True
 		if self.precip4['Precip4'] is not '':
-			self["precip4"].text = _('%s %s') % (self.precip4['Precip4'], unichr(37).encode("latin-1"))
+			self["precip4"].text = _('%s %s') % (self.precip4['Precip4'], chr(37))
 		else:
 			self["precip4"].text = _('n/a')
 			self.notdata = True
@@ -2755,7 +2746,7 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		self.converter = config.plugins.weathermsn.converter.value
 		self.createSetup()
 
-		self["setupActions"] = ActionMap(["DirectionActions", "SetupActions", "ColorActions"], 
+		self["setupActions"] = ActionMap(["DirectionActions", "SetupActions", "ColorActions"],
 		{ "red": self.cancel,
 		"cancel": self.cancel,
 		"green": self.save,
@@ -2805,13 +2796,13 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		self.close(False)
 
 	def save(self):
-		os.system("rm -f /tmp/weathermsn1.xml")
-		os.system("rm -f /tmp/weathermsn2.xml")
+		system("rm -f /tmp/weathermsn1.xml")
+		system("rm -f /tmp/weathermsn2.xml")
 		for x in self["config"].list:
 			x[1].save()
 		configfile.save()
 		if config.plugins.weathermsn.converter.value == 'yes':
-			os.system("cp %sMSNWeather2.py %sMSNWeather2.py" % (self.pluginpath, self.converterpath))
+			system("cp %sMSNWeather2.py %sMSNWeather2.py" % (self.pluginpath, self.converterpath))
 			self.session.openWithCallback(self.restart, MessageBox,_("Do you want to restart the GUI now ?"), MessageBox.TYPE_YESNO)
 		else:
 			self.mbox = self.session.open(MessageBox,(_("Configuration is saved")), MessageBox.TYPE_INFO, timeout = 3)
@@ -2840,7 +2831,7 @@ class SearchLocationMSN(Screen):
 		self.setTitle(_("Search Location Weather MSN"))
 		self["menu"] = MenuList(self.resultlist)
 
-		self["actions"] = ActionMap(["OkCancelActions", "DirectionActions"], 
+		self["actions"] = ActionMap(["OkCancelActions", "DirectionActions"],
 		{"ok": self.okClicked,
 		"cancel": self.close,
 		"up": self.pageUp,
@@ -2882,15 +2873,15 @@ def search_title(id):
 	watchrequest = Request(url)
 	try:
 		watchvideopage = urlopen(watchrequest)
-	except (URLError, HTTPException, socket.error) as err:
-		print("[Location] Error: Unable to retrieve page - Error code: ", str(err))
+	except (URLError, HTTPError, OSError) as err:
+		print("[Location] Error: Unable to retrieve page - Error code: %s" % str(err))
 	content = watchvideopage.read()
 	root = cet_fromstring(content)
 	search_results = []
 	if content:
 		for childs in root:
 			if childs.tag == 'weather':
-				locationcode = "%s,%s" % (childs.attrib.get('weatherlocationname').encode('utf-8', 'ignore'), childs.attrib.get('region').encode('utf-8', 'ignore'))
+				locationcode = "%s,%s" % (childs.attrib.get('weatherlocationname'), childs.attrib.get('region'))
 				search_results.append(locationcode)
 	return search_results
 
