@@ -37,7 +37,7 @@ from Components.MenuList import MenuList
 from Components.ConfigList import ConfigListScreen
 from Components.config import getConfigListEntry, ConfigText, ConfigYesNo, ConfigSubsection, ConfigSelection, config, configfile, NoSave
 from Components.Pixmap import Pixmap
-from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_LANGUAGE
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_LANGUAGE
 from xml.etree.cElementTree import fromstring as cet_fromstring
 from urllib2 import urlopen, Request, URLError, HTTPError, quote
 from twisted.web.client import downloadPage
@@ -491,7 +491,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 		self.day4 = {'Day4':''}
 		self.pic4 = {'Pic4':''}
 
-		self["shortcuts"] = ActionMap(["OkCancelActions", "ColorActions", "MenuActions", "EPGSelectActions"], 
+		self["shortcuts"] = ActionMap(["OkCancelActions", "ColorActions", "MenuActions", "EPGSelectActions"],
 		{ "cancel": self.exit,
 		"menu": self.config,
 		"info": self.about,
@@ -687,7 +687,7 @@ class WeatherMSN(ConfigListScreen, Screen):
 			try:
 				if "<weather" in line:
 					self.location['Location'] = line.split('weatherlocationname')[1].split('"')[1].split(',')[0]
-					if not line.split('timezone')[1].split('"')[1][0] is '0':
+					if not line.split('timezone')[1].split('"')[1][0] == '0':
 						timezone = '%s' % float(line.split('timezone')[1].split('"')[1])
 						self.timezone['Timezone'] = '+' + line.split('timezone')[1].split('"')[1]
 					else:
@@ -699,11 +699,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 					self.observationpoint['Point'] = line.split('observationpoint')[1].split('"')[1]
 					self.attribution['Attribution'] = line.split('attribution')[1].split('"')[1]
 				if "<current" in line:
-					if not line.split('temperature')[1].split('"')[1][0] is '-' and not line.split('temperature')[1].split('"')[1][0] is '0':
+					if not line.split('temperature')[1].split('"')[1][0] == '-' and not line.split('temperature')[1].split('"')[1][0] == '0':
 						self.temperature['Temperature'] = '+' + line.split('temperature')[1].split('"')[1]
 					else:
 						self.temperature['Temperature'] = line.split('temperature')[1].split('"')[1]
-					if not line.split('feelslike')[1].split('"')[1][0] is '-' and not line.split('feelslike')[1].split('"')[1][0] is '0':
+					if not line.split('feelslike')[1].split('"')[1][0] == '-' and not line.split('feelslike')[1].split('"')[1][0] == '0':
 						self.feelslike['Feelslike'] = '+' + line.split('feelslike')[1].split('"')[1]
 					else:
 						self.feelslike['Feelslike'] = line.split('feelslike')[1].split('"')[1]
@@ -751,11 +751,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 						self.windspeed['Windspeed'] = _('%.01f km/h') % (float(line.split('windspeed')[1].split('"')[1].split(' ')[0]) * 1.61)
 # День 0
 				if "<forecast" in line:
-					if not line.split('low')[1].split('"')[1][0] is '-' and not line.split('low')[1].split('"')[1][0] is '0':
+					if not line.split('low')[1].split('"')[1][0] == '-' and not line.split('low')[1].split('"')[1][0] == '0':
 						self.lowtemp0['Lowtemp0'] = '+' + line.split('low')[1].split('"')[1]
 					else:
 						self.lowtemp0['Lowtemp0'] = line.split('low')[1].split('"')[1]
-					if not line.split('high')[1].split('"')[1][0] is '-' and not line.split('high')[1].split('"')[1][0] is '0':
+					if not line.split('high')[1].split('"')[1][0] == '-' and not line.split('high')[1].split('"')[1][0] == '0':
 						self.hightemp0['Hightemp0'] = '+' + line.split('high')[1].split('"')[1]
 					else:
 						self.hightemp0['Hightemp0'] = line.split('high')[1].split('"')[1]
@@ -766,11 +766,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 					self.precip0['Precip0'] = line.split('precip')[1].split('"')[1]
 # День 1
 				if "<forecast" in line:
-					if not line.split('low')[2].split('"')[1][0] is '-' and not line.split('low')[2].split('"')[1][0] is '0':
+					if not line.split('low')[2].split('"')[1][0] == '-' and not line.split('low')[2].split('"')[1][0] == '0':
 						self.lowtemp1['Lowtemp1'] = '+' + line.split('low')[2].split('"')[1]
 					else:
 						self.lowtemp1['Lowtemp1'] = line.split('low')[2].split('"')[1]
-					if not line.split('high')[2].split('"')[1][0] is '-' and not line.split('high')[2].split('"')[1][0] is '0':
+					if not line.split('high')[2].split('"')[1][0] == '-' and not line.split('high')[2].split('"')[1][0] == '0':
 						self.hightemp1['Hightemp1'] = '+' + line.split('high')[2].split('"')[1]
 					else:
 						self.hightemp1['Hightemp1'] = line.split('high')[2].split('"')[1]
@@ -781,11 +781,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 					self.precip1['Precip1'] = line.split('precip')[2].split('"')[1]
 # День 2
 				if "<forecast" in line:
-					if not line.split('low')[3].split('"')[1][0] is '-' and not line.split('low')[3].split('"')[1][0] is '0':
+					if not line.split('low')[3].split('"')[1][0] == '-' and not line.split('low')[3].split('"')[1][0] == '0':
 						self.lowtemp2['Lowtemp2'] = '+' + line.split('low')[3].split('"')[1]
 					else:
 						self.lowtemp2['Lowtemp2'] = line.split('low')[3].split('"')[1]
-					if not line.split('high')[3].split('"')[1][0] is '-' and not line.split('high')[3].split('"')[1][0] is '0':
+					if not line.split('high')[3].split('"')[1][0] == '-' and not line.split('high')[3].split('"')[1][0] == '0':
 						self.hightemp2['Hightemp2'] = '+' + line.split('high')[3].split('"')[1]
 					else:
 						self.hightemp2['Hightemp2'] = line.split('high')[3].split('"')[1]
@@ -796,11 +796,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 					self.precip2['Precip2'] = line.split('precip')[3].split('"')[1]
 # День 3
 				if "<forecast" in line:
-					if not line.split('low')[4].split('"')[1][0] is '-' and not line.split('low')[4].split('"')[1][0] is '0':
+					if not line.split('low')[4].split('"')[1][0] == '-' and not line.split('low')[4].split('"')[1][0] == '0':
 						self.lowtemp3['Lowtemp3'] = '+' + line.split('low')[4].split('"')[1]
 					else:
 						self.lowtemp3['Lowtemp3'] = line.split('low')[4].split('"')[1]
-					if not line.split('high')[4].split('"')[1][0] is '-' and not line.split('high')[4].split('"')[1][0] is '0':
+					if not line.split('high')[4].split('"')[1][0] == '-' and not line.split('high')[4].split('"')[1][0] == '0':
 						self.hightemp3['Hightemp3'] = '+' + line.split('high')[4].split('"')[1]
 					else:
 						self.hightemp3['Hightemp3'] = line.split('high')[4].split('"')[1]
@@ -811,11 +811,11 @@ class WeatherMSN(ConfigListScreen, Screen):
 					self.precip3['Precip3'] = line.split('precip')[4].split('"')[1]
 # День 4
 				if "<forecast" in line:
-					if not line.split('low')[5].split('"')[1][0] is '-' and not line.split('low')[5].split('"')[1][0] is '0':
+					if not line.split('low')[5].split('"')[1][0] == '-' and not line.split('low')[5].split('"')[1][0] == '0':
 						self.lowtemp4['Lowtemp4'] = '+' + line.split('low')[5].split('"')[1]
 					else:
 						self.lowtemp4['Lowtemp4'] = line.split('low')[5].split('"')[1]
-					if not line.split('high')[5].split('"')[1][0] is '-' and not line.split('high')[5].split('"')[1][0] is '0':
+					if not line.split('high')[5].split('"')[1][0] == '-' and not line.split('high')[5].split('"')[1][0] == '0':
 						self.hightemp4['Hightemp4'] = '+' + line.split('high')[5].split('"')[1]
 					else:
 						self.hightemp4['Hightemp4'] = line.split('high')[5].split('"')[1]
@@ -2267,430 +2267,430 @@ class WeatherMSN(ConfigListScreen, Screen):
 
 	def get_widgets(self):
 		defpic = "%sExtensions/WeatherMSN/icons/weather/na.png" % resolveFilename(SCOPE_PLUGINS)
-		if self.location['Location'] is not '':
+		if self.location['Location'] != '':
 			self["location"].text = _('%s') % self.location['Location']
 		else:
 			self["location"].text = _('n/a')
 			self.notdata = True
-		if self.timezone['Timezone'] is not '':
+		if self.timezone['Timezone'] != '':
 			self["timezone"].text = _('%s h') % self.timezone['Timezone']
 		else:
 			self["timezone"].text = _('n/a')
 			self.notdata = True
-		if self.latitude['Latitude'] is not '':
+		if self.latitude['Latitude'] != '':
 			self["latitude"].text = _('%s') % self.latitude['Latitude']
 		else:
 			self["latitude"].text = _('n/a')
 			self.notdata = True
-		if self.longitude['Longitude'] is not '':
+		if self.longitude['Longitude'] != '':
 			self["longitude"].text = _('%s') % self.longitude['Longitude']
 		else:
 			self["longitude"].text = _('n/a')
 			self.notdata = True
-		if self.observationtime['Time'] is not '':
+		if self.observationtime['Time'] != '':
 			self["observationtime"].text = _('%s') % self.observationtime['Time']
 		else:
 			self["observationtime"].text = _('n/a')
 			self.notdata = True
-		if self.observationpoint['Point'] is not '':
+		if self.observationpoint['Point'] != '':
 			self["observationpoint"].text = _('%s') % self.observationpoint['Point']
 		else:
 			self["observationpoint"].text = _('n/a')
 			self.notdata = True
-		if self.attribution['Attribution'] is not '':
+		if self.attribution['Attribution'] != '':
 			self["attribution"].text = _('%s') % self.attribution['Attribution']
 		else:
 			self["attribution"].text = _('n/a')
 			self.notdata = True
-		if self.temperature['Temperature'] is not '':
+		if self.temperature['Temperature'] != '':
 			self["temperature"].text = _('%s%s%s') % (self.temperature['Temperature'], unichr(176).encode("latin-1"), self.degreetype)
 		else:
 			self["temperature"].text = _('n/a')
 			self.notdata = True
-		if self.feelslike['Feelslike'] is not '':
+		if self.feelslike['Feelslike'] != '':
 			self["feelslike"].text = _('%s%s%s') % (self.feelslike['Feelslike'], unichr(176).encode("latin-1"), self.degreetype)
 		else:
 			self["feelslike"].text = _('n/a')
 			self.notdata = True
-		if self.skytext['Skytext'] is not '':
+		if self.skytext['Skytext'] != '':
 			self["skytext"].text = _('%s') % self.skytext['Skytext']
 		else:
 			self["skytext"].text = _('n/a')
 			self.notdata = True
-		if self.humidity['Humidity'] is not '':
+		if self.humidity['Humidity'] != '':
 			self["humidity"].text = _('%s %s') % (self.humidity['Humidity'], unichr(37).encode("latin-1"))
 		else:
 			self["humidity"].text = _('n/a')
 			self.notdata = True
-		if self.windspeed['Windspeed'] is not '':
+		if self.windspeed['Windspeed'] != '':
 			self["wind"].text = _('%s %s %s') % (self.wind['Wind'], unichr(126).encode("latin-1"), self.windspeed['Windspeed'])
 		else:
 			self["wind"].text = _('n/a')
 			self.notdata = True
 		self["pic"].instance.setScale(1)
-		if self.pic['Pic'] is not '':
+		if self.pic['Pic'] != '':
 			self["pic"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/weather/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic['Pic']))
 		else:
 			self["pic"].instance.setPixmapFromFile(defpic)
 		self["pic"].instance.show()
 # День 0
-		if self.lowtemp0['Lowtemp0'] is not '' and self.hightemp0['Hightemp0'] is not '':
+		if self.lowtemp0['Lowtemp0'] != '' and self.hightemp0['Hightemp0'] != '':
 			self["temperature0"].text = _('%s%s%s / %s%s%s') % (self.hightemp0['Hightemp0'], unichr(176).encode("latin-1"), self.degreetype, self.lowtemp0['Lowtemp0'], unichr(176).encode("latin-1"), self.degreetype)
 		else:
 			self["temperature0"].text = _('n/a')
 			self.notdata = True
-		if self.skytext0['Skytext0'] is not '':
+		if self.skytext0['Skytext0'] != '':
 			self["skytext0"].text = _('%s') % self.skytext0['Skytext0']
 		else:
 			self["skytext0"].text = _('n/a')
 			self.notdata = True
-		if self.precip0['Precip0'] is not '':
+		if self.precip0['Precip0'] != '':
 			self["precip0"].text = _('%s %s') % (self.precip0['Precip0'], unichr(37).encode("latin-1"))
 		else:
 			self["precip0"].text = _('n/a')
 			self.notdata = True
-		if self.date0['Date0'] is not '':
+		if self.date0['Date0'] != '':
 			self["date0"].text = _('%s') % self.date0['Date0']
 		else:
 			self["date0"].text = _('n/a')
 			self.notdata = True
-		if self.day0['Day0'] is not '':
+		if self.day0['Day0'] != '':
 			self["day0"].text = _('%s') % self.day0['Day0']
 		else:
 			self["day0"].text = _('n/a')
 			self.notdata = True
 		self["pic0"].instance.setScale(1)
-		if self.pic0['Pic0'] is not '':
+		if self.pic0['Pic0'] != '':
 			self["pic0"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/weather/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic0['Pic0']))
 		else:
 			self["pic0"].instance.setPixmapFromFile(defpic)
 		self["pic0"].instance.show()
 # День 1
-		if self.lowtemp1['Lowtemp1'] is not '' and self.hightemp1['Hightemp1'] is not '':
+		if self.lowtemp1['Lowtemp1'] != '' and self.hightemp1['Hightemp1'] != '':
 			self["temperature1"].text = _('%s%s%s / %s%s%s') % (self.hightemp1['Hightemp1'], unichr(176).encode("latin-1"), self.degreetype, self.lowtemp1['Lowtemp1'], unichr(176).encode("latin-1"), self.degreetype)
 		else:
 			self["temperature1"].text = _('n/a')
 			self.notdata = True
-		if self.skytext1['Skytext1'] is not '':
+		if self.skytext1['Skytext1'] != '':
 			self["skytext1"].text = _('%s') % self.skytext1['Skytext1']
 		else:
 			self["skytext1"].text = _('n/a')
 			self.notdata = True
-		if self.precip1['Precip1'] is not '':
+		if self.precip1['Precip1'] != '':
 			self["precip1"].text = _('%s %s') % (self.precip1['Precip1'], unichr(37).encode("latin-1"))
 		else:
 			self["precip1"].text = _('n/a')
 			self.notdata = True
-		if self.date1['Date1'] is not '':
+		if self.date1['Date1'] != '':
 			self["date1"].text = _('%s') % self.date1['Date1']
 		else:
 			self["date1"].text = _('n/a')
 			self.notdata = True
-		if self.day1['Day1'] is not '':
+		if self.day1['Day1'] != '':
 			self["day1"].text = _('%s') % self.day1['Day1']
 		else:
 			self["day1"].text = _('n/a')
 			self.notdata = True
 		self["pic1"].instance.setScale(1)
-		if self.pic1['Pic1'] is not '':
+		if self.pic1['Pic1'] != '':
 			self["pic1"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/weather/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic1['Pic1']))
 		else:
 			self["pic1"].instance.setPixmapFromFile(defpic)
 		self["pic1"].instance.show()
 # День 2
-		if self.lowtemp2['Lowtemp2'] is not '' and self.hightemp2['Hightemp2'] is not '':
+		if self.lowtemp2['Lowtemp2'] != '' and self.hightemp2['Hightemp2'] != '':
 			self["temperature2"].text = _('%s%s%s / %s%s%s') % (self.hightemp2['Hightemp2'], unichr(176).encode("latin-1"), self.degreetype, self.lowtemp2['Lowtemp2'], unichr(176).encode("latin-1"), self.degreetype)
 		else:
 			self["temperature2"].text = _('n/a')
 			self.notdata = True
-		if self.skytext2['Skytext2'] is not '':
+		if self.skytext2['Skytext2'] != '':
 			self["skytext2"].text = _('%s') % self.skytext2['Skytext2']
 		else:
 			self["skytext2"].text = _('n/a')
 			self.notdata = True
-		if self.precip2['Precip2'] is not '':
+		if self.precip2['Precip2'] != '':
 			self["precip2"].text = _('%s %s') % (self.precip2['Precip2'], unichr(37).encode("latin-1"))
 		else:
 			self["precip2"].text = _('n/a')
 			self.notdata = True
-		if self.date2['Date2'] is not '':
+		if self.date2['Date2'] != '':
 			self["date2"].text = _('%s') % self.date2['Date2']
 		else:
 			self["date2"].text = _('n/a')
 			self.notdata = True
-		if self.day2['Day2'] is not '':
+		if self.day2['Day2'] != '':
 			self["day2"].text = _('%s') % self.day2['Day2']
 		else:
 			self["day2"].text = _('n/a')
 			self.notdata = True
 		self["pic2"].instance.setScale(1)
-		if self.pic2['Pic2'] is not '':
+		if self.pic2['Pic2'] != '':
 			self["pic2"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/weather/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic2['Pic2']))
 		else:
 			self["pic2"].instance.setPixmapFromFile(defpic)
 		self["pic2"].instance.show()
 # День 3
-		if self.lowtemp3['Lowtemp3'] is not '' and self.hightemp3['Hightemp3'] is not '':
+		if self.lowtemp3['Lowtemp3'] != '' and self.hightemp3['Hightemp3'] != '':
 			self["temperature3"].text = _('%s%s%s / %s%s%s') % (self.hightemp3['Hightemp3'], unichr(176).encode("latin-1"), self.degreetype, self.lowtemp3['Lowtemp3'], unichr(176).encode("latin-1"), self.degreetype)
 		else:
 			self["temperature3"].text = _('n/a')
 			self.notdata = True
-		if self.skytext3['Skytext3'] is not '':
+		if self.skytext3['Skytext3'] != '':
 			self["skytext3"].text = _('%s') % self.skytext3['Skytext3']
 		else:
 			self["skytext3"].text = _('n/a')
 			self.notdata = True
-		if self.precip3['Precip3'] is not '':
+		if self.precip3['Precip3'] != '':
 			self["precip3"].text = _('%s %s') % (self.precip3['Precip3'], unichr(37).encode("latin-1"))
 		else:
 			self["precip3"].text = _('n/a')
 			self.notdata = True
-		if self.date3['Date3'] is not '':
+		if self.date3['Date3'] != '':
 			self["date3"].text = _('%s') % self.date3['Date3']
 		else:
 			self["date3"].text = _('n/a')
 			self.notdata = True
-		if self.day3['Day3'] is not '':
+		if self.day3['Day3'] != '':
 			self["day3"].text = _('%s') % self.day3['Day3']
 		else:
 			self["day3"].text = _('n/a')
 			self.notdata = True
 		self["pic3"].instance.setScale(1)
-		if self.pic3['Pic3'] is not '':
+		if self.pic3['Pic3'] != '':
 			self["pic3"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/weather/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic3['Pic3']))
 		else:
 			self["pic3"].instance.setPixmapFromFile(defpic)
 		self["pic3"].instance.show()
 # День 4
-		if self.lowtemp4['Lowtemp4'] is not '' and self.hightemp4['Hightemp4'] is not '':
+		if self.lowtemp4['Lowtemp4'] != '' and self.hightemp4['Hightemp4'] != '':
 			self["temperature4"].text = _('%s%s%s / %s%s%s') % (self.hightemp4['Hightemp4'], unichr(176).encode("latin-1"), self.degreetype, self.lowtemp4['Lowtemp4'], unichr(176).encode("latin-1"), self.degreetype)
 		else:
 			self["temperature4"].text = _('n/a')
 			self.notdata = True
-		if self.skytext4['Skytext4'] is not '':
+		if self.skytext4['Skytext4'] != '':
 			self["skytext4"].text = _('%s') % self.skytext4['Skytext4']
 		else:
 			self["skytext4"].text = _('n/a')
 			self.notdata = True
-		if self.precip4['Precip4'] is not '':
+		if self.precip4['Precip4'] != '':
 			self["precip4"].text = _('%s %s') % (self.precip4['Precip4'], unichr(37).encode("latin-1"))
 		else:
 			self["precip4"].text = _('n/a')
 			self.notdata = True
-		if self.date4['Date4'] is not '':
+		if self.date4['Date4'] != '':
 			self["date4"].text = _('%s') % self.date4['Date4']
 		else:
 			self["date4"].text = _('n/a')
 			self.notdata = True
-		if self.day4['Day4'] is not '':
+		if self.day4['Day4'] != '':
 			self["day4"].text = _('%s') % self.day4['Day4']
 		else:
 			self["day4"].text = _('n/a')
 			self.notdata = True
 		self["pic4"].instance.setScale(1)
-		if self.pic4['Pic4'] is not '':
+		if self.pic4['Pic4'] != '':
 			self["pic4"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/weather/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.pic4['Pic4']))
 		else:
 			self["pic4"].instance.setPixmapFromFile(defpic)
 		self["pic4"].instance.show()
 # Астро
-		if self.yulianday['Julianday'] is not '':
+		if self.yulianday['Julianday'] != '':
 			self["yulianday"].text = '%s' % self.yulianday['Julianday']
 		else:
 			self["yulianday"].text = _('n/a')
 			self.notdata = True
-		if self.sunrise['Sunrise'] is not '':
+		if self.sunrise['Sunrise'] != '':
 			self["sunrise"].text = '%s' % self.sunrise['Sunrise']
 		else:
 			self["sunrise"].text = _('n/a')
 			self.notdata = True
-		if self.sunset['Sunset'] is not '':
+		if self.sunset['Sunset'] != '':
 			self["sunset"].text = '%s' % self.sunset['Sunset']
 		else:
 			self["sunset"].text = _('n/a')
 			self.notdata = True
-		if self.sunculmination['Solstice'] is not '':
+		if self.sunculmination['Solstice'] != '':
 			self["sunculmination"].text = '%s' % self.sunculmination['Solstice']
 		else:
 			self["sunculmination"].text = _('n/a')
 			self.notdata = True
-		if self.mercuryrise['Mercuryrise'] is not '':
+		if self.mercuryrise['Mercuryrise'] != '':
 			self["mercuryrise"].text = '%s' % self.mercuryrise['Mercuryrise']
 		else:
 			self["mercuryrise"].text = _('n/a')
 			self.notdata = True
-		if self.mercuryset['Mercuryset'] is not '':
+		if self.mercuryset['Mercuryset'] != '':
 			self["mercuryset"].text = '%s' % self.mercuryset['Mercuryset']
 		else:
 			self["mercuryset"].text = _('n/a')
 			self.notdata = True
-		if self.mercuryculmination['Mercuryculmination'] is not '':
+		if self.mercuryculmination['Mercuryculmination'] != '':
 			self["mercuryculmination"].text = '%s' % self.mercuryculmination['Mercuryculmination']
 		else:
 			self["mercuryculmination"].text = _('n/a')
 			self.notdata = True
-		if self.mercuryazimuth['Mercuryazimuth'] is not '':
+		if self.mercuryazimuth['Mercuryazimuth'] != '':
 			self["mercuryazimuth"].text = '%s' % self.mercuryazimuth['Mercuryazimuth']
 		else:
 			self["mercuryazimuth"].text = _('n/a')
 			self.notdata = True
-		if self.venusrise['Venusrise'] is not '':
+		if self.venusrise['Venusrise'] != '':
 			self["venusrise"].text = '%s' % self.venusrise['Venusrise']
 		else:
 			self["venusrise"].text = _('n/a')
 			self.notdata = True
-		if self.venusset['Venusset'] is not '':
+		if self.venusset['Venusset'] != '':
 			self["venusset"].text = '%s' % self.venusset['Venusset']
 		else:
 			self["venusset"].text = _('n/a')
 			self.notdata = True
-		if self.venusculmination['Venusculmination'] is not '':
+		if self.venusculmination['Venusculmination'] != '':
 			self["venusculmination"].text = '%s' % self.venusculmination['Venusculmination']
 		else:
 			self["venusculmination"].text = _('n/a')
 			self.notdata = True
-		if self.venusazimuth['Venusazimuth'] is not '':
+		if self.venusazimuth['Venusazimuth'] != '':
 			self["venusazimuth"].text = '%s' % self.venusazimuth['Venusazimuth']
 		else:
 			self["venusazimuth"].text = _('n/a')
 			self.notdata = True
-		if self.marsrise['Marsrise'] is not '':
+		if self.marsrise['Marsrise'] != '':
 			self["marsrise"].text = '%s' % self.marsrise['Marsrise']
 		else:
 			self["marsrise"].text = _('n/a')
 			self.notdata = True
-		if self.marsset['Marsset'] is not '':
+		if self.marsset['Marsset'] != '':
 			self["marsset"].text = '%s' % self.marsset['Marsset']
 		else:
 			self["marsset"].text = _('n/a')
 			self.notdata = True
-		if self.marsculmination['Marsculmination'] is not '':
+		if self.marsculmination['Marsculmination'] != '':
 			self["marsculmination"].text = '%s' % self.marsculmination['Marsculmination']
 		else:
 			self["marsculmination"].text = _('n/a')
 			self.notdata = True
-		if self.marsazimuth['Marsazimuth'] is not '':
+		if self.marsazimuth['Marsazimuth'] != '':
 			self["marsazimuth"].text = '%s' % self.marsazimuth['Marsazimuth']
 		else:
 			self["marsazimuth"].text = _('n/a')
 			self.notdata = True
-		if self.jupiterrise['Jupiterrise'] is not '':
+		if self.jupiterrise['Jupiterrise'] != '':
 			self["jupiterrise"].text = '%s' % self.jupiterrise['Jupiterrise']
 		else:
 			self["jupiterrise"].text = _('n/a')
 			self.notdata = True
-		if self.jupiterset['Jupiterset'] is not '':
+		if self.jupiterset['Jupiterset'] != '':
 			self["jupiterset"].text = '%s' % self.jupiterset['Jupiterset']
 		else:
 			self["jupiterset"].text = _('n/a')
 			self.notdata = True
-		if self.jupiterculmination['Jupiterculmination'] is not '':
+		if self.jupiterculmination['Jupiterculmination'] != '':
 			self["jupiterculmination"].text = '%s' % self.jupiterculmination['Jupiterculmination']
 		else:
 			self["jupiterculmination"].text = _('n/a')
 			self.notdata = True
-		if self.jupiterazimuth['Jupiterazimuth'] is not '':
+		if self.jupiterazimuth['Jupiterazimuth'] != '':
 			self["jupiterazimuth"].text = '%s' % self.jupiterazimuth['Jupiterazimuth']
 		else:
 			self["jupiterazimuth"].text = _('n/a')
 			self.notdata = True
-		if self.saturnrise['Saturnrise'] is not '':
+		if self.saturnrise['Saturnrise'] != '':
 			self["saturnrise"].text = '%s' % self.saturnrise['Saturnrise']
 		else:
 			self["saturnrise"].text = _('n/a')
 			self.notdata = True
-		if self.saturnset['Saturnset'] is not '':
+		if self.saturnset['Saturnset'] != '':
 			self["saturnset"].text = '%s' % self.saturnset['Saturnset']
 		else:
 			self["saturnset"].text = _('n/a')
 			self.notdata = True
-		if self.saturnculmination['Saturnculmination'] is not '':
+		if self.saturnculmination['Saturnculmination'] != '':
 			self["saturnculmination"].text = '%s' % self.saturnculmination['Saturnculmination']
 		else:
 			self["saturnculmination"].text = _('n/a')
 			self.notdata = True
-		if self.saturnazimuth['Saturnazimuth'] is not '':
+		if self.saturnazimuth['Saturnazimuth'] != '':
 			self["saturnazimuth"].text = '%s' % self.saturnazimuth['Saturnazimuth']
 		else:
 			self["saturnazimuth"].text = _('n/a')
 			self.notdata = True
-		if self.uranusrise['Uranusrise'] is not '':
+		if self.uranusrise['Uranusrise'] != '':
 			self["uranusrise"].text = '%s' % self.uranusrise['Uranusrise']
 		else:
 			self["uranusrise"].text = _('n/a')
 			self.notdata = True
-		if self.uranusset['Uranusset'] is not '':
+		if self.uranusset['Uranusset'] != '':
 			self["uranusset"].text = '%s' % self.uranusset['Uranusset']
 		else:
 			self["uranusset"].text = _('n/a')
 			self.notdata = True
-		if self.uranusculmination['Uranusculmination'] is not '':
+		if self.uranusculmination['Uranusculmination'] != '':
 			self["uranusculmination"].text = '%s' % self.uranusculmination['Uranusculmination']
 		else:
 			self["uranusculmination"].text = _('n/a')
 			self.notdata = True
-		if self.uranusazimuth['Uranusazimuth'] is not '':
+		if self.uranusazimuth['Uranusazimuth'] != '':
 			self["uranusazimuth"].text = '%s' % self.uranusazimuth['Uranusazimuth']
 		else:
 			self["uranusazimuth"].text = _('n/a')
 			self.notdata = True
-		if self.neptunerise['Neptunerise'] is not '':
+		if self.neptunerise['Neptunerise'] != '':
 			self["neptunerise"].text = '%s' % self.neptunerise['Neptunerise']
 		else:
 			self["neptunerise"].text = _('n/a')
 			self.notdata = True
-		if self.neptuneset['Neptuneset'] is not '':
+		if self.neptuneset['Neptuneset'] != '':
 			self["neptuneset"].text = '%s' % self.neptuneset['Neptuneset']
 		else:
 			self["neptuneset"].text = _('n/a')
 			self.notdata = True
-		if self.neptuneculmination['Neptuneculmination'] is not '':
+		if self.neptuneculmination['Neptuneculmination'] != '':
 			self["neptuneculmination"].text = '%s' % self.neptuneculmination['Neptuneculmination']
 		else:
 			self["neptuneculmination"].text = _('n/a')
 			self.notdata = True
-		if self.neptuneazimuth['Neptuneazimuth'] is not '':
+		if self.neptuneazimuth['Neptuneazimuth'] != '':
 			self["neptuneazimuth"].text = '%s' % self.neptuneazimuth['Neptuneazimuth']
 		else:
 			self["neptuneazimuth"].text = _('n/a')
 			self.notdata = True
-		if self.moondist['Moondist'] is not '':
+		if self.moondist['Moondist'] != '':
 			self["moondist"].text = '%s' % self.moondist['Moondist']
 		else:
 			self["moondist"].text = _('n/a')
 			self.notdata = True
-		if self.moonazimuth['Moonazimuth'] is not '':
+		if self.moonazimuth['Moonazimuth'] != '':
 			self["moonazimuth"].text = '%s' % self.moonazimuth['Moonazimuth']
 		else:
 			self["moonazimuth"].text = _('n/a')
 			self.notdata = True
-		if self.moonculmination['Moonculmination'] is not '':
+		if self.moonculmination['Moonculmination'] != '':
 			self["moonculmination"].text = '%s' % self.moonculmination['Moonculmination']
 		else:
 			self["moonculmination"].text = _('n/a')
 			self.notdata = True
-		if self.moonrise['Moonrise'] is not '':
+		if self.moonrise['Moonrise'] != '':
 			self["moonrise"].text = '%s' % self.moonrise['Moonrise']
 		else:
 			self["moonrise"].text = _('n/a')
 			self.notdata = True
-		if self.moonset['Moonset'] is not '':
+		if self.moonset['Moonset'] != '':
 			self["moonset"].text = '%s' % self.moonset['Moonset']
 		else:
 			self["moonset"].text = _('n/a')
 			self.notdata = True
-		if self.moonphase['Moonphase'] is not '':
+		if self.moonphase['Moonphase'] != '':
 			self["moonphase"].text = '%s' % self.moonphase['Moonphase']
 		else:
 			self["moonphase"].text = _('n/a')
 			self.notdata = True
-		if self.moonlight['Moonlight'] is not '':
+		if self.moonlight['Moonlight'] != '':
 			self["moonlight"].text = '%s' % self.moonlight['Moonlight']
 		else:
 			self["moonlight"].text = _('n/a')
 			self.notdata = True
 		self["picmoon"].instance.setScale(1)
-		if self.picmoon['PicMoon'] is not '':
+		if self.picmoon['PicMoon'] != '':
 			self["picmoon"].instance.setPixmapFromFile("%sExtensions/WeatherMSN/icons/moon/%s.png" % (resolveFilename(SCOPE_PLUGINS), self.picmoon['PicMoon']))
 		else:
 			self["picmoon"].instance.setPixmapFromFile(defpic)
@@ -2755,7 +2755,7 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		self.converter = config.plugins.weathermsn.converter.value
 		self.createSetup()
 
-		self["setupActions"] = ActionMap(["DirectionActions", "SetupActions", "ColorActions"], 
+		self["setupActions"] = ActionMap(["DirectionActions", "SetupActions", "ColorActions"],
 		{ "red": self.cancel,
 		"cancel": self.cancel,
 		"green": self.save,
@@ -2772,7 +2772,7 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		self.session.openWithCallback(self.ShowsearchBarracuda, VirtualKeyBoard, title=_('Enter text to search city'))
 
 	def ShowsearchBarracuda(self, name):
-		if name is not None:
+		if name != None:
 			self.session.open(SearchLocationMSN, name)
 
 	def createSetup(self):
@@ -2790,13 +2790,13 @@ class ConfigWeatherMSN(ConfigListScreen, Screen):
 		current = self["config"].getCurrent()
 		try:
 			helpwindowpos = self["HelpWindow"].getPosition()
-			if current[1].help_window.instance is not None:
+			if current[1].help_window.instance != None:
 				current[1].help_window.instance.move(ePoint(helpwindowpos[0],helpwindowpos[1]))
 		except:
 			pass
 
 	def restart(self, answer):
-		if answer is True:
+		if answer == True:
 			self.session.open(TryQuitMainloop, 3)
 
 	def cancel(self):
@@ -2840,7 +2840,7 @@ class SearchLocationMSN(Screen):
 		self.setTitle(_("Search Location Weather MSN"))
 		self["menu"] = MenuList(self.resultlist)
 
-		self["actions"] = ActionMap(["OkCancelActions", "DirectionActions"], 
+		self["actions"] = ActionMap(["OkCancelActions", "DirectionActions"],
 		{"ok": self.okClicked,
 		"cancel": self.close,
 		"up": self.pageUp,

@@ -2,7 +2,7 @@
 #
 # Converter - MSNWeatherAstro
 # Developer - Sirius
-# Version 1.3
+# Version 1.4
 # Homepage - http://www.gisclub.tv
 #
 # Jean Meeus - Astronomical Algorithms
@@ -25,8 +25,8 @@ import os
 import math
 import gettext
 import datetime, time
-from Tools.Directories import fileExists, pathExists
 from Components.Converter.Converter import Converter
+from Components.Converter.Poll import Poll
 from Components.Element import cached
 from Components.config import config, configfile
 from Components.Console import Console as iConsole
@@ -34,7 +34,6 @@ from Components.Language import language
 from time import localtime, strftime
 from datetime import date
 from os import environ
-from Poll import Poll
 
 weather_city = config.plugins.weathermsn.city.value # 'Moscow,Russia'
 degreetype = config.plugins.weathermsn.degreetype.value # 'C'
@@ -384,7 +383,7 @@ class MSNWeather2(Poll, Converter, object):
 		self.poll_enabled = True
 
 	def control_xml(self, result, retval, extra_args):
-		if retval is not 0:
+		if retval != 0:
 			self.write_none()
 
 	def write_none(self):
@@ -511,22 +510,25 @@ class MSNWeather2(Poll, Converter, object):
 			'Skytext4':'',\
 			'Precip4':'',\
 			}
-#
-		if fileExists("/tmp/weathermsn2.xml"):
+
+		if not os.path.exists("/tmp/weathermsn2.xml"):
+			self.write_none()
+			return info
+		elif os.path.exists("/tmp/weathermsn2.xml") and open("/tmp/weathermsn2.xml").read() == 'None':
+			if int((time.time() - os.stat("/tmp/weathermsn2.xml").st_mtime)/6) >= time_update:
+				self.get_xmlfile()
+			return info
+		elif os.path.exists("/tmp/weathermsn2.xml") and open("/tmp/weathermsn2.xml").read() != 'None':
 			if int((time.time() - os.stat("/tmp/weathermsn2.xml").st_mtime)/60) >= time_update:
 				self.get_xmlfile()
 		else:
-			self.get_xmlfile()
-		if not fileExists("/tmp/weathermsn2.xml"):
-			self.write_none()
 			return info
-		if fileExists("/tmp/weathermsn2.xml") and open("/tmp/weathermsn2.xml").read() is 'None':
-			return info
+
 		for line in open("/tmp/weathermsn2.xml"):
 			try:
 				if "<weather" in line:
 					msnweather['Location'] = line.split('weatherlocationname')[1].split('"')[1].split(',')[0]
-					if not line.split('timezone')[1].split('"')[1][0] is '0':
+					if not line.split('timezone')[1].split('"')[1][0] == '0':
 						msnweather['Timezone'] = _('+%s h') % line.split('timezone')[1].split('"')[1]
 					else:
 						msnweather['Timezone'] = _('%s h') % line.split('timezone')[1].split('"')[1]
@@ -536,11 +538,11 @@ class MSNWeather2(Poll, Converter, object):
 					latitude = '%s' %  line.split(' lat')[1].split('"')[1].replace(',', '.')
 					longitude = '%s' %  line.split(' long')[1].split('"')[1].replace(',', '.')
 				if "<current" in line:
-					if not line.split('temperature')[1].split('"')[1][0] is '-' and not line.split('temperature')[1].split('"')[1][0] is '0':
+					if not line.split('temperature')[1].split('"')[1][0] == '-' and not line.split('temperature')[1].split('"')[1][0] == '0':
 						msnweather['Temp'] = '+' + line.split('temperature')[1].split('"')[1] + '%s%s' % (unichr(176).encode("latin-1"), degreetype)
 					else:
 						msnweather['Temp'] = line.split('temperature')[1].split('"')[1] + '%s%s' % (unichr(176).encode("latin-1"), degreetype)
-					if not line.split('feelslike')[1].split('"')[1][0] is '-' and not line.split('feelslike')[1].split('"')[1][0] is '0':
+					if not line.split('feelslike')[1].split('"')[1][0] == '-' and not line.split('feelslike')[1].split('"')[1][0] == '0':
 						msnweather['Feelslike'] = '+' + line.split('feelslike')[1].split('"')[1] + '%s%s' % (unichr(176).encode("latin-1"), degreetype)
 					else:
 						msnweather['Feelslike'] = line.split('feelslike')[1].split('"')[1] + '%s%s' % (unichr(176).encode("latin-1"), degreetype)
@@ -592,13 +594,13 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Shortday'] = line.split('shortday')[1].split('"')[1]
 # День 0
 				if "<forecast" in line:
-					if not line.split('low')[1].split('"')[1][0] is '-' and not line.split('low')[1].split('"')[1][0] is '0':
+					if not line.split('low')[1].split('"')[1][0] == '-' and not line.split('low')[1].split('"')[1][0] == '0':
 						low0weather = '+' + line.split('low')[1].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Lowtemp0'] = '%s%s' % (low0weather, degreetype)
 					else:
 						low0weather = line.split('low')[1].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Lowtemp0'] = '%s%s' % (low0weather, degreetype)
-					if not line.split('high')[1].split('"')[1][0] is '-' and not line.split('high')[1].split('"')[1][0] is '0':
+					if not line.split('high')[1].split('"')[1][0] == '-' and not line.split('high')[1].split('"')[1][0] == '0':
 						hi0weather = '+' + line.split('high')[1].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Hightemp0'] = '%s%s' % (hi0weather, degreetype)
 					else:
@@ -614,13 +616,13 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Precip0'] = line.split('precip')[1].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
 # День 1
 				if "<forecast" in line:
-					if not line.split('low')[2].split('"')[1][0] is '-' and not line.split('low')[2].split('"')[1][0] is '0':
+					if not line.split('low')[2].split('"')[1][0] == '-' and not line.split('low')[2].split('"')[1][0] == '0':
 						low1weather = '+' + line.split('low')[2].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Lowtemp1'] = '%s%s' % (low1weather, degreetype)
 					else:
 						low1weather = line.split('low')[2].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Lowtemp1'] = '%s%s' % (low1weather, degreetype)
-					if not line.split('high')[2].split('"')[1][0] is '-' and not line.split('high')[2].split('"')[1][0] is '0':
+					if not line.split('high')[2].split('"')[1][0] == '-' and not line.split('high')[2].split('"')[1][0] == '0':
 						hi1weather = '+' + line.split('high')[2].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Hightemp1'] = '%s%s' % (hi1weather, degreetype)
 					else:
@@ -636,13 +638,13 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Precip1'] = line.split('precip')[2].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
 # День 2
 				if "<forecast" in line:
-					if not line.split('low')[3].split('"')[1][0] is '-' and not line.split('low')[3].split('"')[1][0] is '0':
+					if not line.split('low')[3].split('"')[1][0] == '-' and not line.split('low')[3].split('"')[1][0] == '0':
 						low2weather = '+' + line.split('low')[3].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Lowtemp2'] = '%s%s' % (low2weather, degreetype)
 					else:
 						low2weather = line.split('low')[3].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Lowtemp2'] = '%s%s' % (low2weather, degreetype)
-					if not line.split('high')[3].split('"')[1][0] is '-' and not line.split('high')[3].split('"')[1][0] is '0':
+					if not line.split('high')[3].split('"')[1][0] == '-' and not line.split('high')[3].split('"')[1][0] == '0':
 						hi2weather = '+' + line.split('high')[3].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Hightemp2'] = '%s%s' % (hi2weather, degreetype)
 					else:
@@ -658,13 +660,13 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Precip2'] = line.split('precip')[3].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
 # День 3
 				if "<forecast" in line:
-					if not line.split('low')[4].split('"')[1][0] is '-' and not line.split('low')[4].split('"')[1][0] is '0':
+					if not line.split('low')[4].split('"')[1][0] == '-' and not line.split('low')[4].split('"')[1][0] == '0':
 						low3weather = '+' + line.split('low')[4].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Lowtemp3'] = '%s%s' % (low3weather, degreetype)
 					else:
 						low3weather = line.split('low')[4].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Lowtemp3'] = '%s%s' % (low3weather, degreetype)
-					if not line.split('high')[4].split('"')[1][0] is '-' and not line.split('high')[4].split('"')[1][0] is '0':
+					if not line.split('high')[4].split('"')[1][0] == '-' and not line.split('high')[4].split('"')[1][0] == '0':
 						hi3weather = '+' + line.split('high')[4].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Hightemp3'] = '%s%s' % (hi3weather, degreetype)
 					else:
@@ -680,13 +682,13 @@ class MSNWeather2(Poll, Converter, object):
 					msnweather['Precip3'] = line.split('precip')[4].split('"')[1] + ' %s' % unichr(37).encode("latin-1")
 # День 4
 				if "<forecast" in line:
-					if not line.split('low')[5].split('"')[1][0] is '-' and not line.split('low')[5].split('"')[1][0] is '0':
+					if not line.split('low')[5].split('"')[1][0] == '-' and not line.split('low')[5].split('"')[1][0] == '0':
 						low4weather = '+' + line.split('low')[5].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Lowtemp4'] = '%s%s' % (low4weather, degreetype)
 					else:
 						low4weather = line.split('low')[5].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Lowtemp4'] = '%s%s' % (low4weather, degreetype)
-					if not line.split('high')[5].split('"')[1][0] is '-' and not line.split('high')[5].split('"')[1][0] is '0':
+					if not line.split('high')[5].split('"')[1][0] == '-' and not line.split('high')[5].split('"')[1][0] == '0':
 						hi4weather = '+' + line.split('high')[5].split('"')[1] + '%s' % unichr(176).encode("latin-1")
 						msnweather['Hightemp4'] = '%s%s' % (hi4weather, degreetype)
 					else:
@@ -2134,228 +2136,228 @@ class MSNWeather2(Poll, Converter, object):
 		msnweather['Moonlight'] = '%s %s' % (light, unichr(37).encode("latin-1"))
 		msnweather['PiconMoon'] = '%s' % pic
 #
-		if self.type is self.VFD:
+		if self.type == self.VFD:
 			try:
 				weze = msnweather['Skytext'].split(' ')[1]
 			except:
 				weze = msnweather['Skytext']
 			info = msnweather['Temp'] + ' ' + weze
-		if self.type is self.DATE:
+		if self.type == self.DATE:
 			info = msnweather['Date']
-		if self.type is self.SHORTDATE:
+		if self.type == self.SHORTDATE:
 			info = msnweather['Shortdate']
-		if self.type is self.DAY:
+		if self.type == self.DAY:
 			info = msnweather['Day']
-		if self.type is self.JDAY:
+		if self.type == self.JDAY:
 			info = msnweather['Julianday']
-		if self.type is self.SHORTDAY:
+		if self.type == self.SHORTDAY:
 			info = msnweather['Shortday']
-		if self.type is self.LOCATION:
+		if self.type == self.LOCATION:
 			info = msnweather['Location']
-		if self.type is self.TIMEZONE:
+		if self.type == self.TIMEZONE:
 			info = msnweather['Timezone']
-		if self.type is self.LATITUDE:
+		if self.type == self.LATITUDE:
 			info = msnweather['Latitude']
-		if self.type is self.LONGITUDE:
+		if self.type == self.LONGITUDE:
 			info = msnweather['Longitude']
 # Астро
-		if self.type is self.SUNRISE:
+		if self.type == self.SUNRISE:
 			info = msnweather['Sunrise']
-		if self.type is self.SUNSET:
+		if self.type == self.SUNSET:
 			info = msnweather['Sunset']
-		if self.type is self.SUNCULMINATION:
+		if self.type == self.SUNCULMINATION:
 			info = msnweather['Solstice']
-		if self.type is self.MERCURYRISE:
+		if self.type == self.MERCURYRISE:
 			info = msnweather['Mercuryrise']
-		if self.type is self.MERCURYSET:
+		if self.type == self.MERCURYSET:
 			info = msnweather['Mercuryset']
-		if self.type is self.MERCURYCULMINATION:
+		if self.type == self.MERCURYCULMINATION:
 			info = msnweather['Mercuryculmination']
-		if self.type is self.MERCURYAZIMUTH:
+		if self.type == self.MERCURYAZIMUTH:
 			info = msnweather['Mercuryazimuth']
-		if self.type is self.VENUSRISE:
+		if self.type == self.VENUSRISE:
 			info = msnweather['Venusrise']
-		if self.type is self.VENUSSET:
+		if self.type == self.VENUSSET:
 			info = msnweather['Venusset']
-		if self.type is self.VENUSCULMINATION:
+		if self.type == self.VENUSCULMINATION:
 			info = msnweather['Venusculmination']
-		if self.type is self.VENUSAZIMUTH:
+		if self.type == self.VENUSAZIMUTH:
 			info = msnweather['Venusazimuth']
-		if self.type is self.MARSRISE:
+		if self.type == self.MARSRISE:
 			info = msnweather['Marsrise']
-		if self.type is self.MARSSET:
+		if self.type == self.MARSSET:
 			info = msnweather['Marsset']
-		if self.type is self.MARSCULMINATION:
+		if self.type == self.MARSCULMINATION:
 			info = msnweather['Marsculmination']
-		if self.type is self.MARSAZIMUTH:
+		if self.type == self.MARSAZIMUTH:
 			info = msnweather['Marsazimuth']
-		if self.type is self.JUPITERRISE:
+		if self.type == self.JUPITERRISE:
 			info = msnweather['Jupiterrise']
-		if self.type is self.JUPITERSET:
+		if self.type == self.JUPITERSET:
 			info = msnweather['Jupiterset']
-		if self.type is self.JUPITERCULMINATION:
+		if self.type == self.JUPITERCULMINATION:
 			info = msnweather['Jupiterculmination']
-		if self.type is self.JUPITERAZIMUTH:
+		if self.type == self.JUPITERAZIMUTH:
 			info = msnweather['Jupiterazimuth']
-		if self.type is self.SATURNRISE:
+		if self.type == self.SATURNRISE:
 			info = msnweather['Saturnrise']
-		if self.type is self.SATURNSET:
+		if self.type == self.SATURNSET:
 			info = msnweather['Saturnset']
-		if self.type is self.SATURNCULMINATION:
+		if self.type == self.SATURNCULMINATION:
 			info = msnweather['Saturnculmination']
-		if self.type is self.SATURNAZIMUTH:
+		if self.type == self.SATURNAZIMUTH:
 			info = msnweather['Saturnazimuth']
-		if self.type is self.URANUSRISE:
+		if self.type == self.URANUSRISE:
 			info = msnweather['Uranusrise']
-		if self.type is self.URANUSSET:
+		if self.type == self.URANUSSET:
 			info = msnweather['Uranusset']
-		if self.type is self.URANUSCULMINATION:
+		if self.type == self.URANUSCULMINATION:
 			info = msnweather['Uranusculmination']
-		if self.type is self.URANUSAZIMUTH:
+		if self.type == self.URANUSAZIMUTH:
 			info = msnweather['Uranusazimuth']
-		if self.type is self.NEPTUNERISE:
+		if self.type == self.NEPTUNERISE:
 			info = msnweather['Neptunerise']
-		if self.type is self.NEPTUNESET:
+		if self.type == self.NEPTUNESET:
 			info = msnweather['Neptuneset']
-		if self.type is self.NEPTUNECULMINATION:
+		if self.type == self.NEPTUNECULMINATION:
 			info = msnweather['Neptuneculmination']
-		if self.type is self.NEPTUNEAZIMUTH:
+		if self.type == self.NEPTUNEAZIMUTH:
 			info = msnweather['Neptuneazimuth']
-		if self.type is self.MOONRISE:
+		if self.type == self.MOONRISE:
 			info = msnweather['Moonrise']
-		if self.type is self.MOONSET:
+		if self.type == self.MOONSET:
 			info = msnweather['Moonset']
-		if self.type is self.MOONCULMINATION:
+		if self.type == self.MOONCULMINATION:
 			info = msnweather['Moonculmination']
-		if self.type is self.MOONDIST:
+		if self.type == self.MOONDIST:
 			info = msnweather['Moondist']
-		if self.type is self.MOONAZIMUTH:
+		if self.type == self.MOONAZIMUTH:
 			info = msnweather['Moonazimuth']
-		if self.type is self.MOONPHASE:
+		if self.type == self.MOONPHASE:
 			info = msnweather['Moonphase']
-		if self.type is self.MOONLIGHT:
+		if self.type == self.MOONLIGHT:
 			info = msnweather['Moonlight']
-		if self.type is self.MOONPICON:
+		if self.type == self.MOONPICON:
 			info = msnweather['PiconMoon']
 # Сегодня
-		if self.type is self.TEMP:
+		if self.type == self.TEMP:
 			info = msnweather['Temp']
-		if self.type is self.PICON:
+		if self.type == self.PICON:
 			info = msnweather['Picon']
-		if self.type is self.SKYTEXT:
+		if self.type == self.SKYTEXT:
 			info = msnweather['Skytext']
-		if self.type is self.FEELSLIKE:
+		if self.type == self.FEELSLIKE:
 			info = msnweather['Feelslike']
-		if self.type is self.HUMIDITY:
+		if self.type == self.HUMIDITY:
 			info = msnweather['Humidity']
-		if self.type is self.WIND:
+		if self.type == self.WIND:
 			info = msnweather['Wind']
-		if self.type is self.WINDSPEED:
+		if self.type == self.WINDSPEED:
 			info = msnweather['Windspeed']
 # День 0
-		if self.type is self.DATE0:
+		if self.type == self.DATE0:
 			info = msnweather['Date0']
-		if self.type is self.SHORTDATE0:
+		if self.type == self.SHORTDATE0:
 			info = msnweather['Shortdate0']
-		if self.type is self.DAY0:
+		if self.type == self.DAY0:
 			info = msnweather['Day0']
-		if self.type is self.SHORTDAY0:
+		if self.type == self.SHORTDAY0:
 			info = msnweather['Shortday0']
-		if self.type is self.TEMP0:
+		if self.type == self.TEMP0:
 			info = msnweather['Temp0']
-		if self.type is self.LOWTEMP0:
+		if self.type == self.LOWTEMP0:
 			info = msnweather['Lowtemp0']
-		if self.type is self.HIGHTEMP0:
+		if self.type == self.HIGHTEMP0:
 			info = msnweather['Hightemp0']
-		if self.type is self.PICON0:
+		if self.type == self.PICON0:
 			info = msnweather['Picon0']
-		if self.type is self.SKYTEXT0:
+		if self.type == self.SKYTEXT0:
 			info = msnweather['Skytext0']
-		if self.type is self.PRECIP0:
+		if self.type == self.PRECIP0:
 			info = msnweather['Precip0']
 # День 1
-		if self.type is self.DATE1:
+		if self.type == self.DATE1:
 			info = msnweather['Date1']
-		if self.type is self.SHORTDATE1:
+		if self.type == self.SHORTDATE1:
 			info = msnweather['Shortdate1']
-		if self.type is self.DAY1:
+		if self.type == self.DAY1:
 			info = msnweather['Day1']
-		if self.type is self.SHORTDAY1:
+		if self.type == self.SHORTDAY1:
 			info = msnweather['Shortday1']
-		if self.type is self.TEMP1:
+		if self.type == self.TEMP1:
 			info = msnweather['Temp1']
-		if self.type is self.LOWTEMP1:
+		if self.type == self.LOWTEMP1:
 			info = msnweather['Lowtemp1']
-		if self.type is self.HIGHTEMP1:
+		if self.type == self.HIGHTEMP1:
 			info = msnweather['Hightemp1']
-		if self.type is self.PICON1:
+		if self.type == self.PICON1:
 			info = msnweather['Picon1']
-		if self.type is self.SKYTEXT1:
+		if self.type == self.SKYTEXT1:
 			info = msnweather['Skytext1']
-		if self.type is self.PRECIP1:
+		if self.type == self.PRECIP1:
 			info = msnweather['Precip1']
 # День 2
-		if self.type is self.DATE2:
+		if self.type == self.DATE2:
 			info = msnweather['Date2']
-		if self.type is self.SHORTDATE2:
+		if self.type == self.SHORTDATE2:
 			info = msnweather['Shortdate2']
-		if self.type is self.DAY2:
+		if self.type == self.DAY2:
 			info = msnweather['Day2']
-		if self.type is self.SHORTDAY2:
+		if self.type == self.SHORTDAY2:
 			info = msnweather['Shortday2']
-		if self.type is self.TEMP2:
+		if self.type == self.TEMP2:
 			info = msnweather['Temp2']
-		if self.type is self.LOWTEMP2:
+		if self.type == self.LOWTEMP2:
 			info = msnweather['Lowtemp2']
-		if self.type is self.HIGHTEMP2:
+		if self.type == self.HIGHTEMP2:
 			info = msnweather['Hightemp2']
-		if self.type is self.PICON2:
+		if self.type == self.PICON2:
 			info = msnweather['Picon2']
-		if self.type is self.SKYTEXT2:
+		if self.type == self.SKYTEXT2:
 			info = msnweather['Skytext2']
-		if self.type is self.PRECIP2:
+		if self.type == self.PRECIP2:
 			info = msnweather['Precip2']
 # День 3
-		if self.type is self.DATE3:
+		if self.type == self.DATE3:
 			info = msnweather['Date3']
-		if self.type is self.SHORTDATE3:
+		if self.type == self.SHORTDATE3:
 			info = msnweather['Shortdate3']
-		if self.type is self.DAY3:
+		if self.type == self.DAY3:
 			info = msnweather['Day3']
-		if self.type is self.SHORTDAY3:
+		if self.type == self.SHORTDAY3:
 			info = msnweather['Shortday3']
-		if self.type is self.TEMP3:
+		if self.type == self.TEMP3:
 			info = msnweather['Temp3']
-		if self.type is self.LOWTEMP3:
+		if self.type == self.LOWTEMP3:
 			info = msnweather['Lowtemp3']
-		if self.type is self.HIGHTEMP3:
+		if self.type == self.HIGHTEMP3:
 			info = msnweather['Hightemp3']
-		if self.type is self.PICON3:
+		if self.type == self.PICON3:
 			info = msnweather['Picon3']
-		if self.type is self.SKYTEXT3:
+		if self.type == self.SKYTEXT3:
 			info = msnweather['Skytext3']
-		if self.type is self.PRECIP3:
+		if self.type == self.PRECIP3:
 			info = msnweather['Precip3']
 # День 4
-		if self.type is self.DATE4:
+		if self.type == self.DATE4:
 			info = msnweather['Date4']
-		if self.type is self.SHORTDATE4:
+		if self.type == self.SHORTDATE4:
 			info = msnweather['Shortdate4']
-		if self.type is self.DAY4:
+		if self.type == self.DAY4:
 			info = msnweather['Day4']
-		if self.type is self.SHORTDAY4:
+		if self.type == self.SHORTDAY4:
 			info = msnweather['Shortday4']
-		if self.type is self.TEMP4:
+		if self.type == self.TEMP4:
 			info = msnweather['Temp4']
-		if self.type is self.LOWTEMP4:
+		if self.type == self.LOWTEMP4:
 			info = msnweather['Lowtemp4']
-		if self.type is self.HIGHTEMP4:
+		if self.type == self.HIGHTEMP4:
 			info = msnweather['Hightemp4']
-		if self.type is self.PICON4:
+		if self.type == self.PICON4:
 			info = msnweather['Picon4']
-		if self.type is self.SKYTEXT4:
+		if self.type == self.SKYTEXT4:
 			info = msnweather['Skytext4']
-		if self.type is self.PRECIP4:
+		if self.type == self.PRECIP4:
 			info = msnweather['Precip4']
 		return info
 	text = property(getText)
